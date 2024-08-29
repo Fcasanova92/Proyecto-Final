@@ -1,6 +1,7 @@
 import {dirname} from "path"
 import { fileURLToPath } from "url";
-import { saveProduct, getAllProduct } from "./db/helpers/dbQuerys.js";
+import { saveProduct, getAllProduct, getProductById } from "./db/helpers/dbQuerys.js";
+import { error } from "console";
 
 class ProductManager {
 
@@ -76,16 +77,18 @@ class ProductManager {
 
     }
 
-    getProductById(id){
+   async getProductById(id){
 
         try {
 
-            const productById = this.products.find((obj)=>obj.id === id)
+            const productById = await getProductById(id, this.path)
 
             if(!productById){
 
                 throw new Error("el id del producto no existe")
             }
+
+            console.log(productById)
 
             return productById
             
@@ -99,7 +102,30 @@ class ProductManager {
 
     deleteProductById(){}
 
-    updateProduct(){
+    async updateProduct(id){
+
+      try {
+        const productById = await getProductById(id, this.path)
+
+        const products = getAllProduct(this.path)
+
+        productById.price = 5000
+
+        const updatedProducts = products.map((product) => {
+          if (product.id === productById.id) {
+            return productById; // Devuelve el producto actualizado
+          }
+          return product; // Devuelve el producto sin cambios
+        });
+       
+        await saveProduct(updatedProducts, this.path)
+        
+      } catch (error) {
+
+        console.error(error)
+        
+      }
+
     }
 }
 
@@ -152,7 +178,10 @@ const producto1 = {
     await product.addProduct(producto2);
     await product.addProduct(producto3);
   
+
+    await product.updateProduct(1)
     await product.getProducts();
+    
   }
   
   run();

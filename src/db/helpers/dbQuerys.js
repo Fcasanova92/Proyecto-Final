@@ -39,9 +39,12 @@ export const getProductById = async (id, path) => {
         }
 
       const idProduct = parseInt(id)      
-      const productJson = JSON.parse(await fs.promises.readFile(path, "utf-8"));
-      const productById = productJson[idProduct]
-      return productById
+      const products = JSON.parse(await fs.promises.readFile(`${path}/db/product.json`, "utf-8"));
+      for (const product of products) {
+        if(product.id === idProduct){
+          return product
+        }
+      }
     
     } catch (error) {
       console.error("error", error.message);
