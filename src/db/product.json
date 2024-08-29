@@ -14,6 +14,20 @@
     ]
   },
   {
+    "id": 2,
+    "title": "Cámara Digital 4K",
+    "description": "Una cámara digital avanzada con capacidad de grabación en 4K y conectividad Wi-Fi.",
+    "code": "CAM1231",
+    "price": 499.99,
+    "status": "Disponible",
+    "stock": 25,
+    "category": "Electrónica",
+    "thumbnails": [
+      "https://example.com/images/camara_digital_1.jpg",
+      "https://example.com/images/camara_digital_2.jpg"
+    ]
+  },
+  {
     "id": 3,
     "title": "Cámara Digital 4K",
     "description": "Una cámara digital avanzada con capacidad de grabación en 4K y conectividad Wi-Fi.",

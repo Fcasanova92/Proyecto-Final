@@ -5,10 +5,6 @@ import { saveProduct, getAllProduct, getProductById } from "./db/helpers/dbQuery
 
 class ProductManager {
 
-    #id;
-
-    static nextId = 1;
-
     constructor(){
 
         this.path = dirname(fileURLToPath(import.meta.url))
@@ -26,16 +22,21 @@ class ProductManager {
           }
   
           const products = await getAllProduct(this.path);
-  
+
           const existCodeProduct = products.some((obj) => obj.code === producto.code);
   
           if (existCodeProduct) {
               throw new Error("El codigo del producto debe de ser único");
           }
+
+          const ids = products.map((product) => product.id);
+
+          const lastIdProduct = ids.length > 0 ? Math.max(...ids) : 0;
+
+          const productId = lastIdProduct + 1;
   
-          this.#id = ProductManager.nextId++;
-  
-          const newProduct = { id: this.#id, ...producto };
+          const newProduct = { id: productId, ...producto };
+
           products.push(newProduct);
   
           await saveProduct(products, this.path);
@@ -145,11 +146,12 @@ const producto1 = {
   async function run() {
     // await product.addProduct(producto1);
     // await product.addProduct(producto2);
-    // await product.addProduct(producto3);
+    await product.addProduct(producto3);
   
 
-    await product.deleteProductById(2)
+    // await product.deleteProductById(2)
     await product.getProducts();
+    
 
     
   }
