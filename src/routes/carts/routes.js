@@ -1,30 +1,41 @@
-import { Router } from "express";
+import { Router } from 'express';
 
 export const router = Router()
 
 // obtener todos los productos
-router.get("/carts", (req, res )=>{
+router.get("/", (req, res )=>{
 
-
+    res.send('This is a POST request');
 })
 
 // agregar los productos
 
-router.post("/", ["agregar middleware"], (req, res)=>{
+router.post("/", (req, res)=>{
 
+    res.send('This is a POST request');
 
 } )
 
 // obtener un producto por id
 
 
-router.get("/:pid", (req, res) => {
+router.get("/:cid", (req, res) => {
 
+    res.send('This is a POST request');
+})
+
+router.post("/:cid/product/:pid ", (req, res)=>{
+
+    res.send('This is a POST request');
 
 })
 
-router.post("/:cid/product/:pid ")
+;
 
 // solo debe de contener el id del producto y la cantidad
 
-router.delete("/carts/:pid")
+router.delete("/:cid", (req, res)=>{
+
+    res.send('This is a POST request');
+
+})

@@ -1,3 +1,3 @@
-export { CartsRouter } from "./carts";
+export {CartsRouter} from './carts/index.js'
 
-export  { ProductRouter } from "./product";
+export {ProductRouter} from './product/index.js'

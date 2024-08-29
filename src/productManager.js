@@ -1,7 +1,7 @@
 import {dirname} from "path"
 import { fileURLToPath } from "url";
 import { saveProduct, getAllProduct, getProductById } from "./db/helpers/dbQuerys.js";
-import { error } from "console";
+
 
 class ProductManager {
 
