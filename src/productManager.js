@@ -15,119 +15,88 @@ class ProductManager {
 
     }
 
-    async addProduct(producto){
-        try {
-
-            // agregarlo en un middleware
-
-            const requiredFields = ['title', 'description', 'code', 'price', 'status', 'stock', 'category', 'thumbnails' ];
-
-            for (const field of requiredFields) {
-
+    async addProduct(producto) {
+      try {
+          const requiredFields = ['title', 'description', 'code', 'price', 'status', 'stock', 'category', 'thumbnails'];
+  
+          for (const field of requiredFields) {
               if (!producto.hasOwnProperty(field) || producto[field] === '') {
-
-                throw new Error(`El campo "${field}" es obligatorio.`);
+                  throw new Error(`El campo "${field}" es obligatorio.`);
               }
-            }
-
-            const products = await getAllProduct(this.path)
-
-            const existCodeProduct = products.some((obj) => obj.code === producto.code);
-
-            if(existCodeProduct){
-
-                throw new Error("El codigo del producto debe de ser unico")
-            }
-
-            this.#id = ProductManager.nextId++
-
-            const newProduct = {
-
-                    id:this.#id,
-                     ...producto
-        
-                }
-
-            products.push(newProduct)
-        
-            await saveProduct(products, this.path)
-            
-            
-        } catch (error) {
-
-            console.error(error)
-            
-        }
-
-    }
-
-    async getProducts(){
-
-      try {
-
-        const products = await getAllProduct(this.path)
-
-        console.log(products)
-        
-      } catch (error) {
-
-        console.error(error)
-        
-      }
-
-    }
-
-   async getProductById(id){
-
-        try {
-
-            const productById = await getProductById(id, this.path)
-
-            if(!productById){
-
-                throw new Error("el id del producto no existe")
-            }
-
-            console.log(productById)
-
-            return productById
-            
-        } catch (error) {
-            
-            console.error(error)
-        }
-        
-        
-    }
-
-    deleteProductById(){}
-
-    async updateProduct(id){
-
-      try {
-        const productById = await getProductById(id, this.path)
-
-        const products = getAllProduct(this.path)
-
-        productById.price = 5000
-
-        const updatedProducts = products.map((product) => {
-          if (product.id === productById.id) {
-            return productById; // Devuelve el producto actualizado
           }
-          return product; // Devuelve el producto sin cambios
-        });
-       
-        await saveProduct(updatedProducts, this.path)
-        
+  
+          const products = await getAllProduct(this.path);
+  
+          const existCodeProduct = products.some((obj) => obj.code === producto.code);
+  
+          if (existCodeProduct) {
+              throw new Error("El codigo del producto debe de ser único");
+          }
+  
+          this.#id = ProductManager.nextId++;
+  
+          const newProduct = { id: this.#id, ...producto };
+          products.push(newProduct);
+  
+          await saveProduct(products, this.path);
+  
       } catch (error) {
-
-        console.error(error)
-        
+          throw new Error(`Error al agregar el producto: ${error.message}`);
       }
+  }
 
+  async getProducts() {
+    try {
+        const products = await getAllProduct(this.path);
+        return products;
+    } catch (error) {
+        throw new Error(`Error al obtener los productos: ${error.message}`);
     }
 }
+
+  async getProductById(id) {
+  try {
+      const product = await getProductById(id, this.path);
+      if (!product) {
+          throw new Error("El id del producto no existe");
+      }
+      return product;
+  } catch (error) {
+      throw new Error(`Error al obtener el producto por ID: ${error.message}`);
+  }
+}
+  async deleteProductById(id) {
+  try {
+      const productById = await getProductById(id, this.path);
+      const products = await getAllProduct(this.path);
+
+      const updatedProducts = products.filter((product) => product.id !== productById.id);
+
+      await saveProduct(updatedProducts, this.path);
+  } catch (error) {
+      throw new Error(`Error al eliminar el producto por ID: ${error.message}`);
+  }
+}
+
+ async updateProduct(id, updateField) {
+    try {
+        const productById = await getProductById(id, this.path);
+        const products = await getAllProduct(this.path);
+
+        const updatedProduct = { ...productById, ...updateField };
+
+        const updatedProducts = products.map((product) => {
+            if (product.id === updatedProduct.id) {
+                return updatedProduct;
+            }
+            return product;
+        });
+
+        await saveProduct(updatedProducts, this.path);
+    } catch (error) {
+        throw new Error(`Error al actualizar el producto: ${error.message}`);
+    }
+}}
 
 const producto1 = {
     title: "Cámara Digital 1K",
@@ -174,13 +143,14 @@ const producto1 = {
   const product = new ProductManager();
   
   async function run() {
-    await product.addProduct(producto1);
-    await product.addProduct(producto2);
-    await product.addProduct(producto3);
+    // await product.addProduct(producto1);
+    // await product.addProduct(producto2);
+    // await product.addProduct(producto3);
   
 
-    await product.updateProduct(1)
+    await product.deleteProductById(2)
     await product.getProducts();
+
     
   }
   

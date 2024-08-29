@@ -1,86 +1,44 @@
 import fs from 'fs';
 
 export const saveProduct = async (product, path) => {
-    try {
-  
-      try {
-        await fs.promises.access(`${path}/db/product.json`);
-      } catch {
-        // Si el archivo no existe, se crea con un array vacío
-        await fs.promises.writeFile("./user.json", "{}");
-      }
+  try {
+      await fs.promises.access(`${path}/db/product.json`).catch(async () => {
+          // Si el archivo no existe, se crea con un array vacío
+          await fs.promises.writeFile(`${path}/db/product.json`, JSON.stringify([], null, 2));
+      });
 
       await fs.promises.writeFile(`${path}/db/product.json`, JSON.stringify(product, null, 2));
-  
-    } catch (error) {
-      console.error("ERROR", error.message);
-    }
-  };
+  } catch (error) {
+      throw new Error(`Error al guardar los productos: ${error.message}`);
+  }
+};
 
-  export const getAllProduct = async (path) => {
-    try {
-
-      const productJson = JSON.parse(await fs.promises.readFile(`${path}/db/product.json`, "utf-8"))
-
-      return productJson
-    
-    } catch (error) {
-      console.error("error", error.message);
-    }
-  };
+export const getAllProduct = async (path) => {
+  try {
+      const productJson = await fs.promises.readFile(`${path}/db/product.json`, "utf-8");
+      return JSON.parse(productJson);
+  } catch (error) {
+      throw new Error(`Error al obtener todos los productos: ${error.message}`);
+  }
+};
 
     
 export const getProductById = async (id, path) => {
-    try {
-
-        if(id === ""){
-
-            throw new error("No se ingreso un id valido")
-        }
-
-      const idProduct = parseInt(id)      
-      const products = JSON.parse(await fs.promises.readFile(`${path}/db/product.json`, "utf-8"));
-      for (const product of products) {
-        if(product.id === idProduct){
-          return product
-        }
+  try {
+      if (!id) {
+          throw new Error("No se ingresó un ID válido");
       }
-    
-    } catch (error) {
-      console.error("error", error.message);
-    }
-  };
 
-export const updateProduct = async (id, path) => {
-    try {
+      const idProduct = parseInt(id, 10);
+      const products = JSON.parse(await fs.promises.readFile(`${path}/db/product.json`, "utf-8"));
 
-        if(id === ""){
+      const product = products.find(product => product.id === idProduct);
+      if (!product) {
+          throw new Error("El producto no se encuentra disponible");
+      }
+      return product;
+  } catch (error) {
+      throw new Error(`Error al obtener el producto por ID: ${error.message}`);
+  }
+};
 
-            throw new error("No se ingreso un id valido")
-        }
-
-      const idUser = parseInt(id)      
-      const usersJson = JSON.parse(await fs.promises.readFile(path, "utf-8"));
-      const {nombre, apellido} = usersJson[idUser]
-      console.log(" El usuario buscado es : ", nombre, "", apellido)
-    } catch (error) {
-      console.error("error", error.message);
-    }
-  };
-
-  export const deleteProduct = async (id, path) => {
-    try {
-
-        if(id === ""){
-
-            throw new error("No se ingreso un id valido")
-        }
-
-      const idUser = parseInt(id)      
-      const usersJson = JSON.parse(await fs.promises.readFile(path, "utf-8"));
-      const {nombre, apellido} = usersJson[idUser]
-      console.log(" El usuario buscado es : ", nombre, "", apellido)
-    } catch (error) {
-      console.error("error", error.message);
-    }
-  };
