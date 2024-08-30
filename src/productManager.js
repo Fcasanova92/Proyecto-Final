@@ -2,8 +2,9 @@ import {dirname} from "path"
 import { fileURLToPath } from "url";
 import { saveProduct, getAllProduct, getProductById } from "./db/helpers/dbQuerys.js";
 
+const requiredFields = new Set(['title', 'description', 'code', 'price', 'status', 'stock', 'category', 'thumbnails']);
 
-class ProductManager {
+export class ProductManager {
 
     constructor(){
 
@@ -13,10 +14,11 @@ class ProductManager {
 
     async addProduct(producto) {
       try {
-          const requiredFields = ['title', 'description', 'code', 'price', 'status', 'stock', 'category', 'thumbnails'];
+
+          const productFieldKeys = new Set(Object.keys(producto)); 
   
           for (const field of requiredFields) {
-              if (!producto.hasOwnProperty(field) || producto[field] === '') {
+              if (!productFieldKeys.has(field) || producto[field] === '') {
                   throw new Error(`El campo "${field}" es obligatorio.`);
               }
           }
@@ -51,7 +53,7 @@ class ProductManager {
         const products = await getAllProduct(this.path);
         return products;
     } catch (error) {
-        throw new Error(`Error al obtener los productos: ${error.message}`);
+        throw error;
     }
 }
 
@@ -63,7 +65,7 @@ class ProductManager {
       }
       return product;
   } catch (error) {
-      throw new Error(`Error al obtener el producto por ID: ${error.message}`);
+      throw error
   }
 }
   async deleteProductById(id) {
@@ -73,7 +75,7 @@ class ProductManager {
 
       const updatedProducts = products.filter((product) => product.id !== productById.id);
 
-      await saveProduct(updatedProducts, this.path);
+      return await saveProduct(updatedProducts, this.path);
   } catch (error) {
       throw new Error(`Error al eliminar el producto por ID: ${error.message}`);
   }
@@ -81,6 +83,12 @@ class ProductManager {
 
  async updateProduct(id, updateField) {
     try {
+        const updateFieldKeys = new Set(Object.keys(updateField));
+        for (const field of requiredFields) {
+            if (!updateFieldKeys.has(field)) {
+                throw new Error(`El campo "${field}" no es propio del producto.`);
+            }
+        }
         const productById = await getProductById(id, this.path);
         const products = await getAllProduct(this.path);
 
@@ -93,7 +101,7 @@ class ProductManager {
             return product;
         });
 
-        await saveProduct(updatedProducts, this.path);
+        return await saveProduct(updatedProducts, this.path);
     } catch (error) {
         throw new Error(`Error al actualizar el producto: ${error.message}`);
     }
@@ -141,22 +149,6 @@ const producto1 = {
     ]
   };
   
-  const product = new ProductManager();
-  
-  async function run() {
-    // await product.addProduct(producto1);
-    // await product.addProduct(producto2);
-    await product.addProduct(producto3);
-  
-
-    // await product.deleteProductById(2)
-    await product.getProducts();
-    
-
-    
-  }
-  
-  run();
 
 
 
