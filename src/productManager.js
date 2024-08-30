@@ -41,7 +41,7 @@ export class ProductManager {
 
           products.push(newProduct);
   
-          await saveProduct(products, this.path);
+          return await saveProduct(products, this.path);
   
       } catch (error) {
           throw new Error(`Error al agregar el producto: ${error.message}`);

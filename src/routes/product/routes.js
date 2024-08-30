@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { ProductManager } from '../../productManager.js'
+;
 
 export const router = Router()
 
@@ -20,8 +21,25 @@ router.get("/", async (req, res) => {
 });
 
 // Agregar un producto
-router.post("/", (req, res) => {
-    res.send('Producto agregado');
+router.post("/", async (req, res) => {
+    try {
+
+        const data = req.body;
+
+        const createProduct = await product.addProduct(data);
+
+        if(createProduct.status){
+
+            res.status(200).json({message:createProduct.message});
+
+        }else {
+            res.status(404).json({ message: "Error al crear el producto" });
+        }
+        
+    } catch (error) {
+        
+        res.status(500).json({message:error.message})
+    }
 });
 
 // Obtener un producto por id

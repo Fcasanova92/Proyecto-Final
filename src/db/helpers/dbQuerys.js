@@ -8,7 +8,7 @@ export const saveProduct = async (product, path) => {
       });
 
       await fs.promises.writeFile(`${path}/db/product.json`, JSON.stringify(product, null, 2));
-      return true;
+      return {status:true, message:"producto guardado"};
   } catch (error) {
       throw new Error(`Error al guardar los productos: ${error.message}`);
   }
