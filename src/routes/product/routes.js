@@ -12,7 +12,12 @@ router.get("/", async (req, res) => {
     try {
         const products = await product.getAll()
 
-        res.send(200).json(products)
+        if(products.status){
+
+            res.status(200).json(products)
+        }
+
+        res.status(404).json(products.message)
     
     } catch (error) {
     
@@ -30,7 +35,7 @@ router.post("/", async (req, res) => {
 
         if(createProduct.status){
 
-            res.status(200).json({message:createProduct.message});
+            res.status(200).json(createProduct.message);
 
         }else {
             res.status(404).json({ message: "Error al crear el producto" });
@@ -48,8 +53,13 @@ router.get("/:pid", async (req, res) => {
 
     try {
         const productById = await product.getById(id);
+
+        if(productById.status){
+
+            res.status(200).json(productById.product);
+        }
         
-        res.status(200).json(productById);
+        res.status(404).json(productById.message);
     
     } catch (error) {
 
@@ -67,12 +77,14 @@ router.patch("/:pid", async (req, res) => {
 
     const prodUpdate = await product.updateProduct(id, updateData);
 
+    console.log(prodUpdate)
+
     if(prodUpdate.status){
 
         res.status(200).json({message:prodUpdate.message});
 
     }
-    res.status(404).json({ message: "Error al actualizar el producto" });
+    res.status(404).json({ message: prodUpdate.message});
 
         
     } catch (error) {

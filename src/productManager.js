@@ -2,7 +2,7 @@ import {dirname} from "path"
 import { fileURLToPath } from "url";
 import { saveProduct, getAllProduct, getProductById } from "./db/helpers/dbQuerys.js";
 
-const requiredFields = new Set(['title', 'description', 'code', 'price', 'status', 'stock', 'category', 'thumbnails']);
+const requiredFields = ['title', 'description', 'code', 'price', 'status', 'stock', 'category', 'thumbnails'];
 
 export class ProductManager {
 
@@ -11,114 +11,94 @@ export class ProductManager {
         this.path = dirname(fileURLToPath(import.meta.url))
 
     }
-
     async addProduct(producto) {
-      try {
+        try {
+            const productFieldKeys = new Set(Object.keys(producto));
 
-          const productFieldKeys = new Set(Object.keys(producto)); 
-  
-          for (const field of requiredFields) {
-              if (!productFieldKeys.has(field) || producto[field] === '') {
-                  throw new Error(`El campo "${field}" es obligatorio.`);
-              }
-          }
-  
-          const products = await getAllProduct(this.path);
+            for (const field of requiredFields) {
+                if (!productFieldKeys.has(field) || producto[field] === '') {
+                    return { status: false, message: `El campo "${field}" es obligatorio.` };
+                }
+            }
 
-          const existCodeProduct = products.some((obj) => obj.code === producto.code);
-  
-          if (existCodeProduct) {
-              throw new Error("El codigo del producto debe de ser único");
-          }
+            const products = await getAllProduct(this.path);
 
-          const ids = products.map((product) => product.id);
+            const existCodeProduct = products.some((obj) => obj.code === producto.code);
 
-          const lastIdProduct = ids.length > 0 ? Math.max(...ids) : 0;
+            if (existCodeProduct) {
+                return { status: false, message: "El código del producto debe de ser único" };
+            }
 
-          const productId = lastIdProduct + 1;
-  
-          const newProduct = { id: productId, ...producto };
+            const ids = products.map((product) => product.id);
+            const lastIdProduct = ids.length > 0 ? Math.max(...ids) : 0;
+            const productId = lastIdProduct + 1;
 
-          console.log(newProduct)
+            const newProduct = { id: productId, ...producto };
+            products.push(newProduct);
 
-          products.push(newProduct);
-  
-          return await saveProduct(products, this.path, "guardar");
-  
-      } catch (error) {
-          throw error
-      }
-  }
+            return await saveProduct(products, this.path, "guardar");
 
-  async getAll() {
-    try {
-        const products = await getAllProduct(this.path);
-        if(products.length === 0){
-
-            throw new Error("No hay productos disponibles")
+        } catch (error) {
+            return { status: false, message: `Error al agregar el producto: ${error.message}` };
         }
-        return products
-    } catch (error) {
-        throw error
+    }
+
+    async getAll() {
+        try {
+            const products = await getAllProduct(this.path);
+            if (products.length === 0) {
+                return { status: false, message: "No hay productos disponibles" };
+            }
+            return { status: true, products };
+        } catch (error) {
+            return { status: false, message: `Error al obtener los productos: ${error.message}` };
+        }}
+
+    async getById(id) {
+        try {
+            const product = await getProductById(id, this.path);
+            return { status: true, product };
+        } catch (error) {
+            return { status: false, message: `Error al obtener el producto: ${error.message}` };
+        }
+    }
+
+    async deleteProduct(id) {
+        try {
+            const productExists = await getProductById(id, this.path);
+            const products = await getAllProduct(this.path);
+            const deletedProducts = products.filter((product) => product.id !== productExists.id);
+
+            return await saveProduct(deletedProducts, this.path, "borrar");
+
+        } catch (error) {
+            return { status: false, message: `Error al eliminar el producto: ${error.message}` };
+        }
+    }
+
+    async updateProduct(id, updateField) {
+        try {
+            const updateFieldKeys = Object.keys(updateField);
+            for (const upfield of updateFieldKeys) {
+                if (!requiredFields.includes(upfield)) {
+                    return { status: false, message: `El campo ${field} no es propio del producto.` };
+                }
+            }
+            const productById = await getProductById(id, this.path);
+            const products = await getAllProduct(this.path);
+            const updatedProduct = { ...productById, ...updateField };
+
+            const updatedProducts = products.map((product) => {
+                return product.id === updatedProduct.id ? updatedProduct : product;
+            });
+
+            return await saveProduct(updatedProducts, this.path, "actualizar");
+
+        } catch (error) {
+            return { status: false, message: `Error al actualizar el producto: ${error.message}` };
+        }
     }
 }
-
-  async getById(id) {
-  try {
-      const product = await getProductById(id, this.path);
-     
-      return product;
-  } catch (error) {
-        throw error
-  }
-}
-  async deleteProduct(id) {
-  try {
-        
-      const productExists = await getProductById(id, this.path);
-
-      const products = await getAllProduct(this.path);
-
-      const deletedProducts = products.filter((product) => product.id !== productExists.id);
-
-      return await saveProduct(deletedProducts, this.path, "borrar")
-
-     
-
-  } catch (error) {
-    // Podemos retornar un mensaje genérico o específico
-        throw error
-  }
-}
-
- async updateProduct(id, updateField) {
-    try {
-        const updateFieldKeys = new Set(Object.keys(updateField));
-        for (const field of requiredFields) {
-            if (!updateFieldKeys.has(field)) {
-                throw new Error(`El campo "${field}" no es propio del producto.`);
-            }
-        }
-        const productById = await getProductById(id, this.path);
-
-        const products = await getAllProduct(this.path);
-
-        const updatedProduct = { ...productById, ...updateField };
-
-        const updatedProducts = products.map((product) => {
-            if (product.id === updatedProduct.id) {
-                return updatedProduct;
-            }
-            return product;
-
-        });
-
-        return await saveProduct(updatedProducts, this.path, "actualizar")
-
-    } catch (error) {
-       throw error
-    }
-}}
 
 
 
