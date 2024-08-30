@@ -1,49 +1,36 @@
 import { Router } from "express";
 import { ProductManager } from '../../productManager.js'
 ;
+import { BadRequest } from "../../errors/badRequest.js";
 
-export const router = Router()
-
+export const router = Router();
 const product = new ProductManager();
 
-// obtener todos los productos
-// obtener todos los productos
+// Obtener todos los productos
 router.get("/", async (req, res) => {
     try {
-        const products = await product.getAll()
+        const products = await product.getAll();
 
-        if(products.status){
-
-            res.status(200).json(products)
-        }
-
-        res.status(404).json(products.message)
-    
+        return res.status(200).json({products});
+ 
     } catch (error) {
-    
-        res.status(404).json({message:error.message})
+        console.log(error.message)
+        return res.status(404).json({ message: error.message });
     }
 });
 
 // Agregar un producto
 router.post("/", async (req, res) => {
     try {
-
         const data = req.body;
-
         const createProduct = await product.addProduct(data);
-
-        if(createProduct.status){
-
-            res.status(200).json(createProduct.message);
-
-        }else {
-            res.status(404).json({ message: "Error al crear el producto" });
-        }
+        return res.status(200).json({message:createProduct.message});
         
     } catch (error) {
-        
-        res.status(500).json({message:error.message})
+        if(error instanceof BadRequest){
+            return res.status(404).json({message:error.message})
+        }
+        return res.status(500).json({ message: error.message });
     }
 });
 
@@ -54,73 +41,45 @@ router.get("/:pid", async (req, res) => {
     try {
         const productById = await product.getById(id);
 
-        if(productById.status){
+        return res.status(200).json(productById.product);
 
-            res.status(200).json(productById.product);
-        }
-        
-        res.status(404).json(productById.message);
-    
     } catch (error) {
-
-        res.status(404).json({ message: error.message }); // Usa error.message para obtener el mensaje del error
+        if(error instanceof BadRequest){
+            return res.status(404).json({message:error.message})
+        }
+        return res.status(500).json({ message: error.message });
     }
-})
+});
 
 // Actualizar un producto
 router.patch("/:pid", async (req, res) => {
-
     try {
-
-    const id = parseInt(req.params.pid);
-    const updateData = req.body;
-
-    const prodUpdate = await product.updateProduct(id, updateData);
-
-    console.log(prodUpdate)
-
-    if(prodUpdate.status){
-
-        res.status(200).json({message:prodUpdate.message});
-
-    }
-    res.status(404).json({ message: prodUpdate.message});
-
+        const id = parseInt(req.params.pid);
+        const updateData = req.body;
+        const prodUpdate = await product.updateProduct(id, updateData);
         
+        return res.status(200).json({ message: prodUpdate.message });
+
+
     } catch (error) {
-
-        res.status(500).json({message:error.message})
-        
+        if(error instanceof BadRequest){
+            return res.status(404).json({message:error.message})
+        }
+        return res.status(500).json({ message: error.message });
     }
-
 });
 
 // Borrar un producto
 router.delete("/:pid", async (req, res) => {
-
     try {
-
         const id = parseInt(req.params.pid);
-
         const prodDelete = await product.deleteProduct(id);
-
-        if(prodDelete.status){
-
-            console.log(prodDelete.message)
-
-            res.status(200).json({message:prodDelete.message});
-    
-        }
-        
-        res.status(404).json({ message: "No se pudo eliminar el producto" });
-        
-        
-        
+        return res.status(200).json({ message: prodDelete.message });
+  
     } catch (error) {
-
-        res.status(500).json({message:error.message})
-        
+        if(error instanceof BadRequest){
+            return res.status(404).json({message:error.message})
+        }
+        return res.status(500).json({ message: error.message });
     }
-   
-    
 });

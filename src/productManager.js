@@ -1,6 +1,7 @@
 import {dirname} from "path"
 import { fileURLToPath } from "url";
 import { saveProduct, getAllProduct, getProductById } from "./db/helpers/dbQuerys.js";
+import { BadRequest } from "./errors/badRequest.js";
 
 const requiredFields = ['title', 'description', 'code', 'price', 'status', 'stock', 'category', 'thumbnails'];
 
@@ -13,11 +14,11 @@ export class ProductManager {
     }
     async addProduct(producto) {
         try {
-            const productFieldKeys = new Set(Object.keys(producto));
+            const productFieldKeys = Object.keys(producto);
 
             for (const field of requiredFields) {
-                if (!productFieldKeys.has(field) || producto[field] === '') {
-                    return { status: false, message: `El campo "${field}" es obligatorio.` };
+                if (!productFieldKeys.includes(field) || producto[field] === '') {
+                   throw new Error(`El campo "${field}" es obligatorio.`);
                 }
             }
 
@@ -26,7 +27,7 @@ export class ProductManager {
             const existCodeProduct = products.some((obj) => obj.code === producto.code);
 
             if (existCodeProduct) {
-                return { status: false, message: "El código del producto debe de ser único" };
+                throw new Error ("El código del producto debe de ser único");
             }
 
             const ids = products.map((product) => product.id);
@@ -39,7 +40,8 @@ export class ProductManager {
             return await saveProduct(products, this.path, "guardar");
 
         } catch (error) {
-            return { status: false, message: `Error al agregar el producto: ${error.message}` };
+
+            throw new Error (error.message);
         }
     }
 
@@ -47,19 +49,19 @@ export class ProductManager {
         try {
             const products = await getAllProduct(this.path);
             if (products.length === 0) {
-                return { status: false, message: "No hay productos disponibles" };
+                throw new BadRequest("No se encontraron productos")
             }
-            return { status: true, products };
+            return products ;
         } catch (error) {
-            return { status: false, message: `Error al obtener los productos: ${error.message}` };
+            throw new Error(error.message);
         }}
 
     async getById(id) {
         try {
             const product = await getProductById(id, this.path);
-            return { status: true, product };
+            return product;
         } catch (error) {
-            return { status: false, message: `Error al obtener el producto: ${error.message}` };
+           throw new Error(error.message);
         }
     }
 
@@ -72,7 +74,7 @@ export class ProductManager {
             return await saveProduct(deletedProducts, this.path, "borrar");
 
         } catch (error) {
-            return { status: false, message: `Error al eliminar el producto: ${error.message}` };
+            throw new Error(error.message);
         }
     }
 
@@ -81,7 +83,7 @@ export class ProductManager {
             const updateFieldKeys = Object.keys(updateField);
             for (const upfield of updateFieldKeys) {
                 if (!requiredFields.includes(upfield)) {
-                    return { status: false, message: `El campo ${field} no es propio del producto.` };
+                    return { status: false, message: `El campo ${upfield} no es propio del producto.` };
                 }
             }
             const productById = await getProductById(id, this.path);
@@ -95,7 +97,7 @@ export class ProductManager {
             return await saveProduct(updatedProducts, this.path, "actualizar");
 
         } catch (error) {
-            return { status: false, message: `Error al actualizar el producto: ${error.message}` };
+            throw new Error(error.message);
         }
     }
 }
