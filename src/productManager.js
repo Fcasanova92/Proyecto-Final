@@ -39,45 +39,55 @@ export class ProductManager {
   
           const newProduct = { id: productId, ...producto };
 
+          console.log(newProduct)
+
           products.push(newProduct);
   
-          return await saveProduct(products, this.path);
+          return await saveProduct(products, this.path, "guardar");
   
       } catch (error) {
-          throw new Error(`Error al agregar el producto: ${error.message}`);
+          throw error
       }
   }
 
   async getAll() {
     try {
         const products = await getAllProduct(this.path);
-        return products;
+        if(products.length === 0){
+
+            throw new Error("No hay productos disponibles")
+        }
+        return products
     } catch (error) {
-        throw error;
+        throw error
     }
 }
 
   async getById(id) {
   try {
       const product = await getProductById(id, this.path);
-      if (!product) {
-          throw new Error("El id del producto no existe");
-      }
+     
       return product;
   } catch (error) {
-      throw error
+        throw error
   }
 }
   async deleteProduct(id) {
   try {
-      const productById = await getProductById(id, this.path);
+        
+      const productExists = await getProductById(id, this.path);
+
       const products = await getAllProduct(this.path);
 
-      const updatedProducts = products.filter((product) => product.id !== productById.id);
+      const deletedProducts = products.filter((product) => product.id !== productExists.id);
 
-      return await saveProduct(updatedProducts, this.path);
+      return await saveProduct(deletedProducts, this.path, "borrar")
+
+     
+
   } catch (error) {
-      throw error;
+    // Podemos retornar un mensaje genérico o específico
+        throw error
   }
 }
 
@@ -90,6 +100,7 @@ export class ProductManager {
             }
         }
         const productById = await getProductById(id, this.path);
+
         const products = await getAllProduct(this.path);
 
         const updatedProduct = { ...productById, ...updateField };
@@ -99,56 +110,15 @@ export class ProductManager {
                 return updatedProduct;
             }
             return product;
+
         });
 
-        return await saveProduct(updatedProducts, this.path);
+        return await saveProduct(updatedProducts, this.path, "actualizar")
+
     } catch (error) {
-        throw error
+       throw error
     }
 }}
-
-const producto1 = {
-    title: "Cámara Digital 1K",
-    description: "Una cámara digital avanzada con capacidad de grabación en 4K y conectividad Wi-Fi.",
-    code: "CAM1233",
-    price: 499.99,
-    status: "Disponible",
-    stock: 25,
-    category: "Electrónica",
-    thumbnails: [
-      "https://example.com/images/camara_digital_1.jpg",
-      "https://example.com/images/camara_digital_2.jpg"
-    ]
-  };
-
-  const producto2 = {
-    title: "Cámara Digital 4K",
-    description: "Una cámara digital avanzada con capacidad de grabación en 4K y conectividad Wi-Fi.",
-    code: "CAM1231",
-    price: 499.99,
-    status: "Disponible",
-    stock: 25,
-    category: "Electrónica",
-    thumbnails: [
-      "https://example.com/images/camara_digital_1.jpg",
-      "https://example.com/images/camara_digital_2.jpg"
-    ]
-  };
-
-  const producto3 = {
-    title: "Cámara Digital 4K",
-    description: "Una cámara digital avanzada con capacidad de grabación en 4K y conectividad Wi-Fi.",
-    code: "CAM1235",
-    price: 499.99,
-    status: "Disponible",
-    stock: 25,
-    category: "Electrónica",
-    thumbnails: [
-      "https://example.com/images/camara_digital_1.jpg",
-      "https://example.com/images/camara_digital_2.jpg"
-    ]
-  };
-  
 
 
 

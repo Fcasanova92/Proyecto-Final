@@ -7,12 +7,12 @@ export const router = Router()
 const product = new ProductManager();
 
 // obtener todos los productos
-// Obtener todos los productos
+// obtener todos los productos
 router.get("/", async (req, res) => {
     try {
         const products = await product.getAll()
 
-        res.status(200).json({products})
+        res.send(200).json(products)
     
     } catch (error) {
     
@@ -58,22 +58,22 @@ router.get("/:pid", async (req, res) => {
 })
 
 // Actualizar un producto
-router.patch("/:pid", (req, res) => {
+router.patch("/:pid", async (req, res) => {
 
     try {
 
     const id = parseInt(req.params.pid);
     const updateData = req.body;
 
-    const prodUpdate = product.updateProduct(id, updateData);
+    const prodUpdate = await product.updateProduct(id, updateData);
 
     if(prodUpdate.status){
 
         res.status(200).json({message:prodUpdate.message});
 
-    }else {
-        res.status(404).json({ message: "Error al actualizar el producto" });
     }
+    res.status(404).json({ message: "Error al actualizar el producto" });
+
         
     } catch (error) {
 
@@ -84,21 +84,24 @@ router.patch("/:pid", (req, res) => {
 });
 
 // Borrar un producto
-router.delete("/:pid", (req, res) => {
+router.delete("/:pid", async (req, res) => {
 
     try {
 
         const id = parseInt(req.params.pid);
 
-        const prodDelete = product.deleteProduct(id);
+        const prodDelete = await product.deleteProduct(id);
 
         if(prodDelete.status){
 
+            console.log(prodDelete.message)
+
             res.status(200).json({message:prodDelete.message});
     
-        }else {
-            res.status(404).json({ message: "Error al eliminar el producto" });
         }
+        
+        res.status(404).json({ message: "No se pudo eliminar el producto" });
+        
         
         
     } catch (error) {

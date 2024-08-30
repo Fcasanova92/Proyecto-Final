@@ -1,6 +1,6 @@
 import fs from 'fs';
 
-export const saveProduct = async (product, path) => {
+export const saveProduct = async (product, path, action) => {
   try {
       await fs.promises.access(`${path}/db/product.json`).catch(async () => {
           // Si el archivo no existe, se crea con un array vacío
@@ -8,19 +8,15 @@ export const saveProduct = async (product, path) => {
       });
 
       await fs.promises.writeFile(`${path}/db/product.json`, JSON.stringify(product, null, 2));
-      return {status:true, message:"producto guardado"};
+      return {status:true, message:`Se logro ${action} correctamente el producto` };
   } catch (error) {
-      throw new Error(`Error al guardar los productos: ${error.message}`);
+      throw new Error(`Error al ${action} los productos: ${error.message}`);
   }
 };
 
 export const getAllProduct = async (path) => {
   try {
       const productJson = JSON.parse(await fs.promises.readFile(`${path}/db/product.json`, "utf-8"));
-
-      if (!Array.isArray(productJson) || productJson.length === 0) {
-          throw new Error("No hay productos disponibles");
-      }
       return productJson;
   } catch (error) {
       throw error;
@@ -38,7 +34,7 @@ export const getProductById = async (id, path) => {
 
       const product = products.find(product => product.id === idProduct);
       if (!product) {
-          throw new Error("El producto no se encuentra disponible");
+          throw new Error(`El producto con ID ${idProduct} no se encuentra disponible`);
       }
       return product;
   } catch (error) {
