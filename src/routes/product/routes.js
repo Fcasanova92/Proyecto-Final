@@ -59,10 +59,53 @@ router.get("/:pid", async (req, res) => {
 
 // Actualizar un producto
 router.patch("/:pid", (req, res) => {
-    res.send('Producto con ID ' + req.params.pid + ' actualizado');
+
+    try {
+
+    const id = parseInt(req.params.pid);
+    const updateData = req.body;
+
+    const prodUpdate = product.updateProduct(id, updateData);
+
+    if(prodUpdate.status){
+
+        res.status(200).json({message:prodUpdate.message});
+
+    }else {
+        res.status(404).json({ message: "Error al actualizar el producto" });
+    }
+        
+    } catch (error) {
+
+        res.status(500).json({message:error.message})
+        
+    }
+
 });
 
 // Borrar un producto
 router.delete("/:pid", (req, res) => {
-    res.send('Producto con ID ' + req.params.pid + ' eliminado');
+
+    try {
+
+        const id = parseInt(req.params.pid);
+
+        const prodDelete = product.deleteProduct(id);
+
+        if(prodDelete.status){
+
+            res.status(200).json({message:prodDelete.message});
+    
+        }else {
+            res.status(404).json({ message: "Error al eliminar el producto" });
+        }
+        
+        
+    } catch (error) {
+
+        res.status(500).json({message:error.message})
+        
+    }
+   
+    
 });
