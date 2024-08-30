@@ -9,14 +9,13 @@ const product = new ProductManager();
 // Obtener todos los productos
 router.get("/", async (req, res) => {
     try {
-        const products = await product.getProducts()
+        const products = await product.getAll()
 
-        if(products){
-
-            res.status(200).json({...products})
-        }
+        res.status(200).json({products})
+    
     } catch (error) {
-        res.status(500).json({message:error.message})
+    
+        res.status(404).json({message:error.message})
     }
 });
 
@@ -30,17 +29,13 @@ router.get("/:pid", async (req, res) => {
     const id = parseInt(req.params.pid);
 
     try {
-        const productById = await product.getProductById(id);
-
-        if (productById) {
-            res.status(200).json(productById);
-        } else {
-            res.status(404).json({ message: "Producto no encontrado" });
-        }
-
+        const productById = await product.getById(id);
+        
+        res.status(200).json(productById);
+    
     } catch (error) {
-        console.error(error); // Usa console.error para errores
-        res.status(500).json({ message: error.message }); // Usa error.message para obtener el mensaje del error
+
+        res.status(404).json({ message: error.message }); // Usa error.message para obtener el mensaje del error
     }
 })
 

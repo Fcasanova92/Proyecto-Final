@@ -48,7 +48,7 @@ export class ProductManager {
       }
   }
 
-  async getProducts() {
+  async getAll() {
     try {
         const products = await getAllProduct(this.path);
         return products;
@@ -57,7 +57,7 @@ export class ProductManager {
     }
 }
 
-  async getProductById(id) {
+  async getById(id) {
   try {
       const product = await getProductById(id, this.path);
       if (!product) {
@@ -68,7 +68,7 @@ export class ProductManager {
       throw error
   }
 }
-  async deleteProductById(id) {
+  async deleteProduct(id) {
   try {
       const productById = await getProductById(id, this.path);
       const products = await getAllProduct(this.path);
@@ -77,7 +77,7 @@ export class ProductManager {
 
       return await saveProduct(updatedProducts, this.path);
   } catch (error) {
-      throw new Error(`Error al eliminar el producto por ID: ${error.message}`);
+      throw error;
   }
 }
 
@@ -103,7 +103,7 @@ export class ProductManager {
 
         return await saveProduct(updatedProducts, this.path);
     } catch (error) {
-        throw new Error(`Error al actualizar el producto: ${error.message}`);
+        throw error
     }
 }}
 
