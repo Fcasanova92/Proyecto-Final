@@ -1,7 +1,6 @@
 
 import {dirname} from "path"
 import { fileURLToPath } from "url";
-import { BadRequest } from "./errors/badRequest.js";
 import { getAllCarts, getCartById, saveCart, saveProductInCart } from "./db/helpers/cartsQuerys.js";
 import { getProductById } from "./db/helpers/productQuerys.js";
 
@@ -12,24 +11,8 @@ export class CartsManager {
         this.path = dirname(fileURLToPath(import.meta.url))
 
     }
-    async addCart(carts) {
+    async addCart() {
         try {
-            const cartKey = Object.keys(carts);
-            
-            if (!cartKey.includes('products')) {
-                   throw new BadRequest(`El campo products es obligatorio.`);
-                }
-
-
-            if(!Array.isArray(carts.products)){
-                    throw new BadRequest(`El campo products debe de ser un array vacio.`);
-                   }
-
-            if(carts.products.length !== 0){
-
-                throw new BadRequest(`El campo products debe estar vacio.`);
-            }
-            
 
             const allCarts = await getAllCarts(this.path);
     
@@ -38,7 +21,7 @@ export class CartsManager {
             const lastIdCart = ids.length > 0 ? Math.max(...ids) : 0;
             const cartId = lastIdCart + 1;
 
-            const newCart = { id: cartId, ...carts };
+            const newCart = { id: cartId, products:[] };
    
             allCarts.push(newCart);
 

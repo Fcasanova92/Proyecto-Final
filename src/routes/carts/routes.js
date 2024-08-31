@@ -19,8 +19,7 @@ router.get("/:cid", async (req, res, next) => {
 
 router.post("/", async (req, res, next) => {
     try {
-        const data = req.body;
-        const createCart = await cart.addCart(data);
+        const createCart = await cart.addCart();
         return res.status(200).json({message:createCart.message});
         
     } catch (error) {
