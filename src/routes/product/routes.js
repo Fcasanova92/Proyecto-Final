@@ -7,15 +7,14 @@ export const router = Router();
 const product = new ProductManager();
 
 // Obtener todos los productos
-router.get("/", async (req, res) => {
+router.get("/", async (req, res, next) => {
     try {
         const products = await product.getAll();
 
         return res.status(200).json({products});
  
     } catch (error) {
-        console.log(error.message)
-        return res.status(404).json({ message: error.message });
+        next(error)
     }
 });
 
@@ -27,10 +26,7 @@ router.post("/", async (req, res) => {
         return res.status(200).json({message:createProduct.message});
         
     } catch (error) {
-        if(error instanceof BadRequest){
-            return res.status(404).json({message:error.message})
-        }
-        return res.status(500).json({ message: error.message });
+        next(error)
     }
 });
 
@@ -41,13 +37,11 @@ router.get("/:pid", async (req, res) => {
     try {
         const productById = await product.getById(id);
 
-        return res.status(200).json(productById.product);
+        return res.status(200).json(productById);
 
     } catch (error) {
-        if(error instanceof BadRequest){
-            return res.status(404).json({message:error.message})
-        }
-        return res.status(500).json({ message: error.message });
+
+        next(error)
     }
 });
 
@@ -62,10 +56,7 @@ router.patch("/:pid", async (req, res) => {
 
 
     } catch (error) {
-        if(error instanceof BadRequest){
-            return res.status(404).json({message:error.message})
-        }
-        return res.status(500).json({ message: error.message });
+        next(error)
     }
 });
 
@@ -77,9 +68,6 @@ router.delete("/:pid", async (req, res) => {
         return res.status(200).json({ message: prodDelete.message });
   
     } catch (error) {
-        if(error instanceof BadRequest){
-            return res.status(404).json({message:error.message})
-        }
-        return res.status(500).json({ message: error.message });
+        next(error)
     }
 });

@@ -1,5 +1,6 @@
 import fs from 'fs';
 import { BadRequest } from '../../errors/badRequest.js';
+import { InternalServerError } from '../../errors/internalServerError.js';
 
 export const saveProduct = async (product, path, action) => {
     try {
@@ -10,7 +11,7 @@ export const saveProduct = async (product, path, action) => {
         return { message: `Se logró ${action} correctamente el producto.` };
     } catch (error) {
 
-        throw new Error(error.message)
+        throw new InternalServerError(error.message)
     }
 };
 
@@ -21,7 +22,7 @@ export const getAllProduct = async (path) => {
    
 
     } catch (error) {
-        throw new Error(error.message)
+        throw new InternalServerError(error.message)
     }
 };
 
@@ -30,7 +31,7 @@ export const getProductById = async (id, path) => {
 
 
         if (!id) {
-              throw new Error ("No se ingresó un ID válido") ;
+              throw new BadRequest ("No se ingresó un ID válido") ;
          }
         const idProduct = parseInt(id, 10);
         const products = JSON.parse(await fs.promises.readFile(`${path}/db/product.json`, "utf-8"));
@@ -41,6 +42,10 @@ export const getProductById = async (id, path) => {
         }
         return product;
     } catch (error) {
-        throw new Error(error.message)
+        if(error instanceof BadRequest){
+            throw error
+        }
+        throw new InternalServerError(error)
+   
     }
 };

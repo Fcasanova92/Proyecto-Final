@@ -18,7 +18,7 @@ export class ProductManager {
 
             for (const field of requiredFields) {
                 if (!productFieldKeys.includes(field) || producto[field] === '') {
-                   throw new Error(`El campo "${field}" es obligatorio.`);
+                   throw new BadRequest(`El campo "${field}" es obligatorio.`);
                 }
             }
 
@@ -27,7 +27,7 @@ export class ProductManager {
             const existCodeProduct = products.some((obj) => obj.code === producto.code);
 
             if (existCodeProduct) {
-                throw new Error ("El código del producto debe de ser único");
+                throw new BadRequest ("El código del producto debe de ser único");
             }
 
             const ids = products.map((product) => product.id);
@@ -41,7 +41,7 @@ export class ProductManager {
 
         } catch (error) {
 
-            throw new Error (error.message);
+            throw error
         }
     }
 
@@ -53,7 +53,7 @@ export class ProductManager {
             }
             return products ;
         } catch (error) {
-            throw new Error(error.message);
+            throw error
         }}
 
     async getById(id) {
@@ -61,7 +61,8 @@ export class ProductManager {
             const product = await getProductById(id, this.path);
             return product;
         } catch (error) {
-           throw new Error(error.message);
+
+            throw error
         }
     }
 
@@ -74,7 +75,7 @@ export class ProductManager {
             return await saveProduct(deletedProducts, this.path, "borrar");
 
         } catch (error) {
-            throw new Error(error.message);
+            throw error
         }
     }
 
@@ -97,7 +98,7 @@ export class ProductManager {
             return await saveProduct(updatedProducts, this.path, "actualizar");
 
         } catch (error) {
-            throw new Error(error.message);
+            throw error
         }
     }
 }
