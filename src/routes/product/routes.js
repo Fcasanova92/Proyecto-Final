@@ -1,12 +1,10 @@
 import { Router } from "express";
 import { ProductManager } from '../../productManager.js'
-;
-import { BadRequest } from "../../errors/badRequest.js";
 
 export const router = Router();
 const product = new ProductManager();
 
-// Obtener todos los productos
+
 router.get("/", async (req, res, next) => {
     try {
         const products = await product.getAll();
@@ -18,7 +16,6 @@ router.get("/", async (req, res, next) => {
     }
 });
 
-// Agregar un producto
 router.post("/", async (req, res) => {
     try {
         const data = req.body;
@@ -30,7 +27,7 @@ router.post("/", async (req, res) => {
     }
 });
 
-// Obtener un producto por id
+
 router.get("/:pid", async (req, res) => {
     const id = parseInt(req.params.pid);
 
@@ -45,7 +42,7 @@ router.get("/:pid", async (req, res) => {
     }
 });
 
-// Actualizar un producto
+
 router.patch("/:pid", async (req, res) => {
     try {
         const id = parseInt(req.params.pid);
@@ -60,7 +57,7 @@ router.patch("/:pid", async (req, res) => {
     }
 });
 
-// Borrar un producto
+
 router.delete("/:pid", async (req, res) => {
     try {
         const id = parseInt(req.params.pid);
