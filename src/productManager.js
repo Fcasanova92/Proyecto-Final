@@ -84,7 +84,7 @@ export class ProductManager {
             const updateFieldKeys = Object.keys(updateField);
             for (const upfield of updateFieldKeys) {
                 if (!requiredFields.includes(upfield)) {
-                    return { status: false, message: `El campo ${upfield} no es propio del producto.` };
+                   throw new BadRequest (`El campo ${upfield} no es propio del producto`);
                 }
             }
             const productById = await getProductById(id, this.path);

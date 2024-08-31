@@ -1,92 +1,96 @@
 
-class CartsManager {
+import {dirname} from "path"
+import { fileURLToPath } from "url";
+import { BadRequest } from "./errors/badRequest.js";
+import { getAllCarts, getCartById, saveCart, saveProductInCart } from "./db/helpers/cartsQuerys.js";
+import { getProductById } from "./db/helpers/productQuerys.js";
 
-    #id;
+export class CartsManager {
 
-    static nextId = 1;
+    constructor(){
 
-    constructor(path){
-
-        this.path = path ;
-
-        this.products = []
+        this.path = dirname(fileURLToPath(import.meta.url))
 
     }
-
-    addProduct(producto){
-
-        console.log("el path es", path)
-
+    async addCart(carts) {
         try {
-
-            // agregarlo en un middleware
-
-            const requiredFields = ['title', 'description', 'code', 'price', 'status', 'stock', 'category', 'thumbnails' ];
-
-            for (const field of requiredFields) {
-
-              if (!producto.hasOwnProperty(field) || producto[field] === '') {
-
-                throw new Error(`El campo "${field}" es obligatorio.`);
-              }
-            }
-
-
-            const existCodeProduct = this.products.some((obj) => obj.code === producto.code);
-
-            if(existCodeProduct){
-
-                throw new Error("El codigo del producto debe de ser unico")
-            }
-
-            this.#id = ProductManager.nextId++
-
-                const newProduct = {
-                    id:this.#id,
-                     ...producto
-        
+            const cartKey = Object.keys(carts);
+            
+            if (!cartKey.includes('products')) {
+                   throw new BadRequest(`El campo products es obligatorio.`);
                 }
-        
-                this.products.push(newProduct)
+
+
+            if(!Array.isArray(carts.products)){
+                    throw new BadRequest(`El campo products debe de ser un array vacio.`);
+                   }
+
+            if(carts.products.length !== 0){
+
+                throw new BadRequest(`El campo products debe estar vacio.`);
+            }
             
-            
+
+            const allCarts = await getAllCarts(this.path);
+    
+            const ids = allCarts.map((cart) => cart.id);
+
+            const lastIdCart = ids.length > 0 ? Math.max(...ids) : 0;
+            const cartId = lastIdCart + 1;
+
+            const newCart = { id: cartId, ...carts };
+   
+            allCarts.push(newCart);
+
+            return await saveCart(allCarts, this.path, "crear");
+
         } catch (error) {
 
-            console.error(error)
-            
+            throw error
         }
-
     }
 
-    getProduct(){
-
-        console.log(this.products)
-
-    }
-
-    getProductById(id){
-
+    async getById(id) {
         try {
+            const carts = await getCartById(id, this.path);
+            return carts;
+        } catch (error) {
 
-            const productById = this.products.find((obj)=>obj.id === id)
+            throw error
+        }
+    }
 
-            if(!productById){
+    async addProductToCart(idProduct, idCart) {
 
-                throw new Error("el id del producto no existe")
+        try{
+
+            const cartById = await getCartById(idCart, this.path);
+            const allCarts = await getAllCarts(this.path)
+            const productById = await getProductById(idProduct, this.path)
+
+            const productInCart = cartById.products.find((prod)=>prod.id === idProduct)
+
+            if(productInCart){
+
+                productInCart.quantity+=1
+
+            }else{
+                const newProduct = {id:productById.id, quantity:1}
+                cartById.products.push(newProduct)
             }
 
-            return productById
-            
+            const updatedCarts = allCarts.map(cart => 
+                cart.id === cartById.id ? cartById : cart
+            );
+    
+            // Guardar los carritos actualizados
+            await saveProductInCart(updatedCarts, this.path, "agregar");
+
+            return {message: "se agrego correctamente el producto al carrito"}
+
         } catch (error) {
-            
-            console.error(error)
+            throw error
         }
-        
-        
     }
 
-    deleteProductById(){}
-
-    updateProduct(){
-    }
 }

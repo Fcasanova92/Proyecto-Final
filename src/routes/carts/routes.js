@@ -1,41 +1,46 @@
-import { Router } from 'express';
+import { Router } from "express";
+import { CartsManager } from '../../cartsManager.js'
 
-export const router = Router()
-
-// obtener todos los productos
-router.get("/", (req, res )=>{
-
-    res.send('This is a POST request');
-})
-
-// agregar los productos
-
-router.post("/", (req, res)=>{
-
-    res.send('This is a POST request');
-
-} )
-
-// obtener un producto por id
+export const router = Router();
+const cart = new CartsManager();
 
 
-router.get("/:cid", (req, res) => {
+router.get("/:cid", async (req, res, next) => {
+    try {
+        const idCart = parseInt(req.params.cid)
+        const carts = await cart.getById(idCart);
 
-    res.send('This is a POST request');
-})
+        return res.status(200).json({...carts});
+ 
+    } catch (error) {
+        next(error)
+    }
+});
 
-router.post("/:cid/product/:pid ", (req, res)=>{
+router.post("/", async (req, res, next) => {
+    try {
+        const data = req.body;
+        const createCart = await cart.addCart(data);
+        return res.status(200).json({message:createCart.message});
+        
+    } catch (error) {
+        next(error)
+    }
+});
 
-    res.send('This is a POST request');
 
-})
+router.patch("/:cid/products/:pid", async (req, res, next) => {
+    try {
+        const idProduct = parseInt(req.params.pid);
+   
+        const idCart = parseInt(req.params.cid);
+ 
+        const cartUpdate = await cart.addProductToCart(idProduct, idCart);
+        
+        return res.status(200).json({ message: cartUpdate.message });
 
-;
 
-// solo debe de contener el id del producto y la cantidad
-
-router.delete("/:cid", (req, res)=>{
-
-    res.send('This is a POST request');
-
-})
+    } catch (error) {
+        next(error)
+    }
+});
