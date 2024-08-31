@@ -16,7 +16,7 @@ app.use("/api/products", ProductRouter)
 
 app.use("/api/carts", CartsRouter)
 
-app.use((err, res) => {
+app.use((err, req, res, next) => {
     if (err instanceof BadRequest) {
         return res.status(400).json({ message: err.message });
     }

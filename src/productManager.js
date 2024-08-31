@@ -1,6 +1,6 @@
 import {dirname} from "path"
 import { fileURLToPath } from "url";
-import { saveProduct, getAllProduct, getProductById } from "./db/helpers/dbQuerys.js";
+import { saveProduct, getAllProduct, getProductById } from "./db/helpers/productQuerys.js";
 import { BadRequest } from "./errors/badRequest.js";
 
 const requiredFields = ['title', 'description', 'code', 'price', 'status', 'stock', 'category', 'thumbnails'];
