@@ -80,6 +80,10 @@ export class ProductManager {
     }
 
     async updateProduct(id, updateField) {
+        const {code, ...updateData} = updateField
+        if(code){
+            throw new BadRequest("No se puede actualizar el codigo del producto")
+        }
         try {
             const updateFieldKeys = Object.keys(updateField);
             for (const upfield of updateFieldKeys) {
@@ -89,7 +93,7 @@ export class ProductManager {
             }
             const productById = await getProductById(id, this.path);
             const products = await getAllProduct(this.path);
-            const updatedProduct = { ...productById, ...updateField };
+            const updatedProduct = { ...productById, ...updateData };
 
             const updatedProducts = products.map((product) => {
                 return product.id === updatedProduct.id ? updatedProduct : product;

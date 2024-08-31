@@ -1,12 +1,12 @@
 [
   {
-    "id": 3,
+    "id": 4,
     "title": "Cámara Digital 1K",
     "description": "Una cámara digital avanzada con capacidad de grabación en 4K y conectividad Wi-Fi.",
-    "code": "CAM1234",
-    "price": 499.99,
+    "code": "CAM1233",
+    "price": 7000,
     "status": "Disponible",
-    "stock": 25,
+    "stock": 28,
     "category": "Electrónica",
     "thumbnails": [
       "https://example.com/images/camara_digital_1.jpg",
@@ -14,10 +14,10 @@
     ]
   },
   {
-    "id": 4,
+    "id": 5,
     "title": "Cámara Digital 1K",
     "description": "Una cámara digital avanzada con capacidad de grabación en 4K y conectividad Wi-Fi.",
-    "code": "CAM1233",
+    "code": "CAM1236",
     "price": 499.99,
     "status": "Disponible",
     "stock": 25,
