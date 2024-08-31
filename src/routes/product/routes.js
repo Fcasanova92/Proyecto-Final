@@ -16,7 +16,7 @@ router.get("/", async (req, res, next) => {
     }
 });
 
-router.post("/", async (req, res) => {
+router.post("/", async (req, res, next) => {
     try {
         const data = req.body;
         const createProduct = await product.addProduct(data);
@@ -28,7 +28,7 @@ router.post("/", async (req, res) => {
 });
 
 
-router.get("/:pid", async (req, res) => {
+router.get("/:pid", async (req, res, next) => {
     const id = parseInt(req.params.pid);
 
     try {
@@ -43,7 +43,7 @@ router.get("/:pid", async (req, res) => {
 });
 
 
-router.patch("/:pid", async (req, res) => {
+router.patch("/:pid", async (req, res, next) => {
     try {
         const id = parseInt(req.params.pid);
         const updateData = req.body;
@@ -58,7 +58,7 @@ router.patch("/:pid", async (req, res) => {
 });
 
 
-router.delete("/:pid", async (req, res) => {
+router.delete("/:pid", async (req, res, next) => {
     try {
         const id = parseInt(req.params.pid);
         const prodDelete = await product.deleteProduct(id);
