@@ -1,4 +1,4 @@
-import express, { urlencoded } from 'express'
+import express from 'express'
 import { CartsRouter, ProductRouter } from "./routes/index.js";
 import { InternalServerError } from './errors/internalServerError.js';
 import { BadRequest } from './errors/badRequest.js';
@@ -16,7 +16,7 @@ app.use("/api/products", ProductRouter)
 
 app.use("/api/carts", CartsRouter)
 
-app.use((err, req, res, next) => {
+app.use((err, res) => {
     if (err instanceof BadRequest) {
         return res.status(400).json({ message: err.message });
     }
@@ -29,6 +29,6 @@ app.use((err, req, res, next) => {
 
 app.listen(PORT, ()=>{
 
-    console.log(`Example app listening on port  http://localhost:${PORT}/`)
+    console.log(`http://localhost:${PORT}/`)
 })
 
