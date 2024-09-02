@@ -7,7 +7,11 @@ const product = new ProductManager();
 
 router.get("/", async (req, res, next) => {
     try {
-        const products = await product.getAll();
+        const limit = parseInt(req.query.limit) || 10;
+
+        console.log(limit)
+ 
+        const products = await product.getAll(limit);
 
         return res.status(200).json({products});
  

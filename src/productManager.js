@@ -45,9 +45,10 @@ export class ProductManager {
         }
     }
 
-    async getAll() {
+    async getAll(limit) {
         try {
-            const products = await getAllProduct(this.path);
+            console.log(limit)
+            const products = await getAllProduct(limit, this.path);
             if (products.length === 0) {
                 throw new BadRequest("No se encontraron productos")
             }
