@@ -1,3 +1,8 @@
 const socket = io();
 
-socket.emit('message', 'hola te estoy mandando mensaje desde el cliente')
+socket.emit('delete', 'hola te estoy mandando mensaje desde el cliente')
+
+socket.on("product", (data)=>{
+
+    console.log(data)
+})
