@@ -1,6 +1,4 @@
-
-import {dirname} from "path"
-import { fileURLToPath } from "url";
+import {__dirname} from "./utils.js"
 import { getAllCarts, getCartById, saveCart, saveProductInCart } from "./db/helpers/cartsQuerys.js";
 import { getProductById } from "./db/helpers/productQuerys.js";
 
@@ -8,7 +6,7 @@ export class CartsManager {
 
     constructor(){
 
-        this.path = dirname(fileURLToPath(import.meta.url))
+        this.path = __dirname;
 
     }
     async addCart() {

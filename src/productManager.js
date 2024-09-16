@@ -1,5 +1,4 @@
-import {dirname} from "path"
-import { fileURLToPath } from "url";
+import {__dirname} from "./utils.js"
 import { saveProduct, getAllProduct, getProductById } from "./db/helpers/productQuerys.js";
 import { BadRequest } from "./errors/badRequest.js";
 
@@ -9,7 +8,7 @@ export class ProductManager {
 
     constructor(){
 
-        this.path = dirname(fileURLToPath(import.meta.url))
+        this.path = __dirname;
 
     }
     async addProduct(producto) {
