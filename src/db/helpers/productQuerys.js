@@ -1,13 +1,15 @@
 import fs from 'fs';
 import { BadRequest } from '../../errors/badRequest.js';
 import { InternalServerError } from '../../errors/internalServerError.js';
+import { join } from 'path';
 
 export const saveProduct = async (product, path, action) => {
+    const pathToProductJson = join(path, 'db', 'product.json');
     try {
-        await fs.promises.access(`${path}/db/product.json`).catch(async () => {
-            await fs.promises.writeFile(`${path}/db/product.json`, JSON.stringify([], null, 2));
+        await fs.promises.access(pathToProductJson).catch(async () => {
+            await fs.promises.writeFile(pathToProductJson, JSON.stringify([], null, 2));
         });
-        await fs.promises.writeFile(`${path}/db/product.json`, JSON.stringify(product, null, 2));
+        await fs.promises.writeFile(pathToProductJson, JSON.stringify(product, null, 2));
         return { message: `Se logró ${action} correctamente el producto.` };
     } catch (error) {
 
@@ -16,8 +18,9 @@ export const saveProduct = async (product, path, action) => {
 };
 
 export const getAllProduct = async (limit, path) => {
+    const pathToProductJson = join(path, 'db', 'product.json');
     try {
-        const productJson = JSON.parse(await fs.promises.readFile(`${path}/db/product.json`, "utf-8"));
+        const productJson = JSON.parse(await fs.promises.readFile(pathToProductJson, "utf-8"));
         if(limit){
             const productJsonWithLimit = productJson.length <= limit ? productJson : productJson.slice(0, limit);
             return productJsonWithLimit;
@@ -30,14 +33,15 @@ export const getAllProduct = async (limit, path) => {
 };
 
 export const getProductById = async (id, path) => {
-    try {
 
+    const pathToProductJson = join(path, 'db', 'product.json');
+    try {
 
         if (!id) {
               throw new BadRequest ("No se ingresó un ID válido") ;
          }
         const idProduct = parseInt(id, 10);
-        const products = JSON.parse(await fs.promises.readFile(`${path}/db/product.json`, "utf-8"));
+        const products = JSON.parse(await fs.promises.readFile(pathToProductJson, "utf-8"));
 
         const product = products.find(product => product.id === idProduct);
         if (!product) {

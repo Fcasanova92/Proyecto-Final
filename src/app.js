@@ -15,12 +15,7 @@ const app = express();
 
 const httpServer = app.listen(PORT, ()=>{ console.log(`http://localhost:${PORT}/`);})
 
-const io = new Server(httpServer, {
-    cors: {
-      origin: "*", // Permitir solicitudes de cualquier origen
-      methods: ["GET", "POST"]
-    }
-  });
+const io = new Server(httpServer);
 
 app.engine('handlebars', handlebars.engine());
 
@@ -53,7 +48,7 @@ app.use((err, req, res, next) => {
         return res.status(500).json({ message: err.message });
     }
    
-    return res.status(500).json({ message: 'Ha ocurrido un error interno en el servidor.' });
+    return res.status(500).json({ message: 'Ha ocurrido un error interno en el servidor.' + err.message});
 });
 
 socketHandler(io);

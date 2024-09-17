@@ -71,7 +71,7 @@ export class ProductManager {
 
             const productExists = await getProductById(id, this.path);
      
-            const products = await getAllProduct(this.path);
+            const products = await getAllProduct("",this.path);
 
             const deletedProducts = products.filter((product) => product.id !== productExists.id);
 
