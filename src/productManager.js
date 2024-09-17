@@ -48,10 +48,7 @@ export class ProductManager {
         try {
 
             const products = await getAllProduct(limit, this.path);
-            if (products.length === 0) {
-                throw new BadRequest("No se encontraron productos")
-            }
-            return products ;
+            return products.length > 0 ? products : [];
         } catch (error) {
             throw error
         }}

@@ -7,15 +7,17 @@ const product = new ProductManager();
 
 router.get("/", async (req, res, next) => {
     try {
-
         const limit = parseInt(req.query.limit) || 10;
-
         const products = await product.getAll(limit);
 
-        return res.status(200).json({products});
- 
+        if (products.length === 0) {
+   
+            return res.status(404).json({ products ,message:"No existen productos" });
+        }
+
+        return res.status(200).json({ products });
     } catch (error) {
-        next(error)
+        next(error); 
     }
 });
 

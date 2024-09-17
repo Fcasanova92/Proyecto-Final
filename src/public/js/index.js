@@ -4,9 +4,12 @@ const socket = io();
 function updateProductList(products) {
   const productList = document.getElementById('product-list');
   productList.innerHTML = ''; // Limpiar la lista actual
-  if(!products){
-    console.error("No existen productos")
+  if (!products || products.length === 0) {
+ 
+    productList.innerHTML = '<li>No hay productos disponibles</li>';
+    return; // Salir de la función si no hay productos
   }
+
   products.forEach(product => {
     const li = document.createElement('li');
     li.innerHTML = `${product.name} - $${product.price} <button data-id="${product.id}" class="delete-btn">Eliminar</button>`;
@@ -33,6 +36,7 @@ socket.on('products', updateProductList);
 document.addEventListener('DOMContentLoaded', async () => {
   try {
     const response = await fetch('http://localhost:8080/api/products/');
+    console.log(response.status)
     if(!response.ok){
       updateProductList([]);
     }

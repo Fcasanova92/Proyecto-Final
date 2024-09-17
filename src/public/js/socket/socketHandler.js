@@ -5,15 +5,16 @@ export default (io) => {
 
     try {
       const response = await fetch('http://localhost:8080/api/products/');
-      if (!response.ok) {
-        throw new Error(`Network response was not ok: ${response.statusText}`);
-      }
       const data = await response.json();
-      console.log(data); // This will log the whole data object
+      if(data.products === 0){
+        if (!response.ok) {
+          throw new Error(data.message);
+        }
+      }
       socket.emit('products', data.products);
     } catch (error) {
-      console.error('Error fetching products:', error);
-      socket.emit('error', 'Failed to fetch products');
+      console.error('Error fetching products:', error.message);
+      socket.emit('error', error.message);
     }
 
   });
