@@ -1,38 +1,39 @@
 const socket = io();
 
-// Escuchar la lista de productos desde el servidor y renderizar la tabla
-socket.on('products', (products) => {
-  const tableBody = document.getElementById('productRows');
-  tableBody.innerHTML = ''; // Limpiar la tabla
-
-  // Renderizar cada producto en la tabla
-  products.forEach(product => {
-    const row = document.createElement('tr');
-    row.id = `product-${product.id}`;
-    row.innerHTML = `
-      <td>${product.id}</td>
-      <td>${product.title}</td>
-      <td>${product.description}</td>
-      <td>${product.code}</td>
-      <td>${product.price}</td>
-      <td>${product.stock}</td>
-      <td>${product.category}</td>
-      <td><button class="btn-delete" data-id="${product.id}">Borrar</button></td>
-    `;
-    tableBody.appendChild(row);
+// Función para actualizar la lista de productos en la vista
+function updateProductList(products) {
+  const productList = document.getElementById('product-list');
+  productList.innerHTML = ''; // Limpiar la lista actual
+  console.log(products.product)
+  products.product.forEach(product => {
+    const li = document.createElement('li');
+    li.innerHTML = `${product.name} - $${product.price} <button data-id="${product.id}" class="delete-btn">Eliminar</button>`;
+    productList.appendChild(li);
   });
 
-  // Añadir event listeners a los botones de borrar
-  addDeleteListeners();
-});
-
-// Función para eliminar un producto al hacer clic en el botón "Borrar"
-function addDeleteListeners() {
-  const deleteButtons = document.querySelectorAll('.btn-delete');
-  deleteButtons.forEach(button => {
-    button.addEventListener('click', (event) => {
-      const productId = event.target.getAttribute('data-id');
-      socket.emit('delete', productId); // Emitir el evento de eliminación al servidor
+  // Agregar eventos a los botones de eliminar
+  document.querySelectorAll('.delete-btn').forEach(button => {
+    button.addEventListener('click', async () => {
+      const productId = button.getAttribute('data-id');
+      try {
+        await fetch(`/api/products/${productId}`, { method: 'DELETE' });
+      } catch (error) {
+        console.error('Error al eliminar el producto:', error);
+      }
     });
   });
 }
+
+// Escuchar eventos de `Socket.io` para actualizar la lista de productos
+socket.on('products', updateProductList);
+
+// Inicializar la lista de productos cuando se carga la página
+document.addEventListener('DOMContentLoaded', async () => {
+  try {
+    const response = await fetch('/api/products');
+    const products = await response.json();
+    updateProductList(products);
+  } catch (error) {
+    console.error('Error al obtener productos:', error);
+  }
+});
