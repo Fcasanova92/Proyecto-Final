@@ -4,8 +4,8 @@ const socket = io();
 function updateProductList(products) {
   const productList = document.getElementById('product-list');
   productList.innerHTML = ''; // Limpiar la lista actual
-  console.log(products.product)
-  products.product.forEach(product => {
+
+  products.forEach(product => {
     const li = document.createElement('li');
     li.innerHTML = `${product.name} - $${product.price} <button data-id="${product.id}" class="delete-btn">Eliminar</button>`;
     productList.appendChild(li);
@@ -31,7 +31,8 @@ socket.on('products', updateProductList);
 document.addEventListener('DOMContentLoaded', async () => {
   try {
     const response = await fetch('/api/products');
-    const products = await response.json();
+    const productSjon = await response.json();
+    const products = productSjon.products
     updateProductList(products);
   } catch (error) {
     console.error('Error al obtener productos:', error);

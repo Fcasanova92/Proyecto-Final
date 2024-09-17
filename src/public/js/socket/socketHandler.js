@@ -10,9 +10,5 @@ export default (io) => {
       // Enviar productos al conectarse
       socket.emit('products', products);
   
-  
-      socket.on('disconnect', () => {
-        console.log('Cliente desconectado');
-      });
     });
   };

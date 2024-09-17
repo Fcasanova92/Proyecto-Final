@@ -18,8 +18,11 @@ export const saveProduct = async (product, path, action) => {
 export const getAllProduct = async (limit, path) => {
     try {
         const productJson = JSON.parse(await fs.promises.readFile(`${path}/db/product.json`, "utf-8"));
-        const productJsonWithLimit = productJson.length <= limit ? productJson : productJson.slice(0, limit);
-        return productJsonWithLimit;
+        if(limit){
+            const productJsonWithLimit = productJson.length <= limit ? productJson : productJson.slice(0, limit);
+            return productJsonWithLimit;
+        }
+        return productJson;
 
     } catch (error) {
         throw new InternalServerError(error.message)
