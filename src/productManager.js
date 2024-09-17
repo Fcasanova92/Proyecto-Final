@@ -21,7 +21,7 @@ export class ProductManager {
                 }
             }
 
-            const products = await getAllProduct(this.path);
+            const products = await getAllProduct("",this.path);
 
             const existCodeProduct = products.some((obj) => obj.code === producto.code);
 
@@ -95,7 +95,7 @@ export class ProductManager {
                 }
             }
             const productById = await getProductById(id, this.path);
-            const products = await getAllProduct(this.path);
+            const products = await getAllProduct("",this.path);
             const updatedProduct = { ...productById, ...updateData };
 
             const updatedProducts = products.map((product) => {

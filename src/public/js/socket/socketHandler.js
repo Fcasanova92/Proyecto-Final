@@ -1,14 +1,12 @@
-import { deleteProductBySocket } from "../deleteProductBySocket.js";
-import { getProducts } from "../getProducts.js";
 
 export default (io) => {
 
     io.on('connection', async (socket) => {
       console.log('Cliente conectado');
 
-      const products = await getProducts()
+      const products = await fetch('http://localhost:8080/api/products')
       // Enviar productos al conectarse
-      socket.emit('products', products);
+      socket.emit('products', products.json());
   
     });
   };

@@ -1,25 +1,24 @@
 import { Router } from "express";
-import { getProducts } from "../../public/js/getProducts.js";
 
 export const router = Router();
 
 router.get("/", async (req, res, next) => {
 
-    const product = await getProducts()
+    const product = await fetch("http://localhost:8080/api/products")
 
     res.render('home', {
         title:"Lista de Productos",
-        product:product})
+        product:product.json()})
    
 });
 
 router.get("/realtimeproducts", async (req, res, next) => {
 
-const products = await getProducts(); // Cargar productos desde el archivo JSON o base de datos
+  const products = await fetch("http://localhost:8080/api/products") // Cargar productos desde el archivo JSON o base de datos
 
   res.render('realTimeProducts', {
     title: "Lista de Productos en Tiempo Real",
-    products: products // Productos iniciales para Handlebars
+    products: products.json() // Productos iniciales para Handlebars
   });
 });
 
