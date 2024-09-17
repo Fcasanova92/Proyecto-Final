@@ -14,12 +14,12 @@ router.get("/", async (req, res, next) => {
 });
 
 router.get("/realtimeproducts", async (req, res, next) => {
-    const io = req.io
-    const product = await getProducts()
-    io.emit("product", product)
-    res.render('realTimeProducts', {
-        title:"Lista de Productos",
-        product:product})
-   
+
+const products = await getProducts(); // Cargar productos desde el archivo JSON o base de datos
+
+  res.render('realTimeProducts', {
+    title: "Lista de Productos en Tiempo Real",
+    products: products // Productos iniciales para Handlebars
+  });
 });
 

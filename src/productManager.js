@@ -69,8 +69,12 @@ export class ProductManager {
     async deleteProduct(id) {
         try {
             const productExists = await getProductById(id, this.path);
+     
             const products = await getAllProduct(this.path);
+
             const deletedProducts = products.filter((product) => product.id !== productExists.id);
+
+            console.log(deletedProducts)
 
             return await saveProduct(deletedProducts, this.path, "borrar");
 

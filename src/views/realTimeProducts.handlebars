@@ -1,5 +1,5 @@
 <div>
-<title>{{title}}</title>
+  <title>{{title}}</title>
   <table border="1">
     <thead>
       <tr>
@@ -10,11 +10,12 @@
         <th>Precio</th>
         <th>Stock</th>
         <th>Category</th>
+        <th>Acción</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody id="productRows">
       {{#each product}}
-      <tr>
+      <tr id="product-{{this.id}}">
         <td>{{this.id}}</td>
         <td>{{this.title}}</td>
         <td>{{this.description}}</td>
@@ -23,7 +24,7 @@
         <td>{{this.stock}}</td>
         <td>{{this.category}}</td>
         <td>
-          <button class="btn-delete" data-id="{{id}}">Borrar</button>
+          <button class="btn-delete" data-id="{{this.id}}">Borrar</button>
         </td>
       </tr>
       {{/each}}
