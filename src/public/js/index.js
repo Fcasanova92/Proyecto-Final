@@ -6,13 +6,14 @@ function updateProductList(products) {
   productList.innerHTML = ''; // Limpiar la lista actual
   if (!products || products.length === 0) {
  
-    productList.innerHTML = '<li>No hay productos disponibles</li>';
+    productList.innerHTML = '<h3">No hay productos disponibles</h3>';
     return; // Salir de la función si no hay productos
   }
 
   products.forEach(product => {
     const li = document.createElement('li');
-    li.innerHTML = `${product.name} - $${product.price} <button data-id="${product.id}" class="delete-btn">Eliminar</button>`;
+    li.className = "product-item"
+    li.innerHTML = `<p>Title: ${product.title} - Code: ${product.code} - Price: ${product.price} - Stock: ${product.stock}</p><button data-id="${product.id}" class="delete-btn"><i class="fa-solid fa-trash"></i></button>`;
     productList.appendChild(li);
   });
 
@@ -30,7 +31,7 @@ function updateProductList(products) {
 }
 
 // Escuchar eventos de `Socket.io` para actualizar la lista de productos
-socket.on('products', updateProductList);
+socket.on('products-update', updateProductList);
 
 // Inicializar la lista de productos cuando se carga la página
 document.addEventListener('DOMContentLoaded', async () => {

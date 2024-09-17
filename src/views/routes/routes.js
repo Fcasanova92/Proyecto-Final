@@ -12,13 +12,16 @@ router.get("/", async (req, res, next) => {
    
 });
 
-router.get("/realtimeproducts", async (req, res, next) => {
+router.get('/realtimeproducts', async (req, res) => {
+  try {
+    const products = await fetch('http://localhost:8080/api/products');
+    const productsData = await products.json();
 
-  const products = await fetch("http://localhost:8080/api/products") // Cargar productos desde el archivo JSON o base de datos
-
-  res.render('realTimeProducts', {
-    title: "Lista de Productos en Tiempo Real",
-    products: products.json() // Productos iniciales para Handlebars
-  });
+    res.render('realTimeProducts', {
+      title: "Lista de Productos en Tiempo Real",
+      products: productsData.products
+    });
+  } catch (error) {
+    res.status(500).send('Error al cargar productos');
+  }
 });
-

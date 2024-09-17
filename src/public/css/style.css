@@ -1,0 +1,97 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+}
+
+/* Contenedor principal para el área de productos */
+.realtTimeProduct {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Título principal */
+.realtTimeProduct h1 {
+    text-align: center;
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Lista de productos */
+#product-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+/* Estilo para cada ítem de producto */
+.product-item, h3 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+}
+
+/* Hover en productos */
+.product-item:hover {
+    background-color: #eaeaea;
+}
+
+/* Estilo para el texto del producto */
+.product-item p {
+    margin: 0;
+    color: #555;
+    font-size: 16px;
+}
+
+/* Estilo para el botón de eliminar */
+.delete-btn {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
+}
+
+/* Hover en el botón de eliminar */
+.delete-btn:hover {
+    background-color: #ff1a1a;
+}
+
+/* Estilo para el ícono de la papelera */
+.delete-btn i {
+    align-self: center;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+    .realtTimeProduct {
+        padding: 15px;
+    }
+
+    .product-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .delete-btn {
+        margin-top: 10px;
+        align-self: flex-end;
+    }
+}

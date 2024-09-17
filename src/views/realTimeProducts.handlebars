@@ -1,11 +1,10 @@
 
-<div>
-  <h1>Lista de Productos</h1>
+<div class="realtTimeProduct">
+  <h1>{{title}}</h1>
   <ul id="product-list">
     {{#each products}}
-      <li>
-        {{this.name}} - ${{this.price}}
-        <button data-id="{{this.id}}" class="delete-btn">Eliminar</button>
+      <li class="product-item">
+       <p>Title: {{product.title}}- Code: {{product.code}} - Price: {{product.price}} - Stock: {{product.stock}}</p><button data-id="${product.id}" class="delete-btn"><i class="fa-solid fa-trash"></i></button>
       </li>
     {{/each}}
   </ul>
