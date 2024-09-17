@@ -4,11 +4,17 @@ export const router = Router();
 
 router.get("/", async (req, res, next) => {
 
-    const product = await fetch("http://localhost:8080/api/products")
+  try {
+    const products = await fetch('http://localhost:8080/api/products');
+    const productsData = await products.json();
 
     res.render('home', {
-        title:"Lista de Productos",
-        product:product.json()})
+      title: "Lista de Productos",
+      products: productsData.products
+    });
+  } catch (error) {
+    res.status(500).send('Error al cargar productos');
+  }
    
 });
 

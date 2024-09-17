@@ -4,7 +4,7 @@
   <ul id="product-list">
     {{#each products}}
       <li class="product-item">
-       <p>Title: {{product.title}}- Code: {{product.code}} - Price: {{product.price}} - Stock: {{product.stock}}</p><button data-id="${product.id}" class="delete-btn"><i class="fa-solid fa-trash"></i></button>
+       <p>Title: {{this.title}}- Code: {{this.code}} - Price: {{this.price}} - Stock: {{this.stock}}</p><button data-id="${product.id}" class="delete-btn"><i class="fa-solid fa-trash"></i></button>
       </li>
     {{/each}}
   </ul>
