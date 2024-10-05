@@ -1,3 +1,6 @@
+
+// utilzar la conexion a la base de datos, para realizar busqueda en las colecciones de mongo
+
 import fs from 'fs';
 import { BadRequest } from '../../errors/badRequest.js';
 import { InternalServerError } from '../../errors/internalServerError.js';

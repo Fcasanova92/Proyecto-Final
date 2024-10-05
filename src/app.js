@@ -3,15 +3,16 @@ import { CartsRouter, ProductRouter } from "./routes/index.js";
 import { InternalServerError } from './errors/internalServerError.js';
 import { BadRequest } from './errors/badRequest.js';
 import handlebars from "express-handlebars"
-import {__dirname} from "./utils.js"
+import {__dirname, mongooseConnect} from "./utils.js"
 import { ViewsRouter } from './views/routes/index.js';
 import { Server } from 'socket.io';
 import socketHandler from './public/js/socket/socketHandler.js';
-
-const PORT = 8080;
+import { PORT } from './env.js';
 
 
 const app = express();
+
+mongooseConnect();
 
 const httpServer = app.listen(PORT, ()=>{ console.log(`http://localhost:${PORT}/`);})
 
