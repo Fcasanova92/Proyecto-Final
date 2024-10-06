@@ -1,38 +1,36 @@
-import fs from 'fs';
+
 import { BadRequest } from '../../errors/badRequest.js';
 import { InternalServerError } from '../../errors/internalServerError.js';
+import { cartModel } from '../../models/carts.js';
 
-export const saveCart = async (cart, path, action) => {
+export const addCartInDb = async (cart) => {
     try {
-        await fs.promises.access(`${path}/db/carts.json`).catch(async () => {
-            await fs.promises.writeFile(`${path}/db/carritos.json`, JSON.stringify([], null, 2));
-        });
-        await fs.promises.writeFile(`${path}/db/carritos.json`, JSON.stringify(cart, null, 2));
-        return { message: `Se logró ${action} correctamente el carrito.` };
+        await cartModel.create(cart)
+        return { message: `Se logró crear correctamente el carrito.` };
     } catch (error) {
 
         throw new InternalServerError(error.message)
     }
 };
 
-export const saveProductInCart = async (cart, path, action) => {
+export const addProductInCartIntoDb = async (cid,cart) => {
     try {
-        await fs.promises.access(`${path}/db/carritos.json`).catch(async () => {
-            await fs.promises.writeFile(`${path}/db/carritos.json`, JSON.stringify([], null, 2));
-        });
-        await fs.promises.writeFile(`${path}/db/carritos.json`, JSON.stringify(cart, null, 2));
+        await cartModel.findOneAndUpdate({cid},cart, {
 
-        return { message: `Se logró ${action} correctamente el el producto al carrito` };
+            new: true
+        })
+
+        return { message: `Se logró agregar correctamente el el producto al carrito` };
     } catch (error) {
 
         throw new InternalServerError(error.message)
     }
 };
 
-export const getAllCarts = async (path) => {
+export const getAllCartsFromDb = async () => {
     try {
-        const productJson = JSON.parse(await fs.promises.readFile(`${path}/db/carritos.json`, "utf-8"));
-        return productJson
+        const carts = await cartModel.find()
+        return carts
    
 
     } catch (error) {
@@ -40,17 +38,15 @@ export const getAllCarts = async (path) => {
     }
 };
 
-export const getCartById = async (id, path) => {
+export const getCartByIdFromDb = async (id) => {
     try {
-
 
         if (!id) {
               throw new BadRequest ("No se ingresó un ID válido") ;
          }
-        const idCart= parseInt(id);
-        const carts = JSON.parse(await fs.promises.readFile(`${path}/db/carritos.json`, "utf-8"));
 
-        const cart = carts.find(cart => cart.id === idCart);
+        const cart = await cartModel.findOne({cid:id}).lean()
+
         if (!cart) {
             throw new BadRequest(`No existe el carrito con id: ${id}`)
         }

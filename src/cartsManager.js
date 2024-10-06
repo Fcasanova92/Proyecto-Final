@@ -1,6 +1,6 @@
 import {__dirname} from "./utils.js"
-import { getAllCarts, getCartById, saveCart, saveProductInCart } from "./db/helpers/cartsQuerys.js";
-import { getProductById } from "./db/helpers/productQuerys.js";
+import { getAllCartsFromDb, addCartInDb, addProductInCartIntoDb, getCartByIdFromDb } from "./db/helpers/cartsQuerys.js";
+import {getProductByIdFromDb } from "./db/helpers/productQuerys.js";
 
 export class CartsManager {
 
@@ -12,18 +12,18 @@ export class CartsManager {
     async addCart() {
         try {
 
-            const allCarts = await getAllCarts(this.path);
+            const allCarts = await getAllCartsFromDb(this.path);
     
-            const ids = allCarts.map((cart) => cart.id);
+            const ids = allCarts.map((cart) => cart.cid);
 
             const lastIdCart = ids.length > 0 ? Math.max(...ids) : 0;
             const cartId = lastIdCart + 1;
 
-            const newCart = { id: cartId, products:[] };
+            const newCart = { cid: cartId, products:[] };
    
             allCarts.push(newCart);
 
-            return await saveCart(allCarts, this.path, "crear");
+            return await addCartInDb(allCarts, this.path, "crear");
 
         } catch (error) {
 
@@ -33,7 +33,7 @@ export class CartsManager {
 
     async getById(id) {
         try {
-            const carts = await getCartById(id, this.path);
+            const carts = await getCartByIdFromDb(id, this.path);
             return carts;
         } catch (error) {
 
@@ -41,37 +41,25 @@ export class CartsManager {
         }
     }
 
-    async addProductToCart(idProduct, idCart) {
-
-        try{
-
-            const cartById = await getCartById(idCart, this.path);
-            const allCarts = await getAllCarts(this.path)
-            const productById = await getProductById(idProduct, this.path)
-
-            const productInCart = cartById.products.find((prod)=>prod.id === idProduct)
-
-            if(productInCart){
-
-                productInCart.quantity+=1
-
-            }else{
-                const newProduct = {id:productById.id, quantity:1}
-                cartById.products.push(newProduct)
-            }
-
-            const updatedCarts = allCarts.map(cart => 
-                cart.id === cartById.id ? cartById : cart
-            );
+    async addProductToCart(pid, cid) {
+        try {
+            const cartById = await getCartByIdFromDb(cid);
+            const productById = await getProductByIdFromDb(pid);
     
-            // Guardar los carritos actualizados
-            await saveProductInCart(updatedCarts, this.path, "agregar");
-
-            return {message: "se agrego correctamente el producto al carrito"}
-
+            const productInCart = cartById.products.find((prod) => prod.idProduct.toString() === productById._id.toString());
+    
+            if (productInCart) {
+        
+                productInCart.quantity += 1;
+            } else {
+    
+                const newProduct = { idProduct: productById._id, quantity: 1 };
+                cartById.products.push(newProduct);
+            }
+    
+            return await addProductInCartIntoDb(cid, cartById);
         } catch (error) {
-            throw error
+            throw error;
         }
     }
-
 }

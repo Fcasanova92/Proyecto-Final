@@ -1,8 +1,8 @@
 import {__dirname} from "./utils.js"
-import { saveProduct, getAllProduct, getProductById } from "./db/helpers/productQuerys.js";
+import { addProductToDb, updateProductToDb, getAllProductFromDb, getProductByIdFromDb, deleteProductFromDb, getProductsFromDbWithFilter } from "./db/helpers/productQuerys.js";
 import { BadRequest } from "./errors/badRequest.js";
 
-const requiredFields = ['title', 'description', 'code', 'price', 'status', 'stock', 'category'];
+const requiredFields = ['title', 'description', 'code', 'price', 'status', 'stock', 'category', 'thumbnails'];
 
 export class ProductManager {
 
@@ -21,7 +21,7 @@ export class ProductManager {
                 }
             }
 
-            const products = await getAllProduct("",this.path);
+            const products = await getAllProductFromDb();
 
             const existCodeProduct = products.some((obj) => obj.code === producto.code);
 
@@ -29,14 +29,12 @@ export class ProductManager {
                 throw new BadRequest ("El código del producto debe de ser único");
             }
 
-            const ids = products.map((product) => product.id);
+            const ids = products.map((product) => product.pid);
             const lastIdProduct = ids.length > 0 ? Math.max(...ids) : 0;
             const productId = lastIdProduct + 1;
-
-            const newProduct = { id: productId, ...producto };
-            products.push(newProduct);
-
-            return await saveProduct(products, this.path, "guardar");
+            const newProduct = { pid: productId, ...producto };
+        
+            return await addProductToDb(newProduct);
 
         } catch (error) {
 
@@ -47,7 +45,7 @@ export class ProductManager {
     async getAll(limit) {
         try {
 
-            const products = await getAllProduct(limit, this.path);
+            const products = await getProductsFromDbWithFilter(limit);
             return products.length > 0 ? products : [];
         } catch (error) {
             throw error
@@ -55,7 +53,7 @@ export class ProductManager {
 
     async getById(id) {
         try {
-            const product = await getProductById(id, this.path);
+            const product = await getProductByIdFromDb(id);
             return product;
         } catch (error) {
 
@@ -66,13 +64,7 @@ export class ProductManager {
     async deleteProduct(id) {
         try {
 
-            const productExists = await getProductById(id, this.path);
-     
-            const products = await getAllProduct("",this.path);
-
-            const deletedProducts = products.filter((product) => product.id !== productExists.id);
-
-            return await saveProduct(deletedProducts, this.path, "borrar");
+            return await deleteProductFromDb(id);
 
         } catch (error) {
             throw error
@@ -91,15 +83,11 @@ export class ProductManager {
                    throw new BadRequest (`El campo ${upfield} no es propio del producto`);
                 }
             }
-            const productById = await getProductById(id, this.path);
-            const products = await getAllProduct("",this.path);
+            const productById = await getProductByIdFromDb(id);
+  
             const updatedProduct = { ...productById, ...updateData };
 
-            const updatedProducts = products.map((product) => {
-                return product.id === updatedProduct.id ? updatedProduct : product;
-            });
-
-            return await saveProduct(updatedProducts, this.path, "actualizar");
+            return await updateProductToDb(id, updatedProduct);
 
         } catch (error) {
             throw error

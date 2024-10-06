@@ -1,14 +1,12 @@
-import mongoose, { Types } from "mongoose";
+import mongoose from "mongoose";
 
-const productCollection = "products"
-
+const productCollection = "products";
 
 const productSchema = new mongoose.Schema({
-
-    id: {
+    pid: {
         type: Number,
         unique: true,
-        required: true // Añade required si el id siempre es necesario
+        required: true
     },
     title: {
         type: String,
@@ -27,8 +25,8 @@ const productSchema = new mongoose.Schema({
         required: true
     },
     status: {
-        type: Boolean,
-        default: true // Puedes definir un valor predeterminado
+        type: String,
+        default: 'Disponible'
     },
     stock: {
         type: Number,
@@ -36,8 +34,9 @@ const productSchema = new mongoose.Schema({
     },
     category: {
         type: String
-    }
+    },
+    thumbnails: [String]
 });
 
 
-export const productModel = mongoose.model(productCollection, productSchema)
+export const productModel = mongoose.model(productCollection, productSchema);

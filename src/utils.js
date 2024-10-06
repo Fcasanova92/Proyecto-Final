@@ -1,10 +1,9 @@
 import {dirname} from "path"
 import { fileURLToPath } from "url";
 import mongoose from "mongoose"
-import { DB_USER, DB_PASSWORD } from "../env.js"
+import { DB_USER, DB_PASSWORD } from "./env.js"
 
 export const __dirname = dirname(fileURLToPath(import.meta.url))
-
 
 export const mongooseConnect = async ()=> {
 
@@ -12,13 +11,13 @@ export const mongooseConnect = async ()=> {
 
     try {
 
-        await mongoose.connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true})
+        await mongoose.connect(mongoUri)
 
             console.log("Conectado exitosamente a la base de datos");
 
     }catch (error) {
 
-        console.log(" error en la conexion a la base de datos ", error.message)
+        console.log(" error en la conexion a la base de datos ", error)
 
         process.exit()
         
