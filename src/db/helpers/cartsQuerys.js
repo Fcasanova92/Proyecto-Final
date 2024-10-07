@@ -59,3 +59,25 @@ export const getCartByIdFromDb = async (id) => {
    
     }
 };
+
+export const deleteCartFromDb = async (id) => {
+    
+    try {
+        await productModel.deleteOne({cid:id})
+        return { message: `Se logró eliminar correctamente el producto.` };
+    } catch (error) {
+
+        throw new InternalServerError(error.message)
+    }
+};
+
+export const deleteProductInCartFromDb = async (pid, cid) => {
+    
+    try {
+        await productModel.deleteOne({cid})
+        return { message: `Se logró eliminar correctamente el producto.` };
+    } catch (error) {
+
+        throw new InternalServerError(error.message)
+    }
+};

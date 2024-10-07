@@ -1,5 +1,5 @@
 import {__dirname} from "./utils.js"
-import { getAllCartsFromDb, addCartInDb, addProductInCartIntoDb, getCartByIdFromDb } from "./db/helpers/cartsQuerys.js";
+import { getAllCartsFromDb, addCartInDb, addProductInCartIntoDb, getCartByIdFromDb, deleteCartFromDb } from "./db/helpers/cartsQuerys.js";
 import {getProductByIdFromDb } from "./db/helpers/productQuerys.js";
 
 export class CartsManager {
@@ -60,6 +60,26 @@ export class CartsManager {
             return await addProductInCartIntoDb(cid, cartById);
         } catch (error) {
             throw error;
+        }
+    }
+
+    async deleteCart(cid){
+        try {
+            return await deleteCartFromDb(cid);
+
+        } catch (error) {
+
+            throw error  
+        }
+    }
+
+    async deleteProductInCart(pid, cid){
+        try {
+            return await this.deleteProductInCart(pid, cid);
+
+        } catch (error) {
+
+            throw error  
         }
     }
 }
