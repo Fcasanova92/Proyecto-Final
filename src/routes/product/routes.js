@@ -7,8 +7,12 @@ const product = new ProductManager();
 
 router.get("/", async (req, res, next) => {
     try {
+  
         const limit = parseInt(req.query.limit) || 10;
-        const products = await product.getAll(limit);
+        const page = parseInt(req.query.page) || 1;
+        const query = req.query.query || "";
+        const sort = req.query.sort || "desc";
+        const products = await product.getAll(limit, page, query, sort);
 
         if (products.length === 0) {
    

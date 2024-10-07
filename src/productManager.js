@@ -42,10 +42,10 @@ export class ProductManager {
         }
     }
 
-    async getAll(limit) {
+    async getAll(limit, page, query, sort) {
         try {
 
-            const products = await getProductsFromDbWithFilter(limit);
+            const products = await getProductsFromDbWithFilter(limit, page, query, sort);
             return products.length > 0 ? products : [];
         } catch (error) {
             throw error

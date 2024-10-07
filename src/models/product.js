@@ -38,5 +38,4 @@ const productSchema = new mongoose.Schema({
     thumbnails: [String]
 });
 
-
 export const productModel = mongoose.model(productCollection, productSchema);
