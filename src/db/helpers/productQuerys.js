@@ -26,60 +26,51 @@ export const getAllProductFromDb = async () => {
     }
 };
 
-export const getProductsFromDbWithFilter = async (limit, page, query, sort) => {
-
-
+export const getProductsFromDbWithFilter = async (limit, pages, query, sort) => {
     try {
         const filter = query ? { title: { $regex: query, $options: 'i' } } : {};
+      
+        let sortCriteria = {};
+        if (sort) {
+          if (sort === 'asc') {
+            sortCriteria = { pid: 1 }; 
+          } else if (sort === 'desc') {
+            sortCriteria = { pid: -1 }; 
+          }
+        }
+      
+        const options = {
+          pages,        
+          limit,          
+          sort: sortCriteria,          
+          lean: true                 
+        };
+      
+        const result = await productModel.paginate(filter, options);
+      
+        const { docs: products, totalPages, page, hasNextPage, hasPrevPage, nextPage, prevPage } = result;
+      
+        const prevLink = hasPrevPage ? `http://localhost:8080/?page=${prevPage}&limit=${limitNumber}` : null;
+        const nextLink = hasNextPage ? `http://localhost:8080/?page=${nextPage}&limit=${limitNumber}` : null;
+        
 
-    let sortCriteria = {};
-    if (sort) {
-      if (sort === 'asc') {
-        sortCriteria = { pid: 1 }; 
-      } else if (sort === 'desc') {
-        sortCriteria = { pid: -1 }; 
+        return {
+          status: 'success',
+          payload: products,
+          totalPages,
+          prevPage,
+          nextPage,
+          page,
+          hasPrevPage,
+          hasNextPage,
+          prevLink,
+          nextLink,
+        };
+      
+      } catch (error) {
+        console.log(error)
+        throw new InternalServerError(error.message);
       }
-    }
-
-    const totalProducts = await productModel.countDocuments(filter);
-
-    const totalPages = Math.ceil(totalProducts / limitNumber);
-
-    if (pageNumber > totalPages && totalPages > 0) {
-
-        throw new BadRequest("pagina no encontrada")
-    }
-
-    const products = await productModel.find(filter)
-      .sort(sortCriteria) 
-      .skip((pageNumber - 1) * limitNumber) 
-      .limit(limitNumber); 
-
-    const hasPrevPage = pageNumber > 1;
-    const hasNextPage = pageNumber < totalPages;
-    const prevPage = hasPrevPage ? pageNumber - 1 : null;
-    const nextPage = hasNextPage ? pageNumber + 1 : null;
-
-    const baseUrl = `${req.protocol}://${req.get('host')}${req.path}`;
-    const prevLink = hasPrevPage ? `${baseUrl}?page=${prevPage}&limit=${limitNumber}` : null;
-    const nextLink = hasNextPage ? `${baseUrl}?page=${nextPage}&limit=${limitNumber}` : null;
-
-    return {
-      status: 'success',
-      payload: products,
-      totalPages,
-      prevPage,
-      nextPage,
-      page: pageNumber,
-      hasPrevPage,
-      hasNextPage,
-      prevLink,
-      nextLink,
-    };
-
-    } catch (error) {
-        throw new InternalServerError(error.message)
-    }
 };
 
 export const getProductByIdFromDb = async (id) => {

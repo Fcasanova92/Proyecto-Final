@@ -14,7 +14,7 @@ router.get("/", async (req, res, next) => {
         const sort = req.query.sort || "desc";
         const products = await product.getAll(limit, page, query, sort);
 
-        if (products.length === 0) {
+        if (products.payload.length === 0) {
    
             return res.status(404).json({ products ,message:"No existen productos" });
         }

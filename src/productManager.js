@@ -46,7 +46,8 @@ export class ProductManager {
         try {
 
             const products = await getProductsFromDbWithFilter(limit, page, query, sort);
-            return products.length > 0 ? products : [];
+            
+            return products.payload.length > 0 ? products : [];
         } catch (error) {
             throw error
         }}

@@ -12,7 +12,7 @@ export class CartsManager {
     async addCart() {
         try {
 
-            const allCarts = await getAllCartsFromDb(this.path);
+            const allCarts = await getAllCartsFromDb();
     
             const ids = allCarts.map((cart) => cart.cid);
 
@@ -23,7 +23,7 @@ export class CartsManager {
    
             allCarts.push(newCart);
 
-            return await addCartInDb(allCarts, this.path, "crear");
+            return await addCartInDb(allCarts);
 
         } catch (error) {
 
@@ -33,7 +33,7 @@ export class CartsManager {
 
     async getById(id) {
         try {
-            const carts = await getCartByIdFromDb(id, this.path);
+            const carts = await getCartByIdFromDb(id);
             return carts;
         } catch (error) {
 
