@@ -2,6 +2,7 @@
 import { BadRequest } from '../../errors/badRequest.js';
 import { InternalServerError } from '../../errors/internalServerError.js';
 import { cartModel } from '../../models/carts.js';
+import { getProductByIdFromDb } from './productQuerys.js';
 
 export const addCartInDb = async (cart) => {
     try {
@@ -71,7 +72,7 @@ export const deleteCartFromDb = async (id) => {
     }
 };
 
-export const deleteProductInCartFromDb = async (pid, cid) => {
+export const deleteProductInCartFromDB = async (pid, cid) => {
     
     try {
 
