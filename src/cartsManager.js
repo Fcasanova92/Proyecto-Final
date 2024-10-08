@@ -1,5 +1,5 @@
 import {__dirname} from "./utils.js"
-import { getAllCartsFromDb, addCartInDb, addProductInCartIntoDb, getCartByIdFromDb, deleteCartFromDb, deleteProductInCartFromDB } from "./db/helpers/cartsQuerys.js";
+import { getAllCartsFromDb, addCartInDb, addProductInCartIntoDb, getCartByIdFromDb, deleteCartFromDb, deleteProductInCartFromDB, updateQuatityInProductInCartFromDb } from "./db/helpers/cartsQuerys.js";
 import {getProductByIdFromDb } from "./db/helpers/productQuerys.js";
 
 export class CartsManager {
@@ -87,9 +87,10 @@ export class CartsManager {
         try {
             const cartById = await getCartByIdFromDb(cid);
             const productById = await getProductByIdFromDb(pid);
-            
-            if(!newQuantity) productInCart.quantity = newQuantity;
-            
+            const productByIdInCart = cartById.products.find((prod) => prod.idProduct._id.toString() === productById._id.toString());
+        
+            if(newQuantity) productByIdInCart.quantity = newQuantity;
+      
             return await updateQuatityInProductInCartFromDb(cid, cartById);
         } catch (error) {
             throw error;

@@ -36,12 +36,10 @@ router.put("/:cid/products/:pid", async (req, res, next) => {
         const idCart = parseInt(req.params.cid);
 
         const newQuantity = req.body.quantity;
-
-        console.log(newQuantity)
  
-        const cartUpdate = await cart.addProductToCart(idProduct, idCart);
+        const productQuantityUpdate = await cart.updateQuatityInProductInCart(idProduct, idCart, newQuantity);
         
-        return res.status(200).json({message:cartUpdate.message});
+        return res.status(200).json({message:productQuantityUpdate.message});
 
 
     } catch (error) {
