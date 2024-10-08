@@ -48,7 +48,9 @@ router.patch("/:cid/products/:pid", async (req, res, next) => {
 
 router.delete("/:cid/products/:pid", async (req, res, next) => {
     try {
-        const createCart = await cart.addCart();
+        const idCart = parseInt(req.params.cid)
+        const idProduct = parseInt(req.params.pid)
+        const createCart = await cart.deleteProductInCart(idProduct, idCart)
         return res.status(200).json({message:createCart.message});
         
     } catch (error) {
@@ -62,8 +64,9 @@ router.delete("/:cid/products/:pid", async (req, res, next) => {
 
 router.delete("/:cid", async (req, res, next) => {
     try {
-        const createCart = await cart.addCart();
-        return res.status(200).json({message:createCart.message});
+        const idCart = parseInt(req.params.cid)
+        const deleteCart = await cart.deleteCart(idCart);
+        return res.status(200).json({message:deleteCart});
         
     } catch (error) {
         next(error)

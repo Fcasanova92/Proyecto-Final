@@ -76,7 +76,7 @@ export class CartsManager {
     async deleteProductInCart(pid, cid){
         try {
             return await this.deleteProductInCart(pid, cid);
-
+            
         } catch (error) {
 
             throw error  
