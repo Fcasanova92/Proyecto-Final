@@ -80,6 +80,8 @@ router.put("/:cid/products/:pid", async (req, res, next) => {
         const idProduct = parseInt(req.params.pid);
    
         const idCart = parseInt(req.params.cid);
+
+        const newQuantity = req.body.quantity || 0
  
         const cartUpdate = await cart.addProductToCart(idProduct, idCart);
         

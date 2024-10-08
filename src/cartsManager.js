@@ -82,4 +82,19 @@ export class CartsManager {
             throw error  
         }
     }
+
+    async updateQuatityInProductInCart(pid, cid, newQuantity) {
+        try {
+            const cartById = await getCartByIdFromDb(cid);
+            const productById = await getProductByIdFromDb(pid);
+    
+            const productInCart = cartById.products.find((prod) => prod.idProduct.toString() === productById._id.toString());
+    
+            if (productInCart) productInCart.quantity = newQuantity;
+    
+            return await updateQuatityInProductInCartFromDb(cid, cartById);
+        } catch (error) {
+            throw error;
+        }
+    }
 }

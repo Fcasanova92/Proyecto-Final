@@ -90,3 +90,18 @@ export const deleteProductInCartFromDB = async (pid, cid) => {
         throw new InternalServerError(error.message)
     }
 };
+
+
+export const updateQuatityInProductInCartFromDb = async (cid,cart) => {
+    try {
+        await cartModel.findOneAndUpdate({cid},cart, {
+
+            new: true
+        })
+
+        return { message: `Se logró aumentar la cantidad del producto en el carrito` };
+    } catch (error) {
+
+        throw new InternalServerError(error.message)
+    }
+};
