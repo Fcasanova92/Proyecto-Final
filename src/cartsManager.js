@@ -46,10 +46,10 @@ export class CartsManager {
             const cartById = await getCartByIdFromDb(cid);
             const productById = await getProductByIdFromDb(pid);
     
-            const productInCart = cartById.products.find((prod) => prod.idProduct.toString() === productById._id.toString());
-    
+            const productInCart = cartById.products.find((prod) => prod.idProduct._id.toString() === productById._id.toString());
+ 
             if (productInCart) {
-        
+          
                 productInCart.quantity += 1;
             } else {
     
@@ -87,11 +87,9 @@ export class CartsManager {
         try {
             const cartById = await getCartByIdFromDb(cid);
             const productById = await getProductByIdFromDb(pid);
-    
-            const productInCart = cartById.products.find((prod) => prod.idProduct.toString() === productById._id.toString());
-    
-            if (productInCart) productInCart.quantity = newQuantity;
-    
+            
+            if(!newQuantity) productInCart.quantity = newQuantity;
+            
             return await updateQuatityInProductInCartFromDb(cid, cartById);
         } catch (error) {
             throw error;

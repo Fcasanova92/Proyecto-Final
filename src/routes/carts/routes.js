@@ -27,6 +27,29 @@ router.post("/", async (req, res, next) => {
     }
 });
 
+// endpoint para actualizar la cantidad del producto del carrito, debe de ser cambiar la cantidad dentro de la visual del carrito
+router.put("/:cid/products/:pid", async (req, res, next) => {
+
+    try {
+        const idProduct = parseInt(req.params.pid);
+   
+        const idCart = parseInt(req.params.cid);
+
+        const newQuantity = req.body.quantity;
+
+        console.log(newQuantity)
+ 
+        const cartUpdate = await cart.addProductToCart(idProduct, idCart);
+        
+        return res.status(200).json({message:cartUpdate.message});
+
+
+    } catch (error) {
+
+        next(error)
+    }
+});
+
 
 router.patch("/:cid/products/:pid", async (req, res, next) => {
     try {
@@ -66,29 +89,11 @@ router.delete("/:cid", async (req, res, next) => {
     try {
         const idCart = parseInt(req.params.cid)
         const deleteCart = await cart.deleteCart(idCart);
-        return res.status(200).json({message:deleteCart});
+        return res.status(200).json({message:deleteCart.message});
         
     } catch (error) {
         next(error)
     }
 });
 
-// endpoint para actualizar la cantidad del producto del carrito, debe de ser cambiar la cantidad dentro de la visual del carrito
 
-router.put("/:cid/products/:pid", async (req, res, next) => {
-    try {
-        const idProduct = parseInt(req.params.pid);
-   
-        const idCart = parseInt(req.params.cid);
-
-        const newQuantity = req.body.quantity || 0
- 
-        const cartUpdate = await cart.addProductToCart(idProduct, idCart);
-        
-        return res.status(200).json({ message: cartUpdate.message });
-
-
-    } catch (error) {
-        next(error)
-    }
-});

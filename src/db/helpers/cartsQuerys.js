@@ -75,10 +75,10 @@ export const deleteCartFromDb = async (id) => {
 export const deleteProductInCartFromDB = async (pid, cid) => {
     
     try {
+        
+        const productById = await getProductByIdFromDb(pid);
 
-        const productById = await getProductByIdFromDb(pid)
-
-        await cart.updateOne(
+        await cartModel.updateOne(
             { cid: cid }, // Encuentra el carrito por su id
             {
               $pull: { products: { idProduct: productById._id } } // Elimina el producto del array de productos
