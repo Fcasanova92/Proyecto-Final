@@ -1,12 +1,29 @@
-
 <div class="realtTimeProduct">
-  <h1>{{title}}</h1>
+  <header><h1>{{title}}</h1><a class="cartShopp" href=""><i class="fa-solid fa-cart-shopping"></i><p class="quantityProduct"></p></a></header>
+
   <ul id="product-list">
-    {{#each products}}
+    {{#each products.payload}} <!-- Lista de productos paginados -->
       <li class="product-item">
-       <p>Title: {{this.title}}- Code: {{this.code}} - Price: {{this.price}} - Stock: {{this.stock}}</p><button data-id="${product.id}" class="delete-btn"><i class="fa-solid fa-trash"></i></button>
+        <p>
+          Title: {{this.title}} - Code: {{this.code}} - Price: ${{this.price}} - Stock: {{this.stock}}
+        </p>
+        <!-- Botón de agregar al carrito directo -->
+          <button class="stylish-button" data-id={{this.pid}} onclick="handlerProductInCart(event)">Agregar al carrito</button>
+
       </li>
     {{/each}}
   </ul>
-</div>
 
+  <!-- Paginación -->
+  <div class="pagination">
+    {{#if products.hasPrevPage}}
+      <a href="?page={{products.prevPage}}">Anterior</a>
+    {{/if}}
+
+    Página {{products.page}} de {{products.totalPages}}
+
+    {{#if products.hasNextPage}}
+      <a href="?page={{products.nextPage}}">Siguiente</a>
+    {{/if}}
+  </div>
+</div>

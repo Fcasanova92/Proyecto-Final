@@ -11,4 +11,10 @@
 <body>
     {{{body}}}
 </body>
+<script type="module">
+    import {handlerProductInCart} from "./js/handlerProductInCart.js"
+    import {updateCartQuantity} from "./js/updateCartQuantity.js"
+    window.handlerProductInCart = handlerProductInCart;
+    window.onload = updateCartQuantity ;
+</script>
 </html>

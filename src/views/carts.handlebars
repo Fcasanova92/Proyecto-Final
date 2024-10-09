@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrito de Compras</title>
+    <link rel="stylesheet" href="/path/to/styles.css"> <!-- Agrega tu CSS aquí -->
+</head>
+<body>
+    <header>
+        <h1>Carrito de Compras</h1>
+        <a class="cartShopp" href="/cart">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <p class="quantityProduct">{{cart.totalQuantity}}</p> <!-- Cantidad total de productos -->
+        </a>
+    </header>
+
+    <main>
+        <div class="cart-container">
+            {{#if products.length}}
+                <ul class="product-list">
+                    {{#each products}}
+                        <li class="product-item">
+                            <img src="{{this.image}}" alt="{{this.name}}" class="product-image">
+                            <div class="product-details">
+                                <h2>{{this.name}}</h2>
+                                <p>Precio: ${{this.price}}</p>
+                                <p>Cantidad: {{this.quantity}}</p>
+                            </div>
+                        </li>
+                    {{/each}}
+                </ul>
+                <div class="total-price">
+                    <h3>Precio Total: ${{totalPrice}}</h3>
+                </div>
+            {{else}}
+                <p>No hay productos en el carrito.</p>
+            {{/if}}
+        </div>
+    </main>
+
+    <footer>
+        <button onclick="location.href='/checkout'">Proceder al Pago</button>
+        <button onclick="location.href='/views'">Seguir Comprando</button>
+    </footer>
+</body>
+</html>

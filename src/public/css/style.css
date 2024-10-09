@@ -4,8 +4,31 @@ body {
     margin: 0;
     padding: 20px;
 }
+header {
+    display: flex; /* Usar Flexbox para alinear elementos */
+    justify-content: space-between; /* Espacio entre el título y el carrito */
+    align-items: center; /* Alinear verticalmente al centro */
+    padding: 10px 20px; /* Espaciado interno */
+    background-color: #f8f9fa; /* Color de fondo del encabezado */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
 
-/* Contenedor principal para el área de productos */
+h1 {
+    margin: 0; /* Eliminar el margen por defecto */
+    font-size: 24px; /* Tamaño de fuente del título */
+    color: #333; /* Color del texto del título */
+}
+
+.cartShopp {
+    display: flex; /* Usar Flexbox para alinear icono y cantidad */
+    align-items: center; /* Alinear verticalmente al centro */
+    text-decoration: none; /* Sin subrayado */
+    column-gap: 0.5vw;
+    color: #333; /* Color del icono */
+    position: relative; /* Posicionamiento relativo para la cantidad */
+    padding: 5px; /* Espacio alrededor del carrito */
+}
+
 .realtTimeProduct {
     max-width: 800px;
     margin: 0 auto;
@@ -13,6 +36,22 @@ body {
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+.cartShopp i {
+    font-size: 24px; /* Tamaño del icono */
+}
+
+
+.quantityProduct {
+
+    font-size: 16px; /* Tamaño de la fuente de la cantidad */
+    background-color: #e74c3c; /* Color de fondo de la cantidad */
+    color: white; /* Color del texto de la cantidad */
+    border-radius: 50%; /* Bordes redondeados para crear un círculo */
+    padding: 5px 8px; /* Espaciado interno del círculo */
+    font-weight: bold; /* Negrita para destacar la cantidad */
 }
 
 /* Título principal */
@@ -67,6 +106,24 @@ body {
     align-items: center;
     justify-content: center;
     transition: background-color 0.3s ease;
+}
+
+.stylish-button {
+    background-color: #3498db; /* Color de fondo */
+    color: white; /* Color del texto */
+    border: none; /* Sin borde */
+    border-radius: 5px; /* Bordes redondeados */
+    padding: 12px 20px; /* Espaciado interno */
+    font-size: 16px; /* Tamaño de fuente */
+    cursor: pointer; /* Cambia el cursor al pasar el mouse */
+    transition: background-color 0.3s, transform 0.2s; /* Transición suave */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra */
+}
+
+.stylish-button:hover {
+    background-color: #2980b9; /* Color de fondo en hover */
+    transform: translateY(-2px); /* Levanta el botón ligeramente */
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2); /* Aumenta la sombra en hover */
 }
 
 /* Hover en el botón de eliminar */
