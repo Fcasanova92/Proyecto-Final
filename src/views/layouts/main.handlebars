@@ -12,9 +12,13 @@
     {{{body}}}
 </body>
 <script type="module">
-    import {handlerProductInCart} from "./js/handlerProductInCart.js"
-    import {updateCartQuantity} from "./js/updateCartQuantity.js"
+    import {handlerProductInCart} from "/js/handlerProductInCart.js"
+    import {updateCartQuantity} from "/js/updateCartQuantity.js"
+    import {handlerQuantity} from '/js/handlerQuantity.js'
+    import {deleteProducInCart} from '/js/deleteProductInCart.js'
     window.handlerProductInCart = handlerProductInCart;
+    window.handlerQuantity = handlerQuantity;
+     window.deleteProducInCart = deleteProducInCart;
     window.onload = updateCartQuantity ;
 </script>
 </html>

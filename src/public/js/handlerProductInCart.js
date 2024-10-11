@@ -5,8 +5,8 @@ export const handlerProductInCart = async ({target}) => {
     })
 
     if (response.ok) {
-        const data = await response.json(); // Convertir la respuesta a JSON
-        alert(data.message); // Acceder al mensaje enviado desde el servidor
+        const data = await response.json();
+        alert(data.message);
         location.reload();
     } else {
         console.error("Error en la actualización del carrito");

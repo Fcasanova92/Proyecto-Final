@@ -1,47 +1,40 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carrito de Compras</title>
-    <link rel="stylesheet" href="/path/to/styles.css"> <!-- Agrega tu CSS aquí -->
-</head>
-<body>
-    <header>
-        <h1>Carrito de Compras</h1>
-        <a class="cartShopp" href="/cart">
-            <i class="fa-solid fa-cart-shopping"></i>
-            <p class="quantityProduct">{{cart.totalQuantity}}</p> <!-- Cantidad total de productos -->
-        </a>
-    </header>
 
+<div class="cart">
+    <header><h1>{{title}}</h1><a class="cartShopp" href="/views/carts"><i class="fa-solid fa-cart-shopping"></i><p class="quantityProductInCart"></p></a></header>
     <main>
         <div class="cart-container">
             {{#if products.length}}
                 <ul class="product-list">
                     {{#each products}}
-                        <li class="product-item">
-                            <img src="{{this.image}}" alt="{{this.name}}" class="product-image">
+                        <li class="product-item" id="{{this.idProduct.pid}}">
+                            <img src="{{this.idProduct.image}}" alt="{{this.idProduct.title}}" class="product-image">
                             <div class="product-details">
-                                <h2>{{this.name}}</h2>
-                                <p>Precio: ${{this.price}}</p>
-                                <p>Cantidad: {{this.quantity}}</p>
+                                <h2>{{this.idProduct.title}}</h2>
+                                <p>{{this.idProduct.description}}</p>
+                                <div style="display: flex; flex-flow:row, column-gap: 2vw"><p>Precio: $</p><p class="priceProduct">{{this.idProduct.price}}</p></div>
+                                <div class="cartQuantity">
+                                        <button class="modifyQuantity" id="decrease" onclick="handlerQuantity(event)" data-id="{{this.idProduct.pid}}">-</button>
+                                        <p data-id="{{this.idProduct.pid}}" class="quantity">Cantidad: {{this.quantity}}</p>
+                                        <button class="modifyQuantity" id="increase" onclick="handlerQuantity(event)" data-id="{{this.idProduct.pid}}" >+</button> 
+                                        <button  class="delete-btn" data-id= "{{this.idProduct.pid}}" onclick="deleteProducInCart(event)"><i class="fa-solid fa-trash"></i></button>
+                                </div> 
                             </div>
                         </li>
                     {{/each}}
                 </ul>
-                <div class="total-price">
-                    <h3>Precio Total: ${{totalPrice}}</h3>
-                </div>
+        
             {{else}}
                 <p>No hay productos en el carrito.</p>
             {{/if}}
         </div>
     </main>
 
-    <footer>
-        <button onclick="location.href='/checkout'">Proceder al Pago</button>
-        <button onclick="location.href='/views'">Seguir Comprando</button>
-    </footer>
-</body>
-</html>
+   <footer>
+    <button onclick="location.href=''">
+        <i class="fa-solid fa-credit-card"></i> Proceder al Pago
+    </button>
+    <button onclick="location.href='/views'">
+        <i class="fa-solid fa-store"></i> Seguir Comprando
+    </button>
+</footer>
+<div>

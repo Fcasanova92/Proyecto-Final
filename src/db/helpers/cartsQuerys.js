@@ -99,7 +99,7 @@ export const updateQuatityInProductInCartFromDb = async (cid,cart) => {
             new: true
         })
 
-        return { message: `Se logró aumentar la cantidad del producto en el carrito` };
+        return { message: `Se agrego el producto en el carrito` };
     } catch (error) {
 
         throw new InternalServerError(error.message)
