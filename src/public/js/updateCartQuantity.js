@@ -1,7 +1,9 @@
 export const updateCartQuantity = async () => {
     const quantityElement = document.querySelector('.quantityProductInCart');
 
-    const response = await fetch('/api/carts/1');
+    const cid = quantityElement.getAttribute('data-id') || 1
+
+    const response = await fetch(`/api/carts/${cid}`);
 
     if(response.ok){
 

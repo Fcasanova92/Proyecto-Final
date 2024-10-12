@@ -18,15 +18,18 @@ router.get("/", async (req, res, next) => {
    
 });
 
-router.get("/carts", async (req, res, next) => {
+router.get("/carts/:cid?", async (req, res, next) => {
 
   try {
-    const products = await fetch('http://localhost:8080/api/carts/1');
+   
+    const cid = req.params.cid || 1
+    const products = await fetch(`http://localhost:8080/api/carts/${cid}`);
     const cartsData = await products.json();
 
     res.render('carts', {
       title:"Productos del carrito",
-      products: cartsData.products
+      products: cartsData.products,
+      cid:cid
     });
   } catch (error) {
     res.status(500).send('Error al cargar productos');

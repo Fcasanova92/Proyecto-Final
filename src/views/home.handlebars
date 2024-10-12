@@ -1,5 +1,5 @@
 <div class="realtTimeProduct">
-  <header><h1>{{title}}</h1><a class="cartShopp" href="/views/carts"><i class="fa-solid fa-cart-shopping"></i><p class="quantityProductInCart"></p></a></header>
+  <header><h1>{{title}}</h1><a class="cartShopp" href="/views/carts"><i class="fa-solid fa-cart-shopping"></i><p class="quantityProductInCart" data-id="{{cid}}"></p></a></header>
 
   <ul id="product-list">
     {{#each products.payload}} <!-- Lista de productos paginados -->
