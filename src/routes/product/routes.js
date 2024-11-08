@@ -1,5 +1,9 @@
 import { Router } from "express";
 import { ProductManager } from '../../productManager.js'
+import { validateProductUpdateFields } from "../../middleware/product/validateProductUpdateFields.js";
+import { validateRequiredProductFields } from "../../middleware/product/validateRequiredProductFields.js";
+import {validateProductId} from "../../middleware/product/validateIdProduct.js"
+
 
 export const router = Router();
 const product = new ProductManager();
@@ -16,7 +20,7 @@ router.get("/", async (req, res, next) => {
 
         if (products.payload.length === 0) {
    
-            return res.status(404).json({ products ,message:"No existen productos" });
+            return res.status(404).json({ message:"No existen productos" });
         }
 
         return res.status(200).json({ products });
@@ -25,7 +29,7 @@ router.get("/", async (req, res, next) => {
     }
 });
 
-router.post("/", async (req, res, next) => {
+router.post("/", validateRequiredProductFields, async (req, res, next) => {
     try {
         const data = req.body;
         const createProduct = await product.addProduct(data);
@@ -37,7 +41,7 @@ router.post("/", async (req, res, next) => {
 });
 
 
-router.get("/:pid", async (req, res, next) => {
+router.get("/:pid", validateProductId, async (req, res, next) => {
     const id = parseInt(req.params.pid);
 
     try {
@@ -52,28 +56,28 @@ router.get("/:pid", async (req, res, next) => {
 });
 
 
-router.patch("/:pid", async (req, res, next) => {
+router.patch("/:pid", [validateProductId, validateProductUpdateFields], async (req, res, next) => {
     try {
         const id = parseInt(req.params.pid);
         const updateData = req.body;
         const prodUpdate = await product.updateProduct(id, updateData);
-        
         return res.status(200).json({ message: prodUpdate.message });
-
-
     } catch (error) {
-        next(error)
+        next(error);
     }
 });
 
-
-router.delete("/:pid", async (req, res, next) => {
+router.delete("/:pid", validateProductId, async (req, res, next) => {
     try {
         const id = parseInt(req.params.pid);
         const prodDelete = await product.deleteProduct(id);
+
+        if (!prodDelete) {
+            return res.status(404).json({ message: "Producto no encontrado para eliminar." });
+        }
+
         return res.status(200).json({ message: prodDelete.message });
-  
     } catch (error) {
-        next(error)
+        next(error);
     }
 });

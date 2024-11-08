@@ -1,0 +1,11 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\errors",
+    "\\src\\middleware",
+    "\\src\\middleware\\error"
+  ],
+  "SelectedNode": "\\src\\middleware\\error\\errorHandler.js",
+  "PreviewInSolutionExplorer": false
+}

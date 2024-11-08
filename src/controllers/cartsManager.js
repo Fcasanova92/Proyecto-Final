@@ -1,6 +1,6 @@
 import {__dirname} from "./utils.js"
-import { getAllCartsFromDb, addCartInDb, addProductInCartIntoDb, getCartByIdFromDb, deleteCartFromDb, deleteProductInCartFromDB, updateQuatityInProductInCartFromDb } from "./db/helpers/cartsQuerys.js";
-import {getProductByIdFromDb } from "./db/helpers/productQuerys.js";
+import { getAllCartsFromDb, addCartInDb, addProductInCartIntoDb, getCartByIdFromDb, deleteCartFromDb, deleteProductInCartFromDB, updateQuatityInProductInCartFromDb } from "../db/querys/cartsQuerys.js";
+import {getProductByIdFromDb } from "../db/querys/productQuerys.js";
 
 export class CartsManager {
 
