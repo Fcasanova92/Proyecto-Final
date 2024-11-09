@@ -1,4 +1,4 @@
-import { InternalServerError } from '../../errors/internalServerError.js';
+import {InternalServerError} from '../../utils/errors.js'
 import { productModel } from '../../models/product.js';
 
 export const addProductToDb = async (product) => {

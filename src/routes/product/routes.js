@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { ProductManager } from '../../productManager.js'
+import { ProductManager } from '../../controllers/productManager.js'
 import { validateProductUpdateFields } from "../../middleware/product/validateProductUpdateFields.js";
 import { validateRequiredProductFields } from "../../middleware/product/validateRequiredProductFields.js";
 import {validateProductId} from "../../middleware/product/validateIdProduct.js"

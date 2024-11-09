@@ -1,4 +1,4 @@
-import {__dirname} from "./utils.js"
+import {__dirname} from "../utils/mongoose.js"
 import { getAllCartsFromDb, addCartInDb, addProductInCartIntoDb, getCartByIdFromDb, deleteCartFromDb, deleteProductInCartFromDB, updateQuatityInProductInCartFromDb } from "../db/querys/cartsQuerys.js";
 import {getProductByIdFromDb } from "../db/querys/productQuerys.js";
 

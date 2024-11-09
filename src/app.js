@@ -1,11 +1,11 @@
 import express from 'express'
 import { CartsRouter, ProductRouter } from "./routes/index.js";
 import handlebars from "express-handlebars"
-import {__dirname, mongooseConnect} from "./utils.js"
 import { ViewsRouter } from './views/routes/index.js';
+import {mongooseConnect, __dirname} from  './utils/mongoose.js'
 // import { Server } from 'socket.io';
 // import socketHandler from './public/js/socket/socketHandler.js';
-import { PORT } from './env.js';
+import { PORT } from './utils/env.js';
 import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
 import { errorHandler } from './middleware/error/errorHandler.js';
@@ -48,7 +48,7 @@ app.use("/api/products", ProductRouter);
 
 app.use("/api/carts", CartsRouter);
 
-app.use(errorHandler());
+app.use(errorHandler);
 
 // socketHandler(io);
 

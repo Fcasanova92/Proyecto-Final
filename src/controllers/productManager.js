@@ -1,4 +1,4 @@
-import { __dirname } from "./utils.js";
+import { __dirname } from "../utils/mongoose.js";
 import {
     addProductToDb,
     updateProductInDb,
@@ -6,8 +6,8 @@ import {
     getProductByIdFromDb,
     deleteProductFromDb,
     getProductsFromDbWithFilter
-} from "./db/helpers/productQuerys.js";
-import { InternalServerError } from "./errors/internalServerError.js";
+} from "../db/querys/productQuerys.js";
+import { InternalServerError } from "../utils/errors.js";
 
 export class ProductManager {
     constructor() {

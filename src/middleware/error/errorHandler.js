@@ -1,3 +1,4 @@
+import { BadRequest, InternalServerError, NotFound } from "../../utils/errors.js";
 
 export const errorHandler = (err, req, res, next) => {
     if (err instanceof InternalServerError) {
@@ -12,6 +13,5 @@ export const errorHandler = (err, req, res, next) => {
         return res.status(400).json({ message: err.message });
     }
 
-
-    return res.status(500).json({ message: "Error interno del servidor." });
+    next();
 };

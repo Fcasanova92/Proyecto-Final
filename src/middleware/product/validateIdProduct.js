@@ -1,4 +1,4 @@
-import { getProductByIdFromDb } from "../../db/helpers/productQuerys.js";
+import { getProductByIdFromDb } from "../../db/querys/productQuerys.js";
 
 
 export const validateProductId = async (req, res, next) => {
