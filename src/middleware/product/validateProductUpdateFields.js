@@ -1,4 +1,5 @@
 import { REQUIRED_PRODUCT_FIELDS } from "../validators/products/productValidation.js";
+import { BadRequest } from "../../utils/errors.js";
 
 
 export const validateProductUpdateFields = (req, res, next) => {
@@ -8,7 +9,7 @@ export const validateProductUpdateFields = (req, res, next) => {
     const updateFieldKeys = Object.keys(updateFields);
 
     if (code) {
-        return res.status(400).json({ message: "No se puede actualizar el codigo del producto" })
+        throw new BadRequest("No se puede actualizar el codigo del producto" )
     }
 
     const emptyFields = updateFieldKeys.filter(field =>
@@ -16,7 +17,7 @@ export const validateProductUpdateFields = (req, res, next) => {
     );
 
     if (emptyFields.length > 0) {
-        return res.status(400).json({ message: "Existen campos vacíos o nulos", fields: emptyFields });
+        throw new BadRequest({ message: "Existen campos vacíos o nulos", fields: emptyFields })
     }
 
     const fieldWrongs = updateFieldKeys.filter(
@@ -24,7 +25,7 @@ export const validateProductUpdateFields = (req, res, next) => {
     );
 
     if (fieldWrongs.length > 0) {
-        return res.status(400).json({ message: `Existen campos no válidos`, fields: fieldWrongs });
+        throw new BadRequest({ message: `Existen campos no válidos`, fields: fieldWrongs })
     }
 
     next();

@@ -1,4 +1,5 @@
 import { REQUIRED_PRODUCT_FIELDS } from "../validators/products/productValidation.js";
+import { BadRequest } from "../../utils/errors.js";
 
 export const validateRequiredProductFields = (req, res, next) => {
     const product = req.body;
@@ -10,7 +11,7 @@ export const validateRequiredProductFields = (req, res, next) => {
     );
 
     if (fieldRequired.length > 0) {
-        return res.status(400).json({ message: "Faltan campos requeridos o tienen datos vacíos", fields: fieldRequired });
+        throw new BadRequest({ message: "Faltan campos requeridos o tienen datos vacíos", fields: fieldRequired })
     }
 
     const invalidFields = productFieldKeys.filter(
@@ -18,7 +19,7 @@ export const validateRequiredProductFields = (req, res, next) => {
     );
 
     if (invalidFields.length > 0) {
-        return res.status(400).json({ message: "Existen campos no válidos", fields: invalidFields });
+        throw new BadRequest({ message: "Existen campos no válidos", fields: invalidFields })
     }
 
     next();

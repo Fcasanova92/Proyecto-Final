@@ -1,11 +1,11 @@
 import { Router } from "express";
 import { CartsManager } from '../../controllers/cartsManager.js'
+import {validateCartsId} from '../../middleware/carts/validateIdCarts.js'
 
 export const router = Router();
 const cart = new CartsManager();
 
-
-router.get("/:cid", async (req, res, next) => {
+router.get("/:cid", validateCartsId, async (req, res, next) => {
     try {
         const idCart = parseInt(req.params.cid)
         const carts = await cart.getById(idCart);

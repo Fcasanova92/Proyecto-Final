@@ -29,7 +29,7 @@ export class ProductManager {
             const response = await addProductToDb(newProduct);
             return response;
         } catch (error) {
-            throw new InternalServerError(`Error al agregar producto: ${error.message}`);
+            throw error
         }
     }
 
@@ -38,7 +38,7 @@ export class ProductManager {
             const products = await getProductsFromDbWithFilter(limit, page, query, sort);
             return products.payload.length > 0 ? products : [];
         } catch (error) {
-            throw new InternalServerError(`Error al obtener productos: ${error.message}`);
+            throw error
         }
     }
 
@@ -47,7 +47,7 @@ export class ProductManager {
             const product = await getProductByIdFromDb(id);
             return product;
         } catch (error) {
-            throw new InternalServerError(`Error al obtener producto con ID ${id}: ${error.message}`);
+            throw error
         }
     }
 
@@ -56,7 +56,7 @@ export class ProductManager {
             const response = await deleteProductFromDb(id);
             return response;
         } catch (error) {
-            throw new InternalServerError(`Error al eliminar producto con ID ${id}: ${error.message}`);
+            throw error
         }
     }
 
@@ -66,7 +66,7 @@ export class ProductManager {
             const updatedProduct = { ...productById, ...updateData };
             return await updateProductInDb(id, updatedProduct);
         } catch (error) {
-            throw new InternalServerError(`Error al actualizar producto con ID ${id}: ${error.message}`);
+            throw error
         }
     }
 }
