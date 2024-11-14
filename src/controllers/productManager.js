@@ -7,7 +7,7 @@ import {
     deleteProductFromDb,
     getProductsFromDbWithFilter
 } from "../db/querys/productQuerys.js";
-import { InternalServerError } from "../utils/errors.js";
+
 
 export class ProductManager {
     constructor() {

@@ -6,13 +6,13 @@ export const validateCartsId = async (req, res, next) => {
     
     if (isNaN(cid)) {
 
-        throw new NotFound("El ID del carrito proporcionado no es válido")
+        throw new BadRequest("El ID del carrito proporcionado no tiene un formato válido")
     }
     try {
         const cart = await getCartByIdFromDb(parseInt(cid));
         
         if (!cart) {
-            throw new BadRequest("El ID del carrito proporcionado no es válido")
+            throw new NotFound("El carrito seleccionado no existe")
         }
         next();
     } catch (error) {
