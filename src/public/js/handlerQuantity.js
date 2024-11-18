@@ -43,9 +43,9 @@ export const handlerQuantity = async ({target}) => {
 
     if(response.ok){
 
-        const {message} = await response.json()
+        await response.json()
 
-        alert(message)
+        alert("Se modifico la cantidad del producto")
     }
 
 

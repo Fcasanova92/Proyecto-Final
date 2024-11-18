@@ -1,0 +1,20 @@
+<main>
+        <section id="user-session">  
+            <form id="login" class="fx-deep-shadow-static" method="post">
+                <div class="headline">
+                    <h3 class="title-c">Iniciar Sesion</h3>
+                    <i class="fa-solid fa-right-to-bracket"></i>
+                </div>
+                <label class="message" for="email"></label>
+                <input id="email" type="text" oninput="validateInput(event)" placeholder="Email..." data-validate="false" data-form="login">     
+                <label class="message" for="password"></label>
+                <div class="pass">
+                    <input id="password" type="password" oninput="validateInput(event)" placeholder="Password" data-validate="false" data-form="login">
+                    <i id="eye" class="fa-regular fa-eye-slash trigger-b" onclick="passwordVisuality(event)"></i>
+                </div>
+                <button id="send" class="trigger-a" type="submit" data-id="login" onclick="authValidateAndRedirect(event)">Enviar</button>
+                <a class="link-c" href="/auth/register">No tienes cuenta? Registrate Aqui</a>
+                <label class="message" for="send"></label>
+            </form>
+        </section>
+</main>

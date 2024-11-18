@@ -1,9 +1,9 @@
-import {dirname} from "path"
+import {dirname, resolve} from "path"
 import { fileURLToPath } from "url";
 import mongoose from "mongoose"
 import { DB_USER, DB_PASSWORD } from "./env.js"
 
-export const __dirname = dirname(fileURLToPath(import.meta.url))
+export const __dirname = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 
 export const mongooseConnect = async ()=> {
 

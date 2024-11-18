@@ -1,3 +1,5 @@
+// esta funcion debe de tomar de las cookies 
+
 export const updateCartQuantity = async () => {
     const quantityElement = document.querySelector('.quantityProductInCart');
 

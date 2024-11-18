@@ -2,6 +2,8 @@ import { Router } from "express";
 
 export const router = Router();
 
+// agregar middelware de autentication, si quiere entrar a home, tiene que estar logeado, de cado contrario enviar a la pagina de login
+
 router.get("/", async (req, res, next) => {
 
   try {
@@ -14,6 +16,31 @@ router.get("/", async (req, res, next) => {
     });
   } catch (error) {
     res.status(500).send('Error al cargar productos');
+  }
+   
+});
+
+router.get("/auth/login", async (req, res, next) => {
+
+  try {
+
+    res.render('login', {
+      title: "Login",
+    });
+  } catch (error) {
+    res.status(500).send('Error al cargar el login');
+  }
+   
+});
+
+router.get("/auth/register", async (req, res, next) => {
+
+  try {
+    res.render('register', {
+      title: "Register"
+    });
+  } catch (error) {
+    res.status(500).send('Error al cargar el registro');
   }
    
 });
