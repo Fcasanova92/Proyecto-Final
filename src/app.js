@@ -1,5 +1,5 @@
 import express from 'express'
-import { CartsRouter, ProductRouter } from "./routes/index.js";
+import { CartsRouter, ProductRouter, AuthRouter, SessionRouter } from "./routes/index.js";
 import handlebars from "express-handlebars"
 import { ViewsRouter } from './views/routes/index.js';
 import {mongooseConnect, __dirname} from  './utils/mongoose.js';
@@ -48,6 +48,10 @@ app.use(morgan('dev'));
 app.use('/', ViewsRouter);
 
 app.use("/api/products", ProductRouter);
+
+app.use('/api/auth', AuthRouter);
+
+app.use('/api/session', SessionRouter);
 
 app.use("/api/carts", CartsRouter);
 
