@@ -243,3 +243,155 @@ footer button:nth-child(2):hover {
         align-self: flex-end;
     }
 }
+
+/* ESTILOS DE LA PAGINA DE LOGIN Y REGISTRO */
+
+
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #f5f7fa;
+}
+
+main {
+    width: 100%;
+    max-width: 400px;
+    margin: 20px;
+}
+
+section#user-session {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+form.fx-deep-shadow-static {
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 100%;
+}
+
+
+form .headline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+form .headline .title-c {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333333;
+}
+
+form .headline i {
+    font-size: 1.8rem;
+    color: #007bff;
+}
+
+
+input[type="text"],
+input[type="password"],
+input[type="checkbox"] {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    color: #333;
+    box-sizing: border-box;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+
+.pass {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.pass input {
+    flex: 1;
+}
+
+.pass i#eye {
+    position: absolute;
+    right: 10px;
+    cursor: pointer;
+    color: #999;
+    font-size: 1.2rem;
+}
+
+
+label.with-check-icon {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: #555;
+}
+
+
+button.trigger-a {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 0.8rem;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button.trigger-a:hover {
+    background: #0056b3;
+}
+
+
+a.link-c {
+    text-align: center;
+    color: #007bff;
+    font-size: 0.9rem;
+    text-decoration: none;
+    margin-top: 1rem;
+}
+
+a.link-c:hover {
+    text-decoration: underline;
+}
+
+
+label.message {
+    font-size: 0.85rem;
+    color: #e74c3c;
+    display: none;
+}
+
+
+@media (max-width: 768px) {
+    form.fx-deep-shadow-static {
+        padding: 1.5rem;
+    }
+
+    form .headline .title-c {
+        font-size: 1.3rem;
+    }
+}
+
