@@ -1,6 +1,9 @@
 import { __dirname } from "../utils/mongoose.js";
 
-export class UserManager {
+// obtener data del usuario para ver en el perfil
+// cambiar contrasena
+
+export class SessionManager {
     constructor() {
         this.path = __dirname;
     }

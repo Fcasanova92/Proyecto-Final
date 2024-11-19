@@ -1,6 +1,8 @@
 // estarian los metodos relacionados al login, registro y lo
 
+import { getUserByEmail, saveUserInDb } from "../db/querys/userQuerys.js";
 import {comparePassword, hashPassword} from "../utils/byScript.js"
+import {uidGenerator} from "../utils/uidGenerator.js"
 export class AuthManager {
 
     constructor(){
@@ -11,7 +13,7 @@ export class AuthManager {
     async validateLogin(email, password) {
         try {
 
-            const user = await getUserById(email);
+            const user = await getUserByEmail(email);
 
             if(!user){
 
@@ -50,7 +52,9 @@ export class AuthManager {
 
             const hashPassowrd = hashPassword(password);
 
-            const userRegister = {...data, password:hashPassowrd};
+            const uid = uidGenerator();
+
+            const userRegister = {...data, password:hashPassowrd, uid};
 
             return await saveUserInDb(userRegister);
 
