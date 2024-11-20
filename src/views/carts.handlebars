@@ -1,51 +1,82 @@
-
 <div class="cart">
-    <header><h1>{{title}}</h1><a class="cartShopp" href="/views/carts"><i class="fa-solid fa-cart-shopping"></i><p class="quantityProductInCart"></p></a></header>
+    <header>
+        <h1>{{title}}</h1>
+        <a class="cartShopp" href="/views/carts">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <p class="quantityProductInCart"></p>
+        </a>
+    </header>
     <main>
         <div class="cart-container">
             {{#if products.length}}
-                <ul class="product-list">
-                    {{#each products}}
-                        <li class="product-item" id="{{this.idProduct.pid}}">
-                            <img src="{{this.idProduct.image}}" alt="{{this.idProduct.title}}" class="product-image">
-                            <div class="product-details">
-                                <h2>{{this.idProduct.title}}</h2>
-                                <p>{{this.idProduct.description}}</p>
-                                <div style="display: flex; flex-flow:row, column-gap: 2vw"><p>Precio: $</p><p class="priceProduct">{{this.idProduct.price}}</p></div>
-                                <div class="cartQuantity">
-                                        <button class="modifyQuantity" id="decrease" onclick="handlerQuantity(event)" data-id="{{this.idProduct.pid}}">-</button>
-                                        <p data-id="{{this.idProduct.pid}}" class="quantity">Cantidad: {{this.quantity}}</p>
-                                        <button class="modifyQuantity" id="increase" onclick="handlerQuantity(event)" data-id="{{this.idProduct.pid}}" >+</button> 
-                                        <button  class="delete-btn" data-id= "{{this.idProduct.pid}}" onclick="deleteProducInCart(event)"><i class="fa-solid fa-trash"></i></button>
-                                </div> 
-                            </div>
-                        </li>
-                    {{/each}}
-                </ul>
-        
+            <ul class="product-list">
+                {{#each products}}
+                <li class="product-item" id="{{this.idProduct.pid}}">
+                    <img src="{{this.idProduct.image}}" alt="{{this.idProduct.title}}" class="product-image">
+                    <div class="product-details">
+                        <h2>{{this.idProduct.title}}</h2>
+                        <p>{{this.idProduct.description}}</p>
+                        <div style="display: flex; flex-flow:row, column-gap: 2vw">
+                            <p>Precio: $</p>
+                            <p class="priceProduct">{{this.idProduct.price}}</p>
+                        </div>
+                        <div class="cartQuantity">
+                            <button class="modifyQuantity" id="decrease" data-id="{{this.idProduct.pid}}">-</button>
+                            <p data-id="{{this.idProduct.pid}}" class="quantity">Cantidad: {{this.quantity}}</p>
+                            <button class="modifyQuantity" id="increase" data-id="{{this.idProduct.pid}}">+</button>
+                            <button class="delete-btn" data-id="{{this.idProduct.pid}}">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                </li>
+                {{/each}}
+            </ul>
             {{else}}
-                <p>No hay productos en el carrito.</p>
+            <p>No hay productos en el carrito.</p>
             {{/if}}
         </div>
     </main>
+    <footer>
+        <button onclick="location.href=''">
+            <i class="fa-solid fa-credit-card"></i> Proceder al Pago
+        </button>
+        <button onclick="location.href='/views'">
+            <i class="fa-solid fa-store"></i> Seguir Comprando
+        </button>
+    </footer>
+</div>
 
-   <footer>
-    <button onclick="location.href=''">
-        <i class="fa-solid fa-credit-card"></i> Proceder al Pago
-    </button>
-    <button onclick="location.href='/views'">
-        <i class="fa-solid fa-store"></i> Seguir Comprando
-    </button>
-</footer>
 <script type="module">
-    import {handlerProductInCart} from "/js/handlerProductInCart.js"
-    import {updateCartQuantity} from "/js/updateCartQuantity.js"
-    import {handlerQuantity} from '/js/handlerQuantity.js'
-    import {deleteProducInCart} from '/js/deleteProductInCart.js'
-        // estas funciones tiene que ejecutarse en la pagina del home y del carrito en particular, no en el main, ya que tenemos las paginas de login y registro
-    window.handlerProductInCart = handlerProductInCart;
-    window.handlerQuantity = handlerQuantity;
-    window.deleteProducInCart = deleteProducInCart;
-    window.onload = updateCartQuantity ;
+    import { handlerProductInCart } from "/js/handlerProductInCart.js";
+    import { updateCartQuantity } from "/js/updateCartQuantity.js";
+    import { handlerQuantity } from '/js/handlerQuantity.js';
+    import { deleteProducInCart } from '/js/deleteProductInCart.js';
+
+    const buttonModifyContent = document.querySelectorAll(".modifyQuantity")
+
+    const buttonDeleteProduct = document.querySelectorAll(".delete-btn")
+
+    const updateCartHandler = async (event) => {
+        if (event.type === "pageshow" || event.type === "DOMContentLoaded") {
+            await updateCartQuantity();
+        }
+    };
+
+    document.addEventListener("DOMContentLoaded", updateCartHandler);
+    window.addEventListener("pageshow", updateCartHandler);
+
+
+    buttonModifyContent.forEach(button => {
+
+        button.onclick = handlerQuantity;
+
+    })
+
+    buttonDeleteProduct.forEach(button => {
+
+        button.onclick = deleteProducInCart;
+
+    })
+
 </script>
-<div>

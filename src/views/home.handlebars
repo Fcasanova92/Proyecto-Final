@@ -1,40 +1,49 @@
 <div class="realtTimeProduct">
-  <header><h1>{{title}}</h1><a class="cartShopp" href="/carts"><i class="fa-solid fa-cart-shopping"></i><p class="quantityProductInCart" data-id="{{cid}}"></p></a></header>
+  <header>
+    <h1>{{title}}</h1><a class="cartShopp" href="/carts"><i class="fa-solid fa-cart-shopping"></i>
+      <p class="quantityProductInCart" data-id="{{cid}}"></p>
+    </a>
+  </header>
 
   <ul id="product-list">
     {{#each products.payload}} <!-- Lista de productos paginados -->
-      <li class="product-item">
-        <p>
-          Title: {{this.title}} - Code: {{this.code}} - Price: ${{this.price}} - Stock: {{this.stock}}
-        </p>
-        <!-- Botón de agregar al carrito directo -->
-          <button class="stylish-button" data-id={{this.pid}} onclick="handlerProductInCart(event)">Agregar al carrito</button>
+    <li class="product-item">
+      <p>
+        Title: {{this.title}} - Code: {{this.code}} - Price: ${{this.price}} - Stock: {{this.stock}}
+      </p>
+      <!-- Botón de agregar al carrito directo -->
+      <button class="stylish-button" id="addProduct" data-id={{this.pid}}>Agregar al carrito</button>
 
-      </li>
+    </li>
     {{/each}}
   </ul>
 
   <!-- Paginación -->
   <div class="pagination">
     {{#if products.hasPrevPage}}
-      <a href="?page={{products.prevPage}}">Anterior</a>
+    <a href="?page={{products.prevPage}}">Anterior</a>
     {{/if}}
 
     Página {{products.page}} de {{products.totalPages}}
 
     {{#if products.hasNextPage}}
-      <a href="?page={{products.nextPage}}">Siguiente</a>
+    <a href="?page={{products.nextPage}}">Siguiente</a>
     {{/if}}
   </div>
   <script type="module">
-    import {handlerProductInCart} from "/js/handlerProductInCart.js"
-    import {updateCartQuantity} from "/js/updateCartQuantity.js"
-    import {handlerQuantity} from '/js/handlerQuantity.js'
-    import {deleteProducInCart} from '/js/deleteProductInCart.js'
-        // estas funciones tiene que ejecutarse en la pagina del home y del carrito en particular, no en el main, ya que tenemos las paginas de login y registro
-    window.handlerProductInCart = handlerProductInCart;
-    window.handlerQuantity = handlerQuantity;
-    window.deleteProducInCart = deleteProducInCart;
-    window.onload = updateCartQuantity ;
-</script>
+    import { handlerProductInCart } from "/js/handlerProductInCart.js"
+    import { updateCartQuantity } from "/js/updateCartQuantity.js"
+
+    const buttonAddProduct = document.querySelectorAll("#addProduct")
+    // estas funciones tiene que ejecutarse en la pagina del home y del carrito en particular, no en el main, ya que tenemos las paginas de login y registro
+    document.addEventListener("pageshow", async (event) => {
+      await updateCartQuantity();
+    });
+
+    buttonAddProduct.forEach(button => {
+
+      button.onclick = handlerProductInCart;
+    })
+
+  </script>
 </div>

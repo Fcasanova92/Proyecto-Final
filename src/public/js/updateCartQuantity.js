@@ -25,6 +25,7 @@ export const updateCartQuantity = async () => {
                 }
             }
         });
+
     } else {
         console.error("Error al obtener los productos del carrito.");
     }

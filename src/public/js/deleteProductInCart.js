@@ -1,8 +1,12 @@
+import { updateCartQuantity } from "./updateCartQuantity.js";
+
 export const deleteProducInCart = async (e) => {
 
     e.preventDefault();
 
     const idProductToDelete = e.currentTarget.getAttribute('data-id');
+
+    const itemProduct = document.querySelector(`li.product-item[id="${idProductToDelete}"]`)
 
     const response = await fetch(`/api/carts/1/products/${idProductToDelete}`, {
         method:'DELETE'
@@ -12,9 +16,11 @@ export const deleteProducInCart = async (e) => {
 
         const data = await response.json();
 
-        alert(data.message)
+        await updateCartQuantity();
 
-        location.reload();
+        itemProduct.remove();
+
+        alert(data.message)
 
       
     } else {

@@ -1,3 +1,5 @@
+import { updateCartQuantity } from "./updateCartQuantity.js";
+
 export const handlerProductInCart = async ({target}) => {
     const idProduct = target.dataset.id
     const response = await fetch(`/api/carts/1/products/${idProduct}`, {
@@ -6,8 +8,9 @@ export const handlerProductInCart = async ({target}) => {
 
     if (response.ok) {
         const data = await response.json();
+        await updateCartQuantity()
         alert(data.message);
-        location.reload();
+  
     } else {
         console.error("Error en la actualización del carrito");
     }
