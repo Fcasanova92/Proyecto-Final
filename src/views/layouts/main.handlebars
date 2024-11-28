@@ -5,10 +5,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <title>{{title}}</title>
     
 </head>
 <body>
+    <header>
+        <h1>ProyectoFinal</h1>
+        <nav>
+
+                 <!-- Icono de productos -->
+            <a class="productIcon" href="/">
+                <i class="fa-solid fa-boxes-stacked"></i>
+                <span>Productos</span>
+            </a>
+            <!-- Icono de carrito de compras -->
+            <a class="cartShopp" href="/carts">
+                <i class="fa-solid fa-cart-shopping"></i>
+                <p class="quantityProductInCart"></p>
+            </a>
+            
+            <!-- Icono de login -->
+            <a class="loginIcon" href="/auth/login">
+                <i class="fa-solid fa-user"></i>
+                <span>Login</span>
+            </a>
+        </nav>
+    </header>
     {{{body}}}
+<script type="module">
+
+    // POSIBLEMENTE SE PODRIA OBTENER EL CARRITO DESDE UNA COOKIE, Y ESA VARIABLE, DARSELA AL HREF DEL CARTSHOP
+    // O REALIZAR UN INNERHTML Y CAMBIAR ESA RUTA CUANDO ESTA LOGEADO UNICAMENTE
+    import { updateCartQuantity } from "/js/updateCartQuantity.js";
+
+    const updateCartHandler = async () => {
+        await updateCartQuantity();
+    };
+
+    document.addEventListener("DOMContentLoaded", updateCartHandler);
+
+    window.addEventListener("popstate", updateCartHandler);
+</script>
 </body>
 </html>

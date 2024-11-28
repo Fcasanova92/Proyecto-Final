@@ -1,11 +1,5 @@
-<div class="cart">
-    <header>
-        <h1>{{title}}</h1>
-        <a class="cartShopp" href="/views/carts">
-            <i class="fa-solid fa-cart-shopping"></i>
-            <p class="quantityProductInCart"></p>
-        </a>
-    </header>
+<section class="cart">
+    
     <main>
         <div class="cart-container">
             {{#if products.length}}
@@ -32,39 +26,28 @@
                 </li>
                 {{/each}}
             </ul>
-            {{else}}
-            <p>No hay productos en el carrito.</p>
             {{/if}}
+            <p class="messageEmptyCart" style="display: none;">No hay productos en el carrito.</p>
         </div>
     </main>
     <footer>
         <button onclick="location.href=''">
             <i class="fa-solid fa-credit-card"></i> Proceder al Pago
         </button>
-        <button onclick="location.href='/views'">
+        <button onclick="location.href='/'">
             <i class="fa-solid fa-store"></i> Seguir Comprando
         </button>
     </footer>
-</div>
+</section>
 
 <script type="module">
     import { handlerProductInCart } from "/js/handlerProductInCart.js";
-    import { updateCartQuantity } from "/js/updateCartQuantity.js";
     import { handlerQuantity } from '/js/handlerQuantity.js';
     import { deleteProducInCart } from '/js/deleteProductInCart.js';
 
     const buttonModifyContent = document.querySelectorAll(".modifyQuantity")
 
     const buttonDeleteProduct = document.querySelectorAll(".delete-btn")
-
-    const updateCartHandler = async (event) => {
-        if (event.type === "pageshow" || event.type === "DOMContentLoaded") {
-            await updateCartQuantity();
-        }
-    };
-
-    document.addEventListener("DOMContentLoaded", updateCartHandler);
-    window.addEventListener("pageshow", updateCartHandler);
 
 
     buttonModifyContent.forEach(button => {
@@ -78,5 +61,6 @@
         button.onclick = deleteProducInCart;
 
     })
+    
 
 </script>

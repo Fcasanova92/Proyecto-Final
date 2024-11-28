@@ -1,9 +1,6 @@
-<div class="realtTimeProduct">
-  <header>
-    <h1>{{title}}</h1><a class="cartShopp" href="/carts"><i class="fa-solid fa-cart-shopping"></i>
-      <p class="quantityProductInCart" data-id="{{cid}}"></p>
-    </a>
-  </header>
+<section class="realtTimeProduct">
+
+  <h1>{{title}}</h1>
 
   <ul id="product-list">
     {{#each products.payload}} <!-- Lista de productos paginados -->
@@ -32,13 +29,8 @@
   </div>
   <script type="module">
     import { handlerProductInCart } from "/js/handlerProductInCart.js"
-    import { updateCartQuantity } from "/js/updateCartQuantity.js"
 
     const buttonAddProduct = document.querySelectorAll("#addProduct")
-    // estas funciones tiene que ejecutarse en la pagina del home y del carrito en particular, no en el main, ya que tenemos las paginas de login y registro
-    document.addEventListener("pageshow", async (event) => {
-      await updateCartQuantity();
-    });
 
     buttonAddProduct.forEach(button => {
 
@@ -46,4 +38,4 @@
     })
 
   </script>
-</div>
+</section>

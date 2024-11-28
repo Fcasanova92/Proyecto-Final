@@ -1,32 +1,29 @@
-// esta funcion debe de tomar de las cookies 
+// TODO ESTA FUNCION ACTUALIZA EL LA CANTIDAD DE PRODUCTOS DE UI DEL CARRITO
+import { showMessageEmptyProduct } from './showEmptyProductMesasge.js';
 
 export const updateCartQuantity = async () => {
-    const quantityElement = document.querySelector('.quantityProductInCart');
+  const quantityElement = document.querySelector('.quantityProductInCart');
 
-    const cid = quantityElement.getAttribute('data-id') || 1
+  const cid = quantityElement.getAttribute('data-id') || 1;
 
-    const response = await fetch(`/api/carts/${cid}`);
+  // enviar el cid si el usuario esta logeado, va a permitar cargar dinamicamente, se puede obtener de
+  // alguna cookie que se almacende solamente el cid del carrito
 
-    if(response.ok){
+  const response = await fetch(`/api/carts/${cid}`);
 
-        const data = await response.json();
+  if (response.ok) {
+    const data = await response.json();
 
-        quantityElement.textContent = data.products.length;
+    quantityElement.textContent = data.products.length;
 
-        data.products.forEach((prod)=>{
-            const productList = document.getElementById(prod.idProduct);
-            if (productList) {
-         
-                const quantityProductElement = productList.querySelector('.quantity');
+    const quantityElementNumber = parseInt(quantityElement.textContent);
 
-                if (quantityProductElement) {
-                    // Actualizamos el texto de la cantidad en el HTML
-                    quantityProductElement.textContent = `Cantidad: ${prod.quantity}`;
-                }
-            }
-        });
-
-    } else {
-        console.error("Error al obtener los productos del carrito.");
+    if (quantityElementNumber === 0) {
+      // SI LA DATA ES CERO, AL MOMENTO DE INGRESAR AL CARRITO, SE MOSTRARA EL MENSAJE DE
+      // QUE NO HAY PRODUCTOS
+      showMessageEmptyProduct();
     }
-    };
+  } else {
+    console.log('Error al obtener los productos del carrito.');
+  }
+};

@@ -9,10 +9,10 @@ export default (io) => {
       const data = await response.json();
       const products = data.products;
 
-      socket.emit("products-update", products); // Emitir la lista de productos al cliente
+      socket.emit('products-update', products); // Emitir la lista de productos al cliente
     } catch (error) {
       console.error('Error al emitir productos:', error.message);
-      socket.emit("products-update", []); // Enviar lista vacía si hay error
+      socket.emit('products-update', []); // Enviar lista vacía si hay error
     }
 
     socket.on('disconnect', () => {

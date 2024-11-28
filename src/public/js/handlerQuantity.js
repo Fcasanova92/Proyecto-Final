@@ -1,52 +1,47 @@
-export const handlerQuantity = async ({target}) => {
+export const handlerQuantity = async ({ target }) => {
+  const idProduct = target.dataset.id;
 
+  const quantity = document.querySelector(`p[data-id='${idProduct}']`);
 
-    const idProduct = target.dataset.id
+  let quantityProduct = parseInt(quantity.textContent.split(': ')[1]);
 
-    const quantity = document.querySelector(`p[data-id='${idProduct}']`);
+  const idButton = target.id;
 
-    let quantityProduct = parseInt((quantity.textContent).split(': ')[1]);
+  switch (idButton) {
+    case 'increase':
+      quantityProduct += 1;
 
-    const idButton = target.id
+      break;
 
-    switch (idButton) {
-        case "increase":
-            quantityProduct+=1
-    
-            break;
-    
-        case "decrease":
-            quantityProduct-=1
-  
-            break;
+    case 'decrease':
+      quantityProduct -= 1;
 
-            
-    }
+      break;
+  }
 
-    if(quantityProduct<1){
-        quantity.textContent = `Cantidad: 1`;
+  if (quantityProduct < 1) {
+    quantity.textContent = 'Cantidad: 1';
 
-        return
-    }
-    
-    quantity.textContent = `Cantidad: ${quantityProduct}`;
+    return;
+  }
 
-    const response = await fetch(`/api/carts/1/products/${idProduct}`, {
-        method:"PUT",
-        headers: {
-            'Content-Type': 'application/json', 
-        },
-        body:JSON.stringify({ 
-            quantity: quantityProduct
-        })
-    })
+  quantity.textContent = `Cantidad: ${quantityProduct}`;
 
-    if(response.ok){
+  // aca tambien tengo que enviarle el cid del carrito para actualizar los productos del carrito
 
-        await response.json()
+  const response = await fetch(`/api/carts/1/products/${idProduct}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      quantity: quantityProduct,
+    }),
+  });
 
-        alert("Se modifico la cantidad del producto")
-    }
+  if (response.ok) {
+    await response.json();
 
-
-}
+    alert('Se modifico la cantidad del producto');
+  }
+};

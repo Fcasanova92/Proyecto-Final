@@ -1,1 +1,1 @@
-export { router as ViewsRouter } from "./routes.js";
+export { router as ViewsRouter } from './routes.js';
