@@ -11,27 +11,23 @@ import passport from 'passport';
 
 export const router = Router();
 
-router.get(
-  '/',
-  passport.authenticate('admin', { session: false }),
-  async (req, res, next) => {
-    try {
-      const limit = parseInt(req.query.limit) || 10;
-      const page = parseInt(req.query.page) || 1;
-      const query = req.query.query || '';
-      const sort = req.query.sort || 'desc';
-      const products = await getAll(limit, page, query, sort);
+router.get('/', async (req, res, next) => {
+  try {
+    const limit = parseInt(req.query.limit) || 10;
+    const page = parseInt(req.query.page) || 1;
+    const query = req.query.query || '';
+    const sort = req.query.sort || 'desc';
+    const products = await getAll(limit, page, query, sort);
 
-      if (products.payload.length === 0) {
-        return res.status(404).json({ message: 'No existen productos' });
-      }
-
-      return res.status(200).json({ products });
-    } catch (error) {
-      next(error);
+    if (products.payload.length === 0) {
+      return res.status(404).json({ message: 'No existen productos' });
     }
+
+    return res.status(200).json({ products });
+  } catch (error) {
+    next(error);
   }
-);
+});
 
 router.post(
   '/',
