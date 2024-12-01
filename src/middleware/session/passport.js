@@ -115,7 +115,8 @@ passport.use(
     async (data, done) => {
       try {
         const { uid } = data.user;
-        const user = await getDataUserById(uid);
+        const { first_name, last_name, email } = await getDataUserById(uid);
+        const user = { first_name, last_name, email };
         return done(null, user);
       } catch (error) {
         return done(error);

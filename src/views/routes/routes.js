@@ -9,11 +9,25 @@ router.get('/', async (req, res, next) => {
   try {
     const products = await fetch('http://localhost:8080/api/products');
     const productsData = await products.json();
+    const carrito = req.cookies.carrito || [];
+    if (carrito.length > 0) {
+      return res.render('home', {
+        title: 'Lista de Productos',
+        products,
+      });
+    }
 
-    res.render('home', {
-      title: 'Lista de Productos',
-      products: productsData.products,
-    });
+    // Crear la cookie si no existe
+    res
+      .cookie('carrito', carrito, {
+        httpOnly: true,
+        secure: false,
+        sameSite: 'lax',
+      })
+      .render('home', {
+        title: 'Lista de Productos',
+        products,
+      });
   } catch (error) {
     next('Error al cargar productos');
   }
