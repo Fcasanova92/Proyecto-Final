@@ -139,7 +139,7 @@ passport.use(
         if (!user) {
           return done(null, false, { message: 'User not found' });
         }
-        return done(null, { user_id: null });
+        return done(null, { uid: null });
       } catch (error) {
         return done(error);
       }
