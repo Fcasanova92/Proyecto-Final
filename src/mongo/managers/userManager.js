@@ -8,8 +8,6 @@ import {
   saveUserInDb,
   updateUserInDb,
 } from '../../mongo/querys/userQuerys.js';
-import { hashPassword } from '../../utils/byScript.js';
-import { uidGenerator } from '../../utils/uidGenerator.js';
 import { __dirname } from '../../utils/mongoose.js';
 
 export class UserManager {
@@ -29,6 +27,15 @@ export class UserManager {
   async getDataUserById(id) {
     try {
       const user = await getUserById(id);
+      return user;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getDataUserByEmail(id) {
+    try {
+      const user = await getUserByEmail(id);
       return user;
     } catch (error) {
       throw error;
@@ -55,17 +62,19 @@ export class UserManager {
   }
 
   async createUser(data) {
-    const { password, email, ...userData } = data;
     try {
-      const hashPassowrd = hashPassword(password);
-
-      const uid = uidGenerator();
-
-      const userRegister = { ...userData, password: hashPassowrd, uid };
-
-      return await saveUserInDb(userRegister);
+      return await saveUserInDb(data);
     } catch (error) {
       throw error;
     }
   }
 }
+
+export const {
+  createUser,
+  updateDataUser,
+  deleteUser,
+  getDataUserById,
+  getDataAllUser,
+  getDataUserByEmail,
+} = new UserManager();

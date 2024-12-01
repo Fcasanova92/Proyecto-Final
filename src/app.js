@@ -5,10 +5,11 @@ import {
   SessionRouter,
   UserRouter,
 } from './api/index.js';
-import handlebars from 'express-handlebars';
 import { ViewsRouter } from './views/routes/index.js';
+import handlebars from 'express-handlebars';
 import { mongooseConnect, __dirname } from './utils/mongoose.js';
 import path from 'path';
+import passport from './middleware/session/passport.js';
 // import { Server } from 'socket.io';
 // import socketHandler from './public/js/socket/socketHandler.js';
 import { PORT } from './utils/env.js';
@@ -26,15 +27,11 @@ mongooseConnect();
 
 app.engine('handlebars', handlebars.engine());
 
-console.log(__dirname);
-
 app.set('views', path.join(__dirname, 'views'));
 
 app.set('view engine', 'handlebars');
 
 app.use(express.static(path.join(__dirname, 'public')));
-
-console.log(path.join(__dirname, 'views'));
 
 app.use(express.json());
 
@@ -43,6 +40,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.use(morgan('dev'));
+
+app.use(passport.initialize());
 
 // app.use((req, res, next) => {
 //     req.io = io;

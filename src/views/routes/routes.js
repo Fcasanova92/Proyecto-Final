@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { Router } from 'express';
 
 export const router = Router();
@@ -14,7 +15,7 @@ router.get('/', async (req, res, next) => {
       products: productsData.products,
     });
   } catch (error) {
-    res.status(500).send('Error al cargar productos');
+    next('Error al cargar productos');
   }
 });
 
@@ -24,7 +25,7 @@ router.get('/auth/login', async (req, res, next) => {
       title: 'Login',
     });
   } catch (error) {
-    res.status(500).send('Error al cargar el login');
+    next('Error al cargar el login');
   }
 });
 
@@ -34,7 +35,7 @@ router.get('/auth/register', async (req, res, next) => {
       title: 'Register',
     });
   } catch (error) {
-    res.status(500).send('Error al cargar el registro');
+    next('Error al cargar el registro');
   }
 });
 
@@ -43,18 +44,17 @@ router.get('/carts/:cid?', async (req, res, next) => {
     const cid = req.params.cid || 1;
     const products = await fetch(`http://localhost:8080/api/carts/${cid}`);
     const cartsData = await products.json();
-
     res.render('carts', {
       title: 'Productos del carrito',
-      products: cartsData.products,
+      products: cartsData.products || [],
       cid: cid,
     });
   } catch (error) {
-    res.status(500).send('Error al cargar productos');
+    next(error);
   }
 });
 
-router.get('/realtimeproducts', async (req, res) => {
+router.get('/realtimeproducts', async (req, res, next) => {
   try {
     const products = await fetch('http://localhost:8080/api/products');
     const productsData = await products.json();
@@ -64,6 +64,6 @@ router.get('/realtimeproducts', async (req, res) => {
       products: productsData.products,
     });
   } catch (error) {
-    res.status(500).send('Error al cargar productos');
+    next(error);
   }
 });

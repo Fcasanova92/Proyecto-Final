@@ -1,4 +1,4 @@
-import { BadRequest, InternalServerError } from '../../utils/errors.js';
+import { InternalServerError } from '../../utils/errors.js';
 import { cartModel } from '../../models/carts.js';
 import { getProductByIdFromDb } from './productQuerys.js';
 

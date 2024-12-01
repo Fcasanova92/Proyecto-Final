@@ -6,7 +6,7 @@ export const hashPassword = async (password) => {
     const hashedPassword = await bcrypt.hash(password, saltRounds);
     return hashedPassword;
   } catch (error) {
-    throw new Error('Error al hashear la contraseña');
+    throw new Error('Error al hashear la contraseña', error);
   }
 };
 
@@ -16,6 +16,6 @@ export const comparePassword = async (password, userPassword) => {
 
     return compare;
   } catch (error) {
-    throw new Error('Error en la desincriptacion');
+    throw new Error('Error en la desincriptacion', error);
   }
 };

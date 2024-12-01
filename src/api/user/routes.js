@@ -14,7 +14,7 @@ router.get('/:id', async (req, res, next) => {
     const userData = await user.getDataUserById(id);
     return res.status(200).json({ userData });
   } catch (error) {
-    return next(error);
+    next(error);
   }
 });
 
@@ -25,7 +25,7 @@ router.post('/:id', async (req, res, next) => {
     const response = await user.updateDataUser(id, updateData);
     return res.status(200).json({ message: response.message });
   } catch (error) {
-    return next(error);
+    next(error);
   }
 });
 
@@ -35,6 +35,6 @@ router.delete('/:id', async (req, res, next) => {
     const response = await user.deleteUser(id);
     return res.status(200).json({ message: response.message });
   } catch (error) {
-    return next(error);
+    next(error);
   }
 });

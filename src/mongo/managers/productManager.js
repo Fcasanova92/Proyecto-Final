@@ -72,3 +72,6 @@ export class ProductManager {
     }
   }
 }
+
+export const { updateProduct, deleteProduct, getById, getAll, addProduct } =
+  new ProductManager();

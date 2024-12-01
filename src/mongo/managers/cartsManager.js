@@ -96,3 +96,12 @@ export class CartsManager {
     }
   }
 }
+
+export const {
+  updateQuatityInProductInCart,
+  deleteProductInCart,
+  deleteCart,
+  addProductToCart,
+  getById,
+  addCart,
+} = new CartsManager();

@@ -1,11 +1,12 @@
 import { InternalServerError } from '../../utils/errors.js';
-import { productModel } from '../../models/product.js';
+
+import { userModel } from '../../models/user.js';
 
 export const saveUserInDb = async (user) => {
   try {
     const newUser = await userModel.create(user);
     if (newUser) {
-      return { message: 'Registro existoso' };
+      return { message: 'Registro existoso', newUser };
     }
   } catch (error) {
     throw new InternalServerError(
