@@ -26,7 +26,7 @@ router.get('/', async (req, res, next) => {
       })
       .render('home', {
         title: 'Lista de Productos',
-        productsData,
+        products,
       });
   } catch (error) {
     next('Error al cargar productos');
