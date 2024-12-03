@@ -9,3 +9,5 @@ export const DB_PASSWORD = process.env.DB_PASSWORD;
 export const PORT = process.env.PORT;
 
 export const SECRET_KEY = process.env.SECRET_KEY;
+
+export const BASE_URL = process.env.BASE_URL;

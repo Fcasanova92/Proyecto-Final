@@ -21,6 +21,7 @@ passport.use(
     {
       passReqToCallback: true,
       usernameField: 'email',
+      session: false,
     },
     async (req, email, password, done) => {
       try {
@@ -55,7 +56,7 @@ passport.use(
 passport.use(
   'login',
   new LocalStrategy(
-    { passReqToCallback: true, usernameField: 'email' },
+    { passReqToCallback: true, usernameField: 'email', session: false },
     async (req, email, password, done) => {
       try {
         const user = await getDataUserByEmail(email);

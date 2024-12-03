@@ -7,13 +7,14 @@ export const router = Router();
 
 router.get('/', async (req, res, next) => {
   try {
-    const products = await fetch('http://localhost:8080/api/products');
-    const productsData = await products.json();
+    const response = await fetch('http://localhost:8080/api/products');
+    const { products } = await response.json();
+
     const carrito = req.cookies.carrito || [];
     if (carrito.length > 0) {
       return res.render('home', {
         title: 'Lista de Productos',
-        products,
+        payload,
       });
     }
 
