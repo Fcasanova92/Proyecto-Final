@@ -8,6 +8,7 @@ import {
   updateProduct,
 } from '../../mongo/managers/productManager.js';
 import passport from 'passport';
+import { passportCall } from '../../middleware/session/passportCall.js';
 
 export const router = Router();
 
@@ -31,7 +32,7 @@ router.get('/', async (req, res, next) => {
 
 router.post(
   '/',
-  passport.authenticate('admin', { session: false }),
+  passportCall('admin'),
   [
     productMiddleware.validateRequiredProductFields,
     productMiddleware.validateProductCode,
@@ -49,10 +50,7 @@ router.post(
 
 router.get(
   '/:pid',
-  [
-    passport.authenticate('admin', { session: false }),
-    productMiddleware.validateProductId,
-  ],
+  [passportCall('admin'), productMiddleware.validateProductId],
   async (req, res, next) => {
     const id = parseInt(req.params.pid);
 
@@ -69,7 +67,7 @@ router.get(
 router.patch(
   '/:pid',
   [
-    passport.authenticate('admin', { session: false }),
+    passportCall('admin'),
     productMiddleware.validateProductId,
     productMiddleware.validateProductUpdateFields,
   ],
@@ -87,10 +85,7 @@ router.patch(
 
 router.delete(
   '/:pid',
-  [
-    passport.authenticate('admin', { session: false }),
-    productMiddleware.validateProductId,
-  ],
+  [passportCall('admin'), productMiddleware.validateProductId],
   async (req, res, next) => {
     try {
       const id = parseInt(req.params.pid);
