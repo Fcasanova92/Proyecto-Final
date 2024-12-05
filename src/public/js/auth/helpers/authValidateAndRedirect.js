@@ -1,4 +1,4 @@
-import { getValidateDataform } from '../../../helpers/form/validateForm.js';
+import { getValidateDataform } from '../../form/validateForm.js';
 import { handleAuthentication } from './handleAuthentication.js';
 
 export const authValidateAndRedirect = async (event) => {

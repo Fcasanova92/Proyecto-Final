@@ -1,26 +1,34 @@
 <section>
-        <section id="user-session">
-            <form id="register" class="fx-deep-shadow-static" method="post">
-                <div class="headline">
-                    <h2 class="title-c">Registro</h2>
-                    <i class="fa-regular fa-address-card"></i>
-                </div>
-                <label class="message" for="name" ></label>
-                <input id="name" type="text" oninput="validateInput(event)" placeholder="Nombre..." data-validate="false" data-form="register">
-                <label class="message" for="surname"></label>
-                <input id="surname" type="text" oninput="validateInput(event)"  placeholder="Apellido..." data-validate="false" data-form="register">
-                <label class="message" for="email"></label>
-                <input id="email" type="text" oninput="validateInput(event)" placeholder="Email..." data-validate="false" data-form="register">
-                <label  class="message" for="password"></label>
-                <div class="pass">
-                    <input id="password" type="password" oninput="validateInput(event)" placeholder="Password" data-validate="false" data-form="register">
-                    <i id="eye" class="fa-regular fa-eye-slash trigger-b" onclick="passwordVisuality(event)"></i>
-                </div>
-                <input id="condition" type="checkbox">
-                <label class="with-check-icon" for="condition">Acepto terminos y condiciones</label>
-                <button id="send" class="trigger-a" type="submit" data-id="register" onclick="authValidateAndRedirect(event)">Enviar</button>
-                <label class="message" for="send"></label>
-                <a class="link-c" href="/auth/login">Tienes cuenta? Inicia sesion aquí</a>
-            </form>
-        </section>
+  <section id="user-session">
+    <form id="register" class="fx-deep-shadow-static" method="post">
+      <div class="headline">
+        <h2 class="title-c">Registro</h2>
+        <i class="fa-regular fa-address-card"></i>
+      </div>
+      
+      <label class="messageForm" for="name"></label>
+      <input class="form" id="name" type="text" placeholder="Nombre..." data-validate="false" data-form="register">
+      
+      <label class="messageForm" for="surname"></label>
+      <input class="form" id="surname" type="text" placeholder="Apellido..." data-validate="false" data-form="register">
+      
+      <label class="messageForm" for="email"></label>
+      <input  class="form" id="email" type="text" placeholder="Email..." data-validate="false" data-form="register">
+      
+      <label class="messageForm" for="password"></label>
+      <div class="pass">
+        <input class="form" id="password" type="password" placeholder="Password" data-validate="false" data-form="register">
+        <i id="eye" class="fa-regular fa-eye-slash trigger-b"></i>
+      </div>
+      
+      <input id="condition" type="checkbox">
+      <label class="with-check-icon" for="condition">Acepto términos y condiciones</label>
+      
+      <button id="send" class="trigger-a" type="submit" data-id="register">Enviar</button>
+      <label class="messageForm" for="send"></label>
+      <a class="link-c" href="/auth/login">¿Tienes cuenta? Inicia sesión aquí</a>
+    </form>
+  </section>
 </section>
+
+<script type="module" src="/js/main.js"></script>

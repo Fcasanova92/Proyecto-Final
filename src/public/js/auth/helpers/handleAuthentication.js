@@ -2,9 +2,10 @@ import {
   resetButtonState,
   updateButtonState,
 } from '../styleUtils/styleButton.js';
-import { styleErrorField } from '../styleUtils/styleErrorField.js';
-import { login, register } from '../../../../adapters/auth/index.js';
-import { loginRedirect } from './index.js';
+import { styleErrorField } from '../styleUtils/styleFieldError.js';
+import { login } from '../adapters/login.js';
+import { register } from '../adapters/register.js';
+import { loginRedirect } from './loginAndRedirect.js';
 
 export const handleAuthentication = async (formData) => {
   const { data, type } = formData;

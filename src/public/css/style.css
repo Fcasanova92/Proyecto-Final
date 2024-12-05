@@ -419,6 +419,20 @@ button:hover {
     margin-bottom: 5px;
 }
 
+.messageForm {
+    font-size: 0.8rem;
+    color: #4b4b4b;
+    font-weight: 500;
+    letter-spacing: 0.8px;
+}
+
+.form{
+    border: 1px solid #ccc;
+    background-color: #fff;
+    }
+    
+
+
 /* CHECKBOX */
 .with-check-icon {
     display: flex;

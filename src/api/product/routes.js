@@ -7,7 +7,6 @@ import {
   getById,
   updateProduct,
 } from '../../mongo/managers/productManager.js';
-import passport from 'passport';
 import { passportCall } from '../../middleware/session/passportCall.js';
 
 export const router = Router();
