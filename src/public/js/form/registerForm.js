@@ -1,6 +1,6 @@
-import { validateInput } from './form/utilities/validateInput.js';
-import { passwordVisuality } from './auth/styleUtils/passwordVisuality.js';
-import { authValidateAndRedirect } from './auth/helpers/authValidateAndRedirect.js';
+import { validateInput } from './utilities/validateInput.js';
+import { passwordVisuality } from '../form/styleUtils/passwordVisuality.js';
+import { authValidateAndRedirect } from '../auth/helpers/authValidateAndRedirect.js';
 
 document.getElementById('name').addEventListener('input', validateInput);
 document.getElementById('surname').addEventListener('input', validateInput);

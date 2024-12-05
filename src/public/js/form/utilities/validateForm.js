@@ -1,5 +1,5 @@
-import { errors } from './errors/errorTypes.js';
-import { validateCheckbox } from './utilities/validateCheckbox.js';
+import { errors } from '../errors/errorTypes.js';
+import { validateCheckbox } from '../utilities/validateCheckbox.js';
 
 export const getValidateDataform = (event) => {
   event.preventDefault();

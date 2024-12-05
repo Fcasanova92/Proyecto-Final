@@ -1,8 +1,8 @@
 import {
   resetButtonState,
   updateButtonState,
-} from '../styleUtils/styleButton.js';
-import { styleErrorField } from '../styleUtils/styleFieldError.js';
+} from '../../form/styleUtils/styleButton.js';
+import { styleErrorField } from '../../form/styleUtils/styleFieldError.js';
 import { login } from '../adapters/login.js';
 import { register } from '../adapters/register.js';
 import { loginRedirect } from './loginAndRedirect.js';
