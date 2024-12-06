@@ -2,6 +2,7 @@ import {
   BadRequest,
   InternalServerError,
   NotFound,
+  NotAuthorized,
 } from '../../utils/errors.js';
 
 export const errorHandler = (err, req, res, next) => {
@@ -15,6 +16,10 @@ export const errorHandler = (err, req, res, next) => {
 
   if (err instanceof BadRequest) {
     return res.status(400).json({ message: err.message });
+  }
+
+  if (err instanceof NotAuthorized) {
+    return res.status(401).json({ message: err.message });
   }
 
   res.status(500).json({ message: err.message });

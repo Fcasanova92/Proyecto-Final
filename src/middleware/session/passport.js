@@ -10,10 +10,11 @@ import {
   getDataUserById,
   updateDataUser,
   createUser,
-} from '../../mongo/managers/userManager.js';
+} from '../../data/mongo/managers/userManager.js';
 import { comparePassword, hashPassword } from '../../utils/byScript.js';
 import { ROLE } from '../../constant/role.js';
 import { uidGenerator } from '../../utils/uidGenerator.js';
+import { NotAuthorized } from '../../utils/errors.js';
 
 passport.use(
   'register',
@@ -27,7 +28,9 @@ passport.use(
       try {
         const existingUser = await getDataUserByEmail(email);
         if (existingUser) {
-          const error = new Error(AUTH_ERROR_MESSAGES.USER_ALREADY_EXISTS);
+          const error = new NotAuthorized(
+            AUTH_ERROR_MESSAGES.USER_ALREADY_EXISTS
+          );
           error.statusCode = 401;
           return done(error);
         }
@@ -61,7 +64,7 @@ passport.use(
       try {
         const user = await getDataUserByEmail(email);
         if (!user) {
-          const error = new Error(AUTH_ERROR_MESSAGES.USER_NOT_FOUND);
+          const error = new NotAuthorized(AUTH_ERROR_MESSAGES.USER_NOT_FOUND);
           error.statusCode = 401;
           return done(error);
         }
@@ -69,7 +72,9 @@ passport.use(
         const passwordDb = user.password;
         const verify = await comparePassword(passwordForm, passwordDb);
         if (!verify) {
-          const error = new Error(AUTH_ERROR_MESSAGES.PASSWORD_INCORRECT);
+          const error = new NotAuthorized(
+            AUTH_ERROR_MESSAGES.PASSWORD_INCORRECT
+          );
           error.statusCode = 401;
           return done(error);
         }
@@ -97,7 +102,7 @@ passport.use(
     async (data, done) => {
       const { role } = data.user;
       if (ROLE.ADMIN !== role) {
-        const error = new Error(AUTH_ERROR_MESSAGES.INVALID_CREDENTIAL);
+        const error = new NotAuthorized(AUTH_ERROR_MESSAGES.INVALID_CREDENTIAL);
         error.statusCode = 401;
         return done(error);
       }

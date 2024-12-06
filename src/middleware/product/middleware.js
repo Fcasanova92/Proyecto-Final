@@ -1,7 +1,7 @@
 import { PRODUCT_ERROR_MESSAGES } from '../../constant/productErrorMessage.js';
 import { REQUIRED_PRODUCT_FIELDS } from '../../constant/requiredProductField.js';
-import { getAll } from '../../mongo/managers/productManager.js';
-import { getProductByIdFromDb } from '../../mongo/querys/productQuerys.js';
+import { getAll } from '../../data/mongo/managers/productManager.js';
+import { getProductByIdFromDb } from '../../data/mongo/querys/productQuerys.js';
 import { BadRequest, NotFound } from '../../utils/errors.js';
 
 export const validateProductId = async (req, res, next) => {

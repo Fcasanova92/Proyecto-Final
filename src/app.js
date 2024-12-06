@@ -4,8 +4,8 @@ import {
   ProductRouter,
   SessionRouter,
   UserRouter,
-} from './api/index.js';
-import { ViewsRouter } from './views/routes/index.js';
+} from './routers/api/index.js';
+import { ViewsRouter } from './routers/views/index.js';
 import handlebars from 'express-handlebars';
 import { mongooseConnect, __dirname } from './utils/mongoose.js';
 import path from 'path';
@@ -27,11 +27,11 @@ mongooseConnect();
 
 app.engine('handlebars', handlebars.engine());
 
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', path.join(__dirname, '../public'));
 
 app.set('view engine', 'handlebars');
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '../public')));
 
 app.use(express.json());
 

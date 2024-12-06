@@ -1,4 +1,4 @@
-import { getCartByIdFromDb } from '../../mongo/querys/cartsQuerys.js';
+import { getCartByIdFromDb } from '../../data/mongo/querys/cartsQuerys.js';
 import { BadRequest, NotFound } from '../../utils/errors.js';
 
 export const validateCartsId = async (req, res, next) => {

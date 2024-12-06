@@ -10,7 +10,7 @@ export class BadRequest extends Error {
   constructor(message) {
     super(message);
     this.name = 'BadRequest';
-    this.status = 404;
+    this.status = 400;
   }
 }
 
@@ -19,5 +19,13 @@ export class NotFound extends Error {
     super(message);
     this.name = 'NotFound';
     this.status = 404;
+  }
+}
+
+export class NotAuthorized extends Error {
+  constructor(message) {
+    super(message);
+    this.name = 'Unauthorized';
+    this.status = 401;
   }
 }
