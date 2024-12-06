@@ -16,5 +16,5 @@ export class CartService {
     await addProductToCart(idProduct, idCart);
   deleteProdInCartService = async (idProduct, idCart) =>
     await deleteProductInCart(idProduct, idCart);
-  deleteCartService = async () => await deleteCart(idCart);
+  deleteCartService = async (idCart) => await deleteCart(idCart);
 }

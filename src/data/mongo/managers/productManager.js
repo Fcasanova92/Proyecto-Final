@@ -18,6 +18,8 @@ export class ProductManager {
 
       const newProduct = { pid: productId, ...productData };
 
+      console.log(newProduct)
+
       const response = await addProductToDb(newProduct);
       return response;
     } catch (error) {

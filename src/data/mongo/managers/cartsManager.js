@@ -1,3 +1,4 @@
+import { BadRequest } from '../../../utils/errors.js';
 import {
   getAllCartsFromDb,
   addCartInDb,
@@ -40,9 +41,8 @@ export class CartsManager {
     try {
       const cartById = await getCartByIdFromDb(cid);
       const productById = await getProductByIdFromDb(pid);
-
       const productInCart = cartById.products.find(
-        (prod) => prod.idProduct._id.toString() === productById._id.toString()
+        (prod) => prod.idProduct.pid.toString() === productById.pid.toString()
       );
 
       if (productInCart) {
@@ -78,10 +78,15 @@ export class CartsManager {
     try {
       const cartById = await getCartByIdFromDb(cid);
       const productById = await getProductByIdFromDb(pid);
-      const productByIdInCart = cartById.products.find(
-        (prod) => prod.idProduct._id.toString() === productById._id.toString()
+      const productByIdInCart = cartById?.products.find(
+        (prod) => prod.idProduct?._id.toString() === productById?._id.toString()
       );
 
+      if (!productByIdInCart) {
+        throw new BadRequest(
+          `El producto con ${pid} no se encuentra en el carrito`
+        );
+      }
       if (newQuantity) productByIdInCart.quantity = newQuantity;
 
       return await updateQuatityInProductInCartFromDb(cid, cartById);
