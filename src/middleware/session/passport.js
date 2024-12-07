@@ -49,7 +49,14 @@ passport.use(
           role: req.body.role || 'user',
         });
 
-        return done(null, newUser);
+        const data = {
+          uid: newUser.uid,
+          role: newUser.role,
+        };
+
+        const token = generateToken(data);
+
+        return done(null, token);
       } catch (error) {
         return done(error);
       }

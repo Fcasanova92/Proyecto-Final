@@ -19,10 +19,15 @@ class SessionController {
 
   register = (req, res, next) => {
     try {
-      const data = req.user;
+      const token = req.user;
       return res
+        .cookie('token', token, {
+          maxAge: 60 * 60 * 24 * 7,
+          httpOnly: true,
+          secure: false,
+        })
         .status(200)
-        .json({ data: data, message: AUTH_MESSAGES.REGISTER_SUCCESS });
+        .json({ token, message: AUTH_MESSAGES.REGISTER_SUCCESS });
     } catch (error) {
       next(error);
     }
