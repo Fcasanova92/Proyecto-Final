@@ -11,12 +11,10 @@ export const register = async (user) => {
     const data = await response.json();
 
     if (response.ok) {
-      console.log(data)
       return { status: true, message: data.message };
     }
 
     if (response.status === 401) {
-      console.log(data);
       return {
         status: false,
         id: data.field,
@@ -24,6 +22,6 @@ export const register = async (user) => {
       };
     }
   } catch (error) {
-    console.warn(error);
+    console.error(error);
   }
 };

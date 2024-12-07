@@ -19,8 +19,6 @@ export const handleAuthentication = async (formData) => {
     setTimeout(async () => {
       button.disabled = true;
 
-      console.log(response);
-
       if (response.status) {
         loginRedirect();
       } else {

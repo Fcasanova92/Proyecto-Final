@@ -11,7 +11,6 @@ export const login = async (user) => {
     if (response.ok) {
       return { status: true, message: data.message };
     }
-    console.log(data);
     if (response.status === 401) {
       return {
         status: false,
@@ -20,6 +19,6 @@ export const login = async (user) => {
       };
     }
   } catch (error) {
-    console.log('Error:', error);
+    console.error('Error:', error);
   }
 };
