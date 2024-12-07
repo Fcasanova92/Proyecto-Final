@@ -1,34 +1,23 @@
-export const login = async (data) => {
+export const login = async (user) => {
   try {
     const response = await fetch('/api/auth/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify(user),
     });
-
-    console.log('La respuesta es', response.status);
-
+    const data = await response.json();
     if (response.ok) {
-      const result = await response.json();
-      const { token } = result;
-
-      console.log('La respuesta es', response.status);
-
-      // Almacenamos el token en sessionStorage
-      sessionStorage.setItem('token', token);
-
-      return { status: true, message: 'Bienvenido a MotorShop' };
-    } else {
-      const errorData = await response.json();
-      if (response.status === 401) {
-        return {
-          status: false,
-          id: errorData.fieldError,
-          message: errorData.message,
-        };
-      }
+      return { status: true, message: data.message };
+    }
+    console.log(data);
+    if (response.status === 401) {
+      return {
+        status: false,
+        id: data.field,
+        message: data.message,
+      };
     }
   } catch (error) {
     console.log('Error:', error);

@@ -31,6 +31,7 @@ passport.use(
           const error = new NotAuthorized(
             AUTH_ERROR_MESSAGES.USER_ALREADY_EXISTS
           );
+          error.field = 'email';
           error.statusCode = 401;
           return done(error);
         }
@@ -65,7 +66,7 @@ passport.use(
         const user = await getDataUserByEmail(email);
         if (!user) {
           const error = new NotAuthorized(AUTH_ERROR_MESSAGES.USER_NOT_FOUND);
-          error.statusCode = 401;
+          error.field = 'email';
           return done(error);
         }
         const passwordForm = password;
@@ -76,6 +77,7 @@ passport.use(
             AUTH_ERROR_MESSAGES.PASSWORD_INCORRECT
           );
           error.statusCode = 401;
+          error.field = 'password';
           return done(error);
         }
         const data = {

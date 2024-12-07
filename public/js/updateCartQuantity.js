@@ -2,28 +2,34 @@
 import { showMessageEmptyProduct } from './showEmptyProductMesasge.js';
 
 export const updateCartQuantity = async () => {
-  const quantityElement = document.querySelector('.quantityProductInCart');
+  try {
+    const quantityElement = document.querySelector('.quantityProductInCart');
 
-  const cid = quantityElement.getAttribute('data-id') || 1;
+    const cid = quantityElement.getAttribute('data-id') || 6;
 
-  // enviar el cid si el usuario esta logeado, va a permitar cargar dinamicamente, se puede obtener de
-  // alguna cookie que se almacende solamente el cid del carrito
+    // enviar el cid si el usuario esta logeado, va a permitar cargar dinamicamente, se puede obtener de
+    // alguna cookie que se almacende solamente el cid del carrito
 
-  const response = await fetch(`http://localhost:8080/api/carts/${cid}`);
+    const response = await fetch(`http://localhost:8080/api/carts/${cid}`);
 
-  if (response.ok) {
-    const data = await response.json();
-
-    quantityElement.textContent = data.products.length;
-
-    const quantityElementNumber = parseInt(quantityElement.textContent);
-
-    if (quantityElementNumber === 0) {
-      // SI LA DATA ES CERO, AL MOMENTO DE INGRESAR AL CARRITO, SE MOSTRARA EL MENSAJE DE
-      // QUE NO HAY PRODUCTOS
+    if (response.status === 404) {
       showMessageEmptyProduct();
     }
-  } else {
-    console.log('Error al obtener los productos del carrito.');
+
+    if (response.ok) {
+      const data = await response.json();
+
+      quantityElement.textContent = data.products.length;
+
+      const quantityElementNumber = parseInt(quantityElement.textContent);
+
+      if (quantityElementNumber === 0) {
+        // SI LA DATA ES CERO, AL MOMENTO DE INGRESAR AL CARRITO, SE MOSTRARA EL MENSAJE DE
+        // QUE NO HAY PRODUCTOS
+        showMessageEmptyProduct();
+      }
+    }
+  } catch (error) {
+    console.warn(error);
   }
 };

@@ -5,6 +5,8 @@ class CartController {
     this.cartService = new CartService();
   }
   getCartById = async (req, res, next) => {
+    // este enpodint se utiliza exclusivamente cuando se quiere leer la data del carrito
+    // de la base de datos, si existiese
     try {
       const idCart = parseInt(req.params.cid);
       const carts = await this.cartService.getCartService(idCart);
@@ -16,6 +18,8 @@ class CartController {
 
   createCart = async (req, res, next) => {
     try {
+      // este endpoint se ejecuta cuando el usuario se logea, se crea un carrito en la base de datos con la data del carrito
+      // del cliente si fuese necesario
       const create = await this.cartService.createCartService();
       return res.status(200).json({ message: create.message });
     } catch (error) {

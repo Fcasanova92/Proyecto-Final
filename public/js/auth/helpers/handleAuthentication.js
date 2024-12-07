@@ -10,16 +10,16 @@ import { loginRedirect } from './loginAndRedirect.js';
 export const handleAuthentication = async (formData) => {
   const { data, type } = formData;
 
-  const button = document.getElementById('send');
-
-  updateButtonState(button, type);
-
   try {
+    const button = document.getElementById('send');
+    updateButtonState(button, type);
     const response =
       type === 'login' ? await login(data) : await register(data);
 
     setTimeout(async () => {
       button.disabled = true;
+
+      console.log(response);
 
       if (response.status) {
         loginRedirect();
@@ -29,11 +29,11 @@ export const handleAuthentication = async (formData) => {
         const fieldIdError = response.id;
 
         styleErrorField(message, fieldIdError, type, button);
+
+        resetButtonState(button, type);
       }
     }, 3000);
   } catch (error) {
     console.error('Error during login:', error);
-  } finally {
-    resetButtonState(button, type);
   }
 };

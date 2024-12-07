@@ -1,27 +1,29 @@
-export const register = async (data) => {
+export const register = async (user) => {
   try {
-    const response = await axios.post(`${BASE_URL}/api/auth/register`, data, {
+    const response = await fetch('/api/auth/register', {
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
+      body: JSON.stringify(user),
     });
 
-    const { token, message } = response.data;
+    const data = await response.json();
 
-    if (response.status >= 200 && response.status < 300) {
-      sessionStorage.setItem('token', token);
+    if (response.ok) {
+      console.log(data)
+      return { status: true, message: data.message };
+    }
 
-      return { status: true, message };
+    if (response.status === 401) {
+      console.log(data);
+      return {
+        status: false,
+        id: data.field,
+        message: data.message,
+      };
     }
   } catch (error) {
-    if (error.response) {
-      if (error.response.status === 401) {
-        return {
-          status: false,
-          id: error.response.data.fieldError,
-          message: error.response.data.message,
-        };
-      }
-    }
+    console.warn(error);
   }
 };
