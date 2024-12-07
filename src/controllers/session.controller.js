@@ -11,12 +11,13 @@ class SessionController {
           secure: false,
         })
         .status(200)
-        .json({ token, message: AUTH_MESSAGES.LOGIN_SUCCESS });
+        .json({ token, message: AUTH_MESSAGES.LOGIN_SUCCESS }); // no se deberia de enviar el token al front
     } catch (error) {
       return next(error);
     }
   };
 
+  // envie una cookie con el token, porque el usuario cuando se registra, directamente se logea
   register = (req, res, next) => {
     try {
       const token = req.user;
@@ -27,7 +28,7 @@ class SessionController {
           secure: false,
         })
         .status(200)
-        .json({ token, message: AUTH_MESSAGES.REGISTER_SUCCESS });
+        .json({ token, message: AUTH_MESSAGES.REGISTER_SUCCESS }); // no se deberia de enviar el token al front
     } catch (error) {
       next(error);
     }
