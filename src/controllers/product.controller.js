@@ -1,4 +1,5 @@
 import { ProductService } from '../services/product.service.js';
+import { BadRequest } from '../utils/errors.js';
 
 class ProductController {
   constructor() {
@@ -18,9 +19,9 @@ class ProductController {
         sort
       );
       if (products.payload.length === 0) {
-        return res.status(404).json({ message: 'No existen productos' });
+        throw new BadRequest('no existen productos');
       }
-      return res.status(200).json({ products });
+      return res.status(200).json({ data: products, message: null });
     } catch (error) {
       next(error);
     }
@@ -30,7 +31,7 @@ class ProductController {
     const id = parseInt(req.params.pid);
     const productById = await this.productService.getProductById(id);
     try {
-      return res.status(200).json({ ...productById });
+      return res.status(200).json({ data: productById, message: null });
     } catch (error) {
       next(error);
     }
@@ -40,7 +41,9 @@ class ProductController {
     try {
       const data = req.body;
       const createProduct = await this.productService.createProduct(data);
-      return res.status(200).json({ message: createProduct.message });
+      return res
+        .status(200)
+        .json({ data: null, message: createProduct.message });
     } catch (error) {
       next(error);
     }
@@ -54,7 +57,7 @@ class ProductController {
         id,
         updateData
       );
-      return res.status(200).json({ message: prodUpdate.message });
+      return res.status(200).json({ data: null, message: prodUpdate.message });
     } catch (error) {
       next(error);
     }
@@ -64,7 +67,7 @@ class ProductController {
     try {
       const id = parseInt(req.params.pid);
       const prodDelete = await this.productService.deleteProduct(id);
-      return res.status(200).json({ message: prodDelete.message });
+      return res.status(200).json({ data: null, message: prodDelete.message });
     } catch (error) {
       next(error);
     }

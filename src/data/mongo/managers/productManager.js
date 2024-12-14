@@ -1,74 +1,48 @@
-import {
-  addProductToDb,
-  updateProductInDb,
-  getAllProductsFromDb,
-  getProductByIdFromDb,
-  deleteProductFromDb,
-  getProductsFromDbWithFilter,
-} from '../querys/productQuerys.js';
+import { InternalServerError } from '../../../utils/errors.js';
+import { productModel } from '../models/product.js';
+import { Manager } from './manager.js';
 
-export class ProductManager {
-  async addProduct(productData) {
-    try {
-      const products = await getAllProductsFromDb();
-
-      const ids = products.map((product) => product.pid);
-      const lastIdProduct = ids.length > 0 ? Math.max(...ids) : 0;
-      const productId = lastIdProduct + 1;
-
-      const newProduct = { pid: productId, ...productData };
-
-      console.log(newProduct)
-
-      const response = await addProductToDb(newProduct);
-      return response;
-    } catch (error) {
-      throw error;
-    }
+export class ProductManager extends Manager {
+  constructor() {
+    super(productModel);
   }
 
-  async getAll(limit, page, query, sort) {
+  readPaginate = async (limit, page, query, sort) => {
     try {
-      const products = await getProductsFromDbWithFilter(
-        limit,
+      const filter = query ? { title: { $regex: query, $options: 'i' } } : {};
+      const sortCriteria =
+        sort === 'asc' ? { pid: 1 } : sort === 'desc' ? { pid: -1 } : {};
+      const options = { page, limit, sort: sortCriteria, lean: true };
+
+      const result = await this.model.paginate(filter, options);
+      const {
+        docs: products,
+        totalPages,
+        hasNextPage,
+        hasPrevPage,
+        nextPage,
+        prevPage,
+      } = result;
+
+      return {
+        status: 'success',
+        payload: products,
+        totalPages,
+        hasNextPage,
+        hasPrevPage,
         page,
-        query,
-        sort
-      );
-      return products.payload.length > 0 ? products : [];
+        prevLink: hasPrevPage
+          ? `http://localhost:8080/?page=${prevPage}&limit=${limit}`
+          : null,
+        nextLink: hasNextPage
+          ? `http://localhost:8080/?page=${nextPage}&limit=${limit}`
+          : null,
+      };
     } catch (error) {
-      throw error;
+      throw new InternalServerError(error.message);
     }
-  }
-
-  async getById(id) {
-    try {
-      const product = await getProductByIdFromDb(id);
-      return product;
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  async deleteProduct(id) {
-    try {
-      const response = await deleteProductFromDb(id);
-      return response;
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  async updateProduct(id, updateData) {
-    try {
-      const productById = await getProductByIdFromDb(id);
-      const updatedProduct = { ...productById, ...updateData };
-      return await updateProductInDb(id, updatedProduct);
-    } catch (error) {
-      throw error;
-    }
-  }
+  };
 }
 
-export const { updateProduct, deleteProduct, getById, getAll, addProduct } =
+export const { readPaginate, read, readById, destroy, update } =
   new ProductManager();

@@ -7,20 +7,28 @@ import {
 
 export const errorHandler = (err, req, res, next) => {
   if (err instanceof InternalServerError) {
-    return res.status(500).json({ message: err.message });
+    return res
+      .status(500)
+      .json({ name: err.name, message: err.message, dataError: null });
   }
 
   if (err instanceof NotFound) {
-    return res.status(404).json({ message: err.message });
+    return res
+      .status(404)
+      .json({ name: err.name, message: err.message, dataError: null });
   }
 
   if (err instanceof BadRequest) {
-    return res.status(400).json({ message: err.message });
+    return res
+      .status(400)
+      .json({ name: err.name, message: err.message, dataError: null });
   }
 
   if (err instanceof NotAuthorized) {
-    return res.status(401).json({ message: err.message, field: err.field });
+    return res
+      .status(401)
+      .json({ name: err.name, message: err.message, dataError: err.field });
   }
 
-  res.status(500).json({ message: err.message });
+  res.status(500).json({ name: err.name, message: err.message });
 };

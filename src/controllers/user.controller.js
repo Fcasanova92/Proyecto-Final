@@ -8,7 +8,17 @@ class UserController {
   getById = async (req, res, next) => {
     try {
       const { id } = req.params;
-      const userData = await this.userService.getUserById(id);
+      const userData = await this.userService.readUserById(id);
+      return res.status(200).json({ userData });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  getByEmail = async (req, res, next) => {
+    try {
+      const { email } = req.body;
+      const userData = await this.userService.readUserByEmail(email);
       return res.status(200).json({ userData });
     } catch (error) {
       next(error);
