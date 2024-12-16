@@ -14,7 +14,7 @@ export class UserService {
       throw error;
     }
   };
-  readUserById = async (id) => {
+  readUserByIdService = async (id) => {
     try {
       await readById(id);
     } catch (error) {
@@ -22,21 +22,21 @@ export class UserService {
     }
   };
 
-  readUserByEmail = async (email) => {
+  readUserByEmailService = async (email) => {
     try {
       await readByEmail(email);
     } catch (error) {
       throw error;
     }
   };
-  updateUser = async (id, updateData) => {
+  updateUserService = async (id, updateData) => {
     try {
       await update(id, updateData);
     } catch (error) {
       throw error;
     }
   };
-  destroyUser = async (id) => {
+  destroyUserService = async (id) => {
     try {
       await destroy(id);
     } catch (error) {
@@ -44,3 +44,11 @@ export class UserService {
     }
   };
 }
+
+export const {
+  readUserByEmailService,
+  readUserByIdService,
+  destroyUserService,
+  createService,
+  updateUserService,
+} = new UserService();

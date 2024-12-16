@@ -5,16 +5,16 @@ import { SECRET_KEY } from '../../utils/env.js';
 import { generateInvalidToken, generateToken } from '../../utils/jwt.js';
 import { cookiesExtractor } from '../../utils/cookies.js';
 import { AUTH_ERROR_MESSAGES } from '../../constant/authErrorMessage.js';
-import {
-  getDataUserByEmail,
-  getDataUserById,
-  updateDataUser,
-  createUser,
-} from '../../data/mongo/managers/userManager.js';
 import { comparePassword, hashPassword } from '../../utils/byScript.js';
 import { ROLE } from '../../constant/role.js';
 import { uidGenerator } from '../../utils/uidGenerator.js';
 import { NotAuthorized } from '../../utils/errors.js';
+import {
+  createService,
+  readUserByEmailService,
+  readUserByIdService,
+  updateUserService,
+} from '../../services/user.service.js';
 
 passport.use(
   'register',
@@ -26,7 +26,7 @@ passport.use(
     },
     async (req, email, password, done) => {
       try {
-        const existingUser = await getDataUserByEmail(email);
+        const existingUser = await readUserByEmailService(email);
         if (existingUser) {
           const error = new NotAuthorized(
             AUTH_ERROR_MESSAGES.USER_ALREADY_EXISTS
@@ -40,7 +40,7 @@ passport.use(
 
         const uid = uidGenerator();
 
-        const newUser = await createUser({
+        const newUser = await createService({
           uid,
           email,
           password: hashPass,
@@ -70,7 +70,7 @@ passport.use(
     { passReqToCallback: true, usernameField: 'email', session: false },
     async (req, email, password, done) => {
       try {
-        const user = await getDataUserByEmail(email);
+        const user = await readUserByEmailService(email);
         if (!user) {
           const error = new NotAuthorized(AUTH_ERROR_MESSAGES.USER_NOT_FOUND);
           error.field = 'email';
@@ -130,7 +130,7 @@ passport.use(
     async (data, done) => {
       try {
         const { uid } = data.user;
-        const { first_name, last_name, email } = await getDataUserById(uid);
+        const { first_name, last_name, email } = await readUserByIdService(uid);
         const user = { first_name, last_name, email };
         return done(null, user);
       } catch (error) {
@@ -172,7 +172,7 @@ passport.use(
     async (data, done) => {
       try {
         const { uid } = data.user;
-        await updateDataUser(uid, { online: false });
+        await updateUserService(uid, { online: false });
         const token = generateInvalidToken('');
         data.token = token;
         return done(null, { uid: null });

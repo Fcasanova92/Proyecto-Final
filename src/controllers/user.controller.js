@@ -1,14 +1,14 @@
-import { UserService } from '../services/user.service.js';
-
+import {
+  readUserByEmailService,
+  readUserByIdService,
+  updateUserService,
+  destroyUserService,
+} from '../services/user.service.js';
 class UserController {
-  constructor() {
-    this.userService = new UserService();
-  }
-
   getById = async (req, res, next) => {
     try {
       const { id } = req.params;
-      const userData = await this.userService.readUserById(id);
+      const userData = await readUserByIdService(id);
       return res.status(200).json({ userData });
     } catch (error) {
       next(error);
@@ -18,7 +18,7 @@ class UserController {
   getByEmail = async (req, res, next) => {
     try {
       const { email } = req.body;
-      const userData = await this.userService.readUserByEmail(email);
+      const userData = await readUserByEmailService(email);
       return res.status(200).json({ userData });
     } catch (error) {
       next(error);
@@ -29,7 +29,7 @@ class UserController {
     try {
       const { id } = req.params;
       const updateData = req.body;
-      const response = await this.userService.updateUser(id, updateData);
+      const response = await updateUserService(id, updateData);
       return res.status(200).json({ message: response.message });
     } catch (error) {
       next(error);
@@ -39,7 +39,7 @@ class UserController {
   deleteUser = async (req, res, next) => {
     try {
       const { id } = req.params;
-      const response = await this.userService.delete(id);
+      const response = await destroyUserService(id);
       return res.status(200).json({ message: response.message });
     } catch (error) {
       next(error);

@@ -1,50 +1,59 @@
 import {
-  getAll,
-  getById,
-  addProduct,
-  updateProduct,
-  deleteProduct,
+  read,
+  readById,
+  readPaginate,
+  update,
+  destroy,
+  create,
 } from '../data/mongo/managers/productManager.js';
 
 export class ProductService {
   getProductService = async (limit, page, query, sort) => {
     try {
-      await getAll(limit, page, query, sort);
+      await readPaginate(limit, page, query, sort);
     } catch (error) {
       throw error;
     }
   };
   // este metodo es particular, ya que devuelve paginado, poner la logica aca si existiese
 
-  getProductById = async (id) => {
+  getProductByIdService = async (id) => {
     try {
-      await getById(id);
+      await readById(id);
     } catch (error) {
       throw error;
     }
   };
 
-  createProduct = async (data) => {
+  createProductService = async (data) => {
     try {
-      await addProduct(data);
+      await create(data);
     } catch (error) {
       throw error;
     }
   };
   //poner la logica de update en este punto, sacar lo demas del manager
-  updateProduct = async (id, updateData) => {
+  updateProductService = async (id, updateData) => {
     try {
-      await updateProduct(id, updateData);
+      await update(id, updateData);
     } catch (error) {
       throw error;
     }
   };
 
-  deleteProduct = async (id) => {
+  deleteProductService = async (id) => {
     try {
-      await deleteProduct(id);
+      await destroy(id);
     } catch (error) {
       throw error;
     }
   };
 }
+
+export const {
+  getProductService,
+  getProductByIdService,
+  createProductService,
+  updateProductService,
+  deleteProductService,
+} = new ProductService();

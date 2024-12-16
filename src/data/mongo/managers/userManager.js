@@ -16,5 +16,5 @@ export class UserManager extends Manager {
   }
 }
 
-export const { readByEmail, read, readById, destroy, update } =
+export const { readByEmail, read, readById, destroy, update, create } =
   new UserManager();

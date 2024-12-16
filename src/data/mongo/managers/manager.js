@@ -1,4 +1,4 @@
-import { InternalServerError } from '../../../utils/errors';
+import { InternalServerError } from '../../../utils/errors.js';
 
 export class Manager {
   constructor(model) {

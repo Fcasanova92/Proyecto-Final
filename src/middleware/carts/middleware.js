@@ -1,4 +1,4 @@
-import { getCartByIdFromDb } from '../../data/mongo/querys/cartsQuerys.js';
+import { readByIdCartService } from '../../services/cart.service.js';
 import { BadRequest, NotFound } from '../../utils/errors.js';
 
 export const validateCartsId = async (req, res, next) => {
@@ -11,7 +11,7 @@ export const validateCartsId = async (req, res, next) => {
         )
       );
     }
-    const cart = await getCartByIdFromDb(parseInt(cid, 10));
+    const cart = await readByIdCartService(parseInt(cid, 10));
 
     if (!cart) {
       throw new NotFound('El carrito seleccionado no existe');

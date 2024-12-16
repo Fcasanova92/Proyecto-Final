@@ -44,5 +44,5 @@ export class ProductManager extends Manager {
   };
 }
 
-export const { readPaginate, read, readById, destroy, update } =
+export const { readPaginate, read, readById, destroy, update, create } =
   new ProductManager();

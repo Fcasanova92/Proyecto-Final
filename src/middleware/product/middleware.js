@@ -1,7 +1,9 @@
 import { PRODUCT_ERROR_MESSAGES } from '../../constant/productErrorMessage.js';
 import { REQUIRED_PRODUCT_FIELDS } from '../../constant/requiredProductField.js';
-import { getAll } from '../../data/mongo/managers/productManager.js';
-import { getProductByIdFromDb } from '../../data/mongo/querys/productQuerys.js';
+import {
+  getProductByIdService,
+  getProductService,
+} from '../../services/product.service.js';
 import { BadRequest, NotFound } from '../../utils/errors.js';
 
 export const validateProductId = async (req, res, next) => {
@@ -10,7 +12,7 @@ export const validateProductId = async (req, res, next) => {
     if (isNaN(pid)) {
       throw new NotFound(PRODUCT_ERROR_MESSAGES.INVALID_ID);
     }
-    const product = await getProductByIdFromDb(parseInt(pid));
+    const product = await getProductByIdService(parseInt(pid));
 
     if (!product) {
       throw new BadRequest(PRODUCT_ERROR_MESSAGES.PRODUCT_NOT_FOUND(pid));
@@ -93,7 +95,7 @@ export const validateRequiredProductFields = (req, res, next) => {
 export const validateProductCode = async (req, res, next) => {
   try {
     const { code } = req.body;
-    const { payload } = await getAll();
+    const { payload } = await getProductService();
     const codeExist = payload.some((prod) => prod.code === code);
 
     if (codeExist) {

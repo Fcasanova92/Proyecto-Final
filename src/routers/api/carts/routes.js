@@ -7,7 +7,6 @@ import {
   getCartById,
   createCart,
   updateQuantityProduct,
-  updateProducts,
   deleteProdInCart,
   deleteCart,
 } from '../../../controllers/cart.controller.js';
@@ -28,7 +27,7 @@ router.put(
 router.patch(
   '/:cid/products/:pid',
   [cartMiddleware.validateCartsId, productMiddleware.validateProductId],
-  updateProducts
+  updateQuantityProduct
 );
 
 // eliminar los productos del carrito

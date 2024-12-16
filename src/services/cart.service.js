@@ -57,3 +57,13 @@ export class CartService {
     }
   };
 }
+
+const cartService = new CartService();
+
+export const {
+  readByIdCartService,
+  createCartService,
+  updateCartService,
+  destroyProdInCartService,
+  deleteCartService,
+} = cartService;
