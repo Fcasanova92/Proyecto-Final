@@ -4,20 +4,18 @@ import {
   ProductRouter,
   SessionRouter,
   UserRouter,
-} from './routers/api/index.js';
-import { ViewsRouter } from './routers/views/index.js';
+} from './src/routers/api/index.js';
+import { ViewsRouter } from './src/routers/views/index.js';
 import handlebars from 'express-handlebars';
-import { mongooseConnect, __dirname } from './utils/mongoose.js';
+import { mongooseConnect, __dirname } from './src/utils/mongoose.js';
 import path from 'path';
-import passport from './middleware/session/passport.js';
+import passport from './src/middleware/session/passport.js';
 // import { Server } from 'socket.io';
 // import socketHandler from './public/js/socket/socketHandler.js';
-import { URL, PORT } from './utils/env.js';
+import { URL, PORT } from './src/utils/env.js';
 import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
-import { errorHandler } from './middleware/error/errorHandler.js';
-import EnvEnum from './constant/envEnum.js';
-import argsUtil from './utils/args.js';
+import { errorHandler } from './src/middleware/error/errorHandler.js';
 
 const app = express();
 
@@ -61,12 +59,6 @@ app.use('/api/user', UserRouter);
 app.use('/api/carts', CartsRouter);
 
 app.use(errorHandler);
-
-const { env } = argsUtil;
-
-console.log(EnvEnum.PROD)
-
-console.log(env === EnvEnum.PROD)
 
 app.listen(PORT, () => {
   console.log(`${URL}`);

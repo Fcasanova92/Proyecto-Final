@@ -5,8 +5,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon ./src/app.js --env development --persistence mongo",
-    "prod": "nodemon ./src/app.js --env production --persistence mongo",
+    "dev": "nodemon app.js --env development --persistence mongo ",
+    "prod": "nodemon app.js --env production --persistence mongo",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
