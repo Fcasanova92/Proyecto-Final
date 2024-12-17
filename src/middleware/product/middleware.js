@@ -4,18 +4,16 @@ import {
   getProductByIdService,
   getProductService,
 } from '../../services/product.service.js';
-import { BadRequest, NotFound } from '../../utils/errors.js';
+import { BadRequest } from '../../utils/errors.js';
 
 export const validateProductId = async (req, res, next) => {
-  const { pid } = req.params;
+  const id = req.params.pid;
+
   try {
-    if (isNaN(pid)) {
-      throw new NotFound(PRODUCT_ERROR_MESSAGES.INVALID_ID);
-    }
-    const product = await getProductByIdService(parseInt(pid));
+    const product = await getProductByIdService(id);
 
     if (!product) {
-      throw new BadRequest(PRODUCT_ERROR_MESSAGES.PRODUCT_NOT_FOUND(pid));
+      throw new BadRequest(PRODUCT_ERROR_MESSAGES.PRODUCT_NOT_FOUND(id));
     }
     next();
   } catch (error) {

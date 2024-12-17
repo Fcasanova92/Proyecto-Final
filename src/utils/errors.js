@@ -7,18 +7,20 @@ export class InternalServerError extends Error {
 }
 
 export class BadRequest extends Error {
-  constructor(message) {
+  constructor(message, data = null) {
     super(message);
     this.name = 'BadRequest';
     this.status = 400;
+    this.data = data;
   }
 }
 
 export class NotFound extends Error {
-  constructor(message) {
+  constructor(message, data = null) {
     super(message);
     this.name = 'NotFound';
     this.status = 404;
+    this.data = data;
   }
 }
 

@@ -11,7 +11,7 @@ export class UserManager extends Manager {
       const user = await userModel.findOne({ email: email }).lean();
       return user;
     } catch (error) {
-      throw InternalServerError(error.message);
+      throw new InternalServerError(error.message);
     }
   }
 }

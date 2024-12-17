@@ -23,7 +23,6 @@ export class ProductManager extends Manager {
         nextPage,
         prevPage,
       } = result;
-
       return {
         status: 'success',
         payload: products,

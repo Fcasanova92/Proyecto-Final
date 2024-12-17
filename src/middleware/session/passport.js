@@ -71,6 +71,7 @@ passport.use(
     async (req, email, password, done) => {
       try {
         const user = await readUserByEmailService(email);
+        console.log(user);
         if (!user) {
           const error = new NotAuthorized(AUTH_ERROR_MESSAGES.USER_NOT_FOUND);
           error.field = 'email';
@@ -88,11 +89,11 @@ passport.use(
           return done(error);
         }
         const data = {
-          uid: user.uid,
+          id: user._id,
           role: user.role,
         };
         const token = generateToken(data);
-        await updateDataUser(user.uid, { online: true });
+        await updateUserService(user._id, { online: true });
         return done(null, token);
       } catch (error) {
         return done(error);
@@ -129,8 +130,8 @@ passport.use(
     },
     async (data, done) => {
       try {
-        const { uid } = data.user;
-        const { first_name, last_name, email } = await readUserByIdService(uid);
+        const { id } = data.user;
+        const { first_name, last_name, email } = await readUserByIdService(id);
         const user = { first_name, last_name, email };
         return done(null, user);
       } catch (error) {
@@ -149,8 +150,8 @@ passport.use(
     },
     async (data, done) => {
       try {
-        const { uid } = data.user;
-        const user = await getDataUserById(uid);
+        const { id } = data.user;
+        const user = await readUserByIdService(id);
         if (!user) {
           return done(null, false, { message: 'User not found' });
         }
@@ -171,8 +172,8 @@ passport.use(
     },
     async (data, done) => {
       try {
-        const { uid } = data.user;
-        await updateUserService(uid, { online: false });
+        const { id } = data.user;
+        await updateUserService(id, { online: false });
         const token = generateInvalidToken('');
         data.token = token;
         return done(null, { uid: null });

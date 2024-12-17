@@ -10,7 +10,7 @@ import {
 export class ProductService {
   getProductService = async (limit, page, query, sort) => {
     try {
-      await readPaginate(limit, page, query, sort);
+      return await readPaginate(limit, page, query, sort);
     } catch (error) {
       throw error;
     }
@@ -19,7 +19,7 @@ export class ProductService {
 
   getProductByIdService = async (id) => {
     try {
-      await readById(id);
+      return await readById(id);
     } catch (error) {
       throw error;
     }
@@ -27,7 +27,7 @@ export class ProductService {
 
   createProductService = async (data) => {
     try {
-      await create(data);
+      return await create(data);
     } catch (error) {
       throw error;
     }
@@ -35,7 +35,7 @@ export class ProductService {
   //poner la logica de update en este punto, sacar lo demas del manager
   updateProductService = async (id, updateData) => {
     try {
-      await update(id, updateData);
+      return await update(id, updateData);
     } catch (error) {
       throw error;
     }
@@ -43,7 +43,7 @@ export class ProductService {
 
   deleteProductService = async (id) => {
     try {
-      await destroy(id);
+      return await destroy(id);
     } catch (error) {
       throw error;
     }

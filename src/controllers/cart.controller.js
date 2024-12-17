@@ -11,7 +11,7 @@ class CartController {
     // este enpodint se utiliza exclusivamente cuando se quiere leer la data del carrito
     // de la base de datos, si existiese
     try {
-      const idCart = parseInt(req.params.cid);
+      const idCart = req.params.cid;
       const cart = await readByIdCartService(idCart);
       return res.status(200).json({ data: cart, message: null });
     } catch (error) {
@@ -23,8 +23,11 @@ class CartController {
     try {
       // este endpoint se ejecuta cuando el usuario se logea, se crea un carrito en la base de datos con la data del carrito
       // del cliente si fuese necesario
-      const create = await createCartService();
-      return res.status(200).json({ data: null, message: create.message });
+      const data = req.body;
+      const create = await createCartService(data);
+      return res
+        .status(200)
+        .json({ data: { id: create._id }, message: 'Carrito Creado' });
     } catch (error) {
       next(error);
     }
@@ -32,17 +35,19 @@ class CartController {
 
   updateQuantityProduct = async (req, res, next) => {
     try {
-      const idProduct = parseInt(req.params.pid);
-      const idCart = parseInt(req.params.cid);
+      const idProduct = req.params.pid;
+      const idCart = req.params.cid;
       const newQuantity = req.body.quantity;
       const productQuantityUpdate = await updateCartService(
         idProduct,
         idCart,
         newQuantity
       );
-      return res
-        .status(200)
-        .json({ data: null, message: productQuantityUpdate.message });
+
+      return res.status(200).json({
+        data: productQuantityUpdate,
+        message: 'Cantidad del producto actualizada en el carrito',
+      });
     } catch (error) {
       next(error);
     }

@@ -9,41 +9,47 @@ import {
 export class CartService {
   readByIdCartService = async (idCart) => {
     try {
-      await readById(idCart);
+      return await readById(idCart);
     } catch (error) {
       throw error;
     }
   };
-  createCartService = async () => {
+  createCartService = async (data) => {
     try {
-      await create();
+      return await create(data);
     } catch (error) {
       throw error;
     }
   };
-  updateCartService = async (idProduct, idCart, newquantity = null) => {
+  updateCartService = async (idProduct, idCart, newQuantity = null) => {
     try {
-      const cart = this.readByIdCartService(idCart);
-      let quantity = 1;
-      const validate = cart.find((prod) => prod._id === idProduct);
+      const { product } = await this.readByIdCartService(idCart);
+
+      const validate = product.find(
+        (prod) => prod.product_id._id.toString() === idProduct
+      );
+
       if (validate) {
-        if (newquantity) {
-          quantity = newquantity;
+        if (newQuantity !== null) {
+          validate.quantity = newQuantity;
+        } else {
+          validate.quantity += 1;
         }
-        quantity = quantity + 1;
+      } else {
+        product.push({
+          product_id: idProduct,
+          quantity: newQuantity || 1,
+        });
       }
-      const data = {
-        product_id: idProduct,
-        quantity,
-      };
-      await update(idCart, data);
+
+      return await update(idCart, { product });
     } catch (error) {
       throw error;
     }
   };
   destroyProdInCartService = async (idProduct, idCart) => {
     try {
-      await destroyProductInCart(idProduct, idCart);
+      return await destroyProductInCart(idProduct, idCart);
     } catch (error) {
       throw error;
     }
@@ -51,7 +57,7 @@ export class CartService {
 
   deleteCartService = async (idCart) => {
     try {
-      await destroy(idCart);
+      return await destroy(idCart);
     } catch (error) {
       throw error;
     }

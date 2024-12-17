@@ -9,7 +9,7 @@ export class Manager {
       const record = await this.model.create(data);
       return record;
     } catch (error) {
-      InternalServerError(error.message);
+      throw new InternalServerError(error.message);
     }
   };
 
@@ -18,7 +18,7 @@ export class Manager {
       const record = this.model.findAll();
       return record;
     } catch (error) {
-      InternalServerError(error.message);
+      throw new InternalServerError(error.message);
     }
   };
   readById = async (id) => {
@@ -26,7 +26,7 @@ export class Manager {
       const record = this.model.findOne({ _id: id });
       return record;
     } catch (error) {
-      InternalServerError(error.message);
+      throw new InternalServerError(error.message);
     }
   };
   destroy = async (id) => {
@@ -44,7 +44,7 @@ export class Manager {
       });
       return updateRecord;
     } catch (error) {
-      InternalServerError(error.message);
+      throw new InternalServerError(error.message);
     }
   };
 }

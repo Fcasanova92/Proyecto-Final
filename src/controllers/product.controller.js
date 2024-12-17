@@ -5,6 +5,7 @@ import {
   updateProductService,
   deleteProductService,
 } from '../services/product.service.js';
+import { NotFound } from '../utils/errors.js';
 
 class ProductController {
   getProduct = async (req, res, next) => {
@@ -15,7 +16,7 @@ class ProductController {
       const sort = req.query.sort || 'desc';
       const products = await getProductService(limit, page, query, sort);
       if (products.payload.length === 0) {
-        throw new BadRequest('no existen productos');
+        throw new NotFound('no existen productos', products.payload);
       }
       return res.status(200).json({ data: products, message: null });
     } catch (error) {
@@ -36,10 +37,10 @@ class ProductController {
   create = async (req, res, next) => {
     try {
       const data = req.body;
-      const createProduct = await createProductService(data);
+      const { _id } = await createProductService(data);
       return res
         .status(200)
-        .json({ data: null, message: createProduct.message });
+        .json({ data: { id: _id }, message: 'Producto Guardado' });
     } catch (error) {
       next(error);
     }
@@ -47,10 +48,12 @@ class ProductController {
 
   update = async (req, res, next) => {
     try {
-      const id = parseInt(req.params.pid);
+      const id = req.params.pid;
       const updateData = req.body;
-      const prodUpdate = await updateProductService(id, updateData);
-      return res.status(200).json({ data: null, message: prodUpdate.message });
+      const { _id } = await updateProductService(id, updateData);
+      return res
+        .status(200)
+        .json({ data: { id: _id }, message: 'Producto Actualizado' });
     } catch (error) {
       next(error);
     }
@@ -58,9 +61,11 @@ class ProductController {
 
   deleteProd = async (req, res, next) => {
     try {
-      const id = parseInt(req.params.pid);
-      const prodDelete = await deleteProductService(id);
-      return res.status(200).json({ data: null, message: prodDelete.message });
+      const id = req.params.pid;
+      await deleteProductService(id);
+      return res
+        .status(200)
+        .json({ data: null, message: 'Producto Eliminado' });
     } catch (error) {
       next(error);
     }
