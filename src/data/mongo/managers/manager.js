@@ -15,7 +15,7 @@ export class Manager {
 
   read = async () => {
     try {
-      const record = this.model.findAll();
+      const record = await this.model.find();
       return record;
     } catch (error) {
       throw new InternalServerError(error.message);
@@ -23,7 +23,7 @@ export class Manager {
   };
   readById = async (id) => {
     try {
-      const record = this.model.findOne({ _id: id });
+      const record = await this.model.findOne({ _id: id });
       return record;
     } catch (error) {
       throw new InternalServerError(error.message);
@@ -31,10 +31,10 @@ export class Manager {
   };
   destroy = async (id) => {
     try {
-      const deleteRecord = this.model.deleteOne({ _id: id });
+      const deleteRecord = await this.model.deleteOne({ _id: id });
       return deleteRecord;
     } catch (error) {
-      InternalServerError(error.message);
+      throw new InternalServerError(error.message);
     }
   };
   update = async (id, data) => {

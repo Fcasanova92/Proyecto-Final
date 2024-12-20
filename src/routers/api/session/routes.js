@@ -30,3 +30,5 @@ router.get('/online', passportCall('isOnline'), isOnline);
 router.post('/logout', passportCall('signout'), logout);
 
 router.get('/admin', passportCall('admin'), admin);
+
+router.post('/recovery-password', passportCall('admin'), admin);

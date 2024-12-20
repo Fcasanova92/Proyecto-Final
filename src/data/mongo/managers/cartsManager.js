@@ -8,21 +8,21 @@ export class CartsManager extends Manager {
     super(cartModel);
   }
 
-  async destroyProductInCart(pid, cid) {
+  destroyProductInCart = async (pid, cid) => {
     try {
       const deleteRecord = await this.model.updateOne(
         { _id: cid }, // Encuentra el carrito por su id
         {
-          $pull: { idProduct: pid }, // Elimina el producto del array de productos
+          $pull: { product: { product_id: pid } }, // Elimina el producto del array de productos
         }
       );
       if (deleteRecord) {
         return { message: 'Se logró eliminar correctamente el producto.' };
       }
     } catch (error) {
-      throw InternalServerError(error.message);
+      throw new InternalServerError(error.message);
     }
-  }
+  };
 }
 
 export const { read, create, destroyProductInCart, readById, destroy, update } =

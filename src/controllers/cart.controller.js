@@ -55,8 +55,8 @@ class CartController {
 
   deleteProdInCart = async (req, res, next) => {
     try {
-      const idCart = parseInt(req.params.cid);
-      const idProduct = parseInt(req.params.pid);
+      const idCart = req.params.cid;
+      const idProduct = req.params.pid;
       const delProd = await destroyProdInCartService(idProduct, idCart);
 
       return res.status(200).json({ data: null, message: delProd.message });
@@ -67,9 +67,11 @@ class CartController {
 
   deleteCart = async (req, res, next) => {
     try {
-      const idCart = parseInt(req.params.cid);
-      const delCart = await deleteCartService(idCart);
-      return res.status(200).json({ data: null, message: delCart.message });
+      const idCart = req.params.cid;
+      await deleteCartService(idCart);
+      return res
+        .status(200)
+        .json({ data: null, message: 'Se elimino el carrito' });
     } catch (error) {
       next(error);
     }
