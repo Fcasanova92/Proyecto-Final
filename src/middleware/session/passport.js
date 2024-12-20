@@ -71,7 +71,6 @@ passport.use(
     async (req, email, password, done) => {
       try {
         const user = await readUserByEmailService(email);
-        console.log(user);
         if (!user) {
           const error = new NotAuthorized(AUTH_ERROR_MESSAGES.USER_NOT_FOUND);
           error.field = 'email';
@@ -190,12 +189,14 @@ passport.use(
     {
       jwtFromRequest: ExtractJwt.fromExtractors([cookiesExtractor]),
       secretOrKey: SECRET_KEY,
+      passReqToCallback: true,
     },
-    async (data, done) => {
+    async (req, data, done) => {
       try {
         const { id } = data.user;
         const { newPassword, confirmNewPassword } = req.body;
         const user = await readUserByIdService(id);
+
         if (!user) {
           return done(null, false, { message: 'User not found' });
         }
@@ -204,12 +205,14 @@ passport.use(
             message: 'Las contrasenas deben de coincidir',
           });
         }
-        if (newPassword == !user.passwordDb) {
+
+        const verify = await comparePassword(newPassword, user.password);
+        if (verify) {
           return done(null, false, {
             message: 'La nueva contrasena no puede ser igual a la antigua',
           });
         }
-        const hashPass = await hashPassword(password);
+        const hashPass = await hashPassword(newPassword);
         await updateUserService(user._id, { password: hashPass });
         return done(null, { uid: null });
       } catch (error) {
