@@ -69,6 +69,22 @@ class SessionController {
       return next(error);
     }
   };
+
+  recoveryPassowrd = (req, res, next) => {
+    try {
+      return res.status(200).json({ message: AUTH_MESSAGES.PASSWORD_UPDATE });
+    } catch (error) {
+      return next(error);
+    }
+  };
 }
 const controller = new SessionController();
-export const { login, register, logout, isOnline, current, admin } = controller;
+export const {
+  login,
+  register,
+  logout,
+  isOnline,
+  current,
+  admin,
+  recoveryPassowrd,
+} = controller;

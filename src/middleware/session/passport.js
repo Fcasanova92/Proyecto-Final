@@ -184,4 +184,39 @@ passport.use(
   )
 );
 
+passport.use(
+  'recovery-password',
+  new JwtStrategy(
+    {
+      jwtFromRequest: ExtractJwt.fromExtractors([cookiesExtractor]),
+      secretOrKey: SECRET_KEY,
+    },
+    async (data, done) => {
+      try {
+        const { id } = data.user;
+        const { newPassword, confirmNewPassword } = req.body;
+        const user = await readUserByIdService(id);
+        if (!user) {
+          return done(null, false, { message: 'User not found' });
+        }
+        if (newPassword !== confirmNewPassword) {
+          return done(null, false, {
+            message: 'Las contrasenas deben de coincidir',
+          });
+        }
+        if (newPassword == !user.passwordDb) {
+          return done(null, false, {
+            message: 'La nueva contrasena no puede ser igual a la antigua',
+          });
+        }
+        const hashPass = await hashPassword(password);
+        await updateUserService(user._id, { password: hashPass });
+        return done(null, { uid: null });
+      } catch (error) {
+        return done(error);
+      }
+    }
+  )
+);
+
 export default passport;

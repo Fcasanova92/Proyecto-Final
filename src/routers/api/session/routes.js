@@ -7,6 +7,7 @@ import {
   isOnline,
   logout,
   admin,
+  recoveryPassowrd,
 } from '../../../controllers/session.controller.js';
 
 import { passportCall } from '../../../middleware/session/passportCall.js';
@@ -31,4 +32,8 @@ router.post('/logout', passportCall('signout'), logout);
 
 router.get('/admin', passportCall('admin'), admin);
 
-router.post('/recovery-password', passportCall('admin'), admin);
+router.post(
+  '/recovery-password',
+  passportCall('recovery-password'),
+  recoveryPassowrd
+);
