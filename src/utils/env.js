@@ -24,3 +24,7 @@ export const SECRET_KEY = process.env.SECRET_KEY;
 export const PORT = process.env.PORT;
 
 export const URL = env === EnvEnum.PROD ? `${BASE_URL}` : `${BASE_URL}:${PORT}`;
+
+export const EMAIL = process.env.EMAIL;
+
+export const PASSWORD = process.env.PASSWORD;
