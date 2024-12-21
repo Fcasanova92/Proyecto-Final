@@ -3,6 +3,7 @@ import {
   InternalServerError,
   NotFound,
   NotAuthorized,
+  NotVerify,
 } from '../../utils/errors.js';
 
 export const errorHandler = (err, req, res, next) => {
@@ -27,6 +28,12 @@ export const errorHandler = (err, req, res, next) => {
   if (err instanceof NotAuthorized) {
     return res
       .status(401)
+      .json({ name: err.name, message: err.message, dataError: err.field });
+  }
+
+  if (err instanceof NotVerify) {
+    return res
+      .status(403)
       .json({ name: err.name, message: err.message, dataError: err.field });
   }
 

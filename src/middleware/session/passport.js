@@ -8,7 +8,7 @@ import { AUTH_ERROR_MESSAGES } from '../../constant/authErrorMessage.js';
 import { comparePassword, hashPassword } from '../../utils/byScript.js';
 import { ROLE } from '../../constant/role.js';
 import { uidGenerator, verifyCodeGenerator } from '../../utils/uidGenerator.js';
-import { NotAuthorized } from '../../utils/errors.js';
+import { NotAuthorized, NotVerify } from '../../utils/errors.js';
 import {
   createService,
   readUserByCodeService,
@@ -111,8 +111,8 @@ passport.use(
           return done(error);
         }
         if (!user.verify) {
-          const error = new NotAuthorized(AUTH_ERROR_MESSAGES.VERIFY_CODE);
-          error.statusCode = 401;
+          const error = new NotVerify(AUTH_ERROR_MESSAGES.VERIFY_CODE);
+          error.statusCode = 403;
           error.field = null;
           return done(error);
         }

@@ -21,7 +21,6 @@ export const handleAuthentication = async (formData) => {
       } else {
         const message = response.message;
 
-        console.log("el error es", response.id)
         const fieldIdError = response.id;
 
         styleErrorField(message, fieldIdError, type, button);

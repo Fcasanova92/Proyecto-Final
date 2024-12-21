@@ -31,3 +31,11 @@ export class NotAuthorized extends Error {
     this.status = 401;
   }
 }
+
+export class NotVerify extends Error {
+  constructor(message) {
+    super(message);
+    this.name = 'NotVerify';
+    this.status = 403;
+  }
+}

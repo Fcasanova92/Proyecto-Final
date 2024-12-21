@@ -7,16 +7,19 @@ export const styleErrorField = (message, id, type, button) => {
 
   button.disabled = false;
 
-  inputError.style.borderColor = '#EF5350';
+  if (inputError) {
+    inputError.style.borderColor = '#EF5350';
 
-  errorMessageLabel.style.display = inputError.id === `${id}` ? 'flex' : 'none';
+    errorMessageLabel.style.display =
+      inputError.id === `${id}` ? 'flex' : 'none';
+  }
 
   errorMessageLabel.innerHTML = message;
 
   errorMessageLabel.style.color = 'red';
 
   setTimeout(() => {
-    errorMessageLabel.style.display =
-      inputError.id === `${id}` ? 'none' : 'flex';
+    errorMessageLabel.style.display = 'none';
+    inputError.id === `${id}` ? 'none' : 'flex';
   }, 2500);
 };

@@ -19,6 +19,11 @@ export const login = async (user) => {
         message: data.message,
       };
     }
+    return {
+      status: false,
+      id: data.dataError,
+      message: data.message,
+    };
   } catch (error) {
     console.error('Error:', error);
   }
