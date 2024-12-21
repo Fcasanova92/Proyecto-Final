@@ -1,0 +1,18 @@
+<section>
+        <section id="user-session">  
+            <form id="verify" class="fx-deep-shadow-static" method="post">
+                <div class="headline">
+                    <h3 class="title-c">{{title}}</h3>
+                    <i class="fa-solid fa-right-to-bracket"></i>
+                </div>
+                <label class="message" for="email"></label>
+                <input id="email" type="text" placeholder="Email..." data-validate="false" data-form="verify">     
+                <label class="message" for="code"></label>
+                <input id="code" type="text" placeholder="Code" data-validate="false" data-form="verify">
+                <button id="send" class="trigger-a" type="submit" data-id="verify" >Verify</button>
+                <a class="link-c" href="">Olvidaste tu codigo? clickea para volver a enviartelo</a>
+                <label class="message" for="send"></label>
+            </form>
+        </section>
+</section>
+<script type="module" src="/js/form/verifyForm.js"></script>

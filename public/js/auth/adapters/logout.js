@@ -1,16 +1,14 @@
-export const login = async (user) => {
-  try {
-    const response = await fetch('/api/auth/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+import { redirectLogout } from '../helpers/redirectLogout.js';
 
-      body: JSON.stringify(user),
+export const logout = async () => {
+  console.log('estoy realizando el logout');
+  try {
+    const response = await fetch('/api/auth/logout', {
+      method: 'POST',
     });
     const data = await response.json();
     if (response.ok) {
-      return { status: true, message: data.message };
+      redirectLogout();
     }
     if (response.status === 401) {
       return {

@@ -8,6 +8,7 @@ import {
   logout,
   admin,
   recoveryPassowrd,
+  verifyRegister,
 } from '../../../controllers/session.controller.js';
 
 import { passportCall } from '../../../middleware/session/passportCall.js';
@@ -37,3 +38,5 @@ router.post(
   passportCall('recovery-password'),
   recoveryPassowrd
 );
+
+router.post('/verify-register', passportCall('verify'), verifyRegister);

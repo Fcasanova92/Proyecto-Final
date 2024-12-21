@@ -16,9 +16,12 @@ export const deleteProducInCart = async (e) => {
 
   // aca tambien tengo que enviarle el cid del carrito para actualizar los productos del carrito
 
-  const response = await fetch(`/api/carts/1/products/${idProductToDelete}`, {
-    method: 'DELETE',
-  });
+  const response = await fetch(
+    `/api/carts/67670b7e72fd3b14db0d0606/products/${idProductToDelete}`,
+    {
+      method: 'DELETE',
+    }
+  );
 
   if (response.ok) {
     const data = await response.json();

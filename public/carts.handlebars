@@ -5,20 +5,20 @@
             {{#if products.length}}
             <ul class="product-list">
                 {{#each products}}
-                <li class="product-item" id="{{this.idProduct.pid}}">
-                    <img src="{{this.idProduct.image}}" alt="{{this.idProduct.title}}" class="product-image">
+                <li class="product-item" id="{{this.product_id._id}}">
+                    <img src="{{this.product_id.image}}" alt="{{this.product_id.title}}" class="product-image">
                     <div class="product-details">
-                        <h2>{{this.idProduct.title}}</h2>
-                        <p>{{this.idProduct.description}}</p>
+                        <h2>{{this.product_id.title}}</h2>
+                        <p>{{this.product_id.description}}</p>
                         <div style="display: flex; flex-flow:row, column-gap: 2vw">
                             <p>Precio: $</p>
-                            <p class="priceProduct">{{this.idProduct.price}}</p>
+                            <p class="priceProduct">{{this.product_id.price}}</p>
                         </div>
                         <div class="cartQuantity">
-                            <button class="modifyQuantity" id="decrease" data-id="{{this.idProduct.pid}}">-</button>
-                            <p data-id="{{this.idProduct.pid}}" class="quantity">Cantidad: {{this.quantity}}</p>
-                            <button class="modifyQuantity" id="increase" data-id="{{this.idProduct.pid}}">+</button>
-                            <button class="delete-btn" data-id="{{this.idProduct.pid}}">
+                            <button class="modifyQuantity" id="decrease" data-id="{{this.product_id._id}}">-</button>
+                            <p data-id="{{this.product_id._id}}" class="quantity">Cantidad: {{this.quantity}}</p>
+                            <button class="modifyQuantity" id="increase" data-id="{{this.product_id._id}}">+</button>
+                            <button class="delete-btn" data-id="{{this.product_id._id}}">
                                 <i class="fa-solid fa-trash"></i>
                             </button>
                         </div>
@@ -61,6 +61,4 @@
         button.onclick = deleteProducInCart;
 
     })
-    
-
 </script>

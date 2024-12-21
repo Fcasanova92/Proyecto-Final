@@ -34,6 +34,16 @@ const userSchema = new mongoose.Schema({
     required: true,
     default: false,
   },
+  verifyCode: {
+    type: String,
+    required: true,
+    default: '',
+  },
+  verify: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
 });
 
 export const userModel = mongoose.model(userCollection, userSchema);

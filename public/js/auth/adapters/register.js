@@ -17,7 +17,7 @@ export const register = async (user) => {
     if (response.status === 401) {
       return {
         status: false,
-        id: data.field,
+        id: data.dataError,
         message: data.message,
       };
     }

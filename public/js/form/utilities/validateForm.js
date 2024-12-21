@@ -20,8 +20,6 @@ export const getValidateDataform = (event) => {
     case 'register':
       const checkboxValidate = validateCheckbox(checkbox);
 
-      console.log(checkboxValidate);
-
       if (data && checkboxValidate) {
         return { data, type: formType, inputsArray };
       }
@@ -35,6 +33,12 @@ export const getValidateDataform = (event) => {
       break;
 
     case 'contact':
+      if (data) {
+        return { data, type: formType, inputsArray };
+      }
+      break;
+
+    case 'verify':
       if (data) {
         return { data, type: formType, inputsArray };
       }

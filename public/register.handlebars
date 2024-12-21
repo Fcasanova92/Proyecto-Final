@@ -2,7 +2,7 @@
   <section id="user-session">
     <form id="register" class="fx-deep-shadow-static" method="post">
       <div class="headline">
-        <h2 class="title-c">Registro</h2>
+        <h2 class="title-c">{{title}}</h2>
         <i class="fa-regular fa-address-card"></i>
       </div>
       
@@ -25,6 +25,7 @@
       <label class="with-check-icon" for="condition">Acepto términos y condiciones</label>
       
       <button id="send" class="trigger-a" type="submit" data-id="register">Register</button>
+       <p id="succesRegister" style="display: none;" class="message">Hemos enviado los detalles de tu cuenta a tu correo electrónico. Revisa tu bandeja de entrada (o la carpeta de spam si no lo encuentras).</p>
       <label class="messageForm" for="send"></label>
       <a class="link-c" href="/auth/login">¿Tienes cuenta? Inicia sesión aquí</a>
     </form>

@@ -8,7 +8,7 @@ export const router = Router();
 router.get('/', async (req, res, next) => {
   try {
     const response = await fetch('http://localhost:8080/api/products');
-    const { products } = await response.json();
+    const { data } = await response.json();
 
     const carrito = req.cookies.carrito || [];
     if (carrito.length > 0) {
@@ -17,7 +17,6 @@ router.get('/', async (req, res, next) => {
         payload,
       });
     }
-
     // Crear la cookie si no existe
     res
       .cookie('carrito', carrito, {
@@ -27,7 +26,7 @@ router.get('/', async (req, res, next) => {
       })
       .render('home', {
         title: 'Lista de Productos',
-        products,
+        products: data,
       });
   } catch (error) {
     next('Error al cargar productos');
@@ -54,14 +53,30 @@ router.get('/auth/register', async (req, res, next) => {
   }
 });
 
+router.get('/auth/verify', async (req, res, next) => {
+  try {
+    res.render('verifyRegister', {
+      title: 'Verificacion',
+    });
+  } catch (error) {
+    next('Error al cargar el registro');
+  }
+});
+
 router.get('/carts/:cid?', async (req, res, next) => {
   try {
-    const cid = req.params.cid || 1;
+    const cid = req.params.cid || '67670b7e72fd3b14db0d0606';
     const products = await fetch(`http://localhost:8080/api/carts/${cid}`);
+
     const cartsData = await products.json();
+
+    const productLista = cartsData.data.product;
+
+    console.log(productLista)
+
     res.render('carts', {
       title: 'Productos del carrito',
-      products: cartsData.products || [],
+      products: cartsData.data.product || [],
       cid: cid,
     });
   } catch (error) {

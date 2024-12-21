@@ -1,10 +1,11 @@
-export const loadUserinfo = (data) => {
-  const name = document.querySelector('#name');
-  const surname = document.querySelector('#surname');
+import { logout } from '../auth/adapters/logout.js';
 
-  if (name && surname) {
-    name.innerHTML = data.username;
-    surname.innerHTML = data.surname;
+export const loadUserinfo = (data) => {
+  const nameElement = document.querySelector('#name');
+  const logoutElement = document.querySelector('.logout');
+  if (nameElement) {
+    nameElement.innerHTML = data.first_name;
+    logoutElement.addEventListener('click', logout);
   } else {
     console.error('Elementos de nombre y apellido no encontrados');
   }

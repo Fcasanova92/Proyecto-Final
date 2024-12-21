@@ -4,9 +4,15 @@ import { handleAuthenticationError } from './validateAndStyleField.js';
 
 export const validateInput = ({ target }) => {
   const { id, value } = target;
-  const { text, telephone, email, consulta, password } = regexTypes;
-  const { textError, telephoneError, emailError, passwordError, empty } =
-    errors;
+  const { text, telephone, email, consulta, password, code } = regexTypes;
+  const {
+    textError,
+    telephoneError,
+    emailError,
+    passwordError,
+    empty,
+    codeError,
+  } = errors;
 
   const inputSelected = document.querySelector(`input[id=${id}]`);
   const alertValidate = document.querySelector(`label[for=${id}]`);
@@ -18,6 +24,7 @@ export const validateInput = ({ target }) => {
     surname: { regex: text, error: textError },
     consulta: { regex: consulta, error: textError },
     password: { regex: password, error: passwordError },
+    code: { regex: code, error: codeError },
   };
 
   const { regex, error } = config[id] || {};

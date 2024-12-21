@@ -6,4 +6,6 @@ export const AUTH_MESSAGES = {
   SIGNOUT_SUCCESS: 'User signed out!',
   ADMIN_SUCCESS: 'User is admin',
   PASSWORD_UPDATE: 'Contrasena actualizada',
+  VERIFY_REGISTER: 'Verificacion exitosa',
+  USER_UPDATE: 'Los datos del usuario fueron actualizado',
 };

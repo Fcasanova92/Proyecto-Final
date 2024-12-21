@@ -1,26 +1,7 @@
 export const loginComponent = `
-     <div id="user-session" style="display: flex; flex-flow: column; column-gap: 1vh; justify-content: center; align-items: center;">
-         <a class="link-a" style="display: flex; flex-flow: row; align-items: center; justify-content: center;"><img 
-       src="https://api.dicebear.com/8.x/lorelei/svg?size=48"
-       alt="avatar"
-     /><i class="fa-solid fa-bars" style=" cursor: pointer"></i></a>
-         <div style="display: flex; flex-flow: row  ; justify-content: center; column-gap: 0.3vw;">
-             <p class="data" id="name" style="color: aliceblue; font-size: x-small;"></p>
-             <p class="data" id="surname" style="color: aliceblue; font-size: x-small;"></p>
-    </div>
-     </div>
-
-     <nav id="secondary" >
-             <ul class="menu">
-                <li>
-                    <a class="link-a" href="/profile">Perfil</a>
-                </li>
-                 <li>
-                    <a class="link-a" href="/favoritos" >Favoritos<i class="fa-regular fa-heart"></i></a>
-                 </li>
-                 <li>
-                   <a class="link-a" href="#" onclick="logout()">Salir<i class="fa-regular fa-circle-xmark"></i></i></a>
-                 </li>
-             </ul>
-     </nav>
+  <div id="user-session" style="display: flex; align-items: center; justify-content: center; column-gap: 1vh; padding: 10px; background-color: #ffffff; border-radius: 8px; box-shadow: none; border: none;">
+    <img src="https://api.dicebear.com/8.x/lorelei/svg?size=48" alt="avatar" style="border-radius: 50%;"/>
+    <p id="name" style="color: #333; font-size: 16px; margin: 0;">Nombre del Usuario</p>
+    <button class='logout' onclick="redirectLogout()" style="background-color: #ff5c5c; border: none; padding: 8px 16px; color: white; font-size: 14px; border-radius: 5px; cursor: pointer;">Salir</button>
+  </div>
 `;

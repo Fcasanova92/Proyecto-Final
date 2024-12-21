@@ -7,7 +7,7 @@ import { cookiesExtractor } from '../../utils/cookies.js';
 import { AUTH_ERROR_MESSAGES } from '../../constant/authErrorMessage.js';
 import { comparePassword, hashPassword } from '../../utils/byScript.js';
 import { ROLE } from '../../constant/role.js';
-import { uidGenerator } from '../../utils/uidGenerator.js';
+import { uidGenerator, verifyCodeGenerator } from '../../utils/uidGenerator.js';
 import { NotAuthorized } from '../../utils/errors.js';
 import {
   createService,
@@ -15,6 +15,8 @@ import {
   readUserByIdService,
   updateUserService,
 } from '../../services/user.service.js';
+import { emailService } from '../../services/mail/nodemailer.service.js';
+import { welcomeMessage } from '../../services/mail/model/welcomeMessage.js';
 
 passport.use(
   'register',
@@ -40,23 +42,61 @@ passport.use(
 
         const uid = uidGenerator();
 
-        const newUser = await createService({
+        const verifyCode = verifyCodeGenerator();
+
+        const { name, surname, role } = req.body;
+
+        await createService({
           uid,
           email,
           password: hashPass,
-          first_name: req.body.first_name || 'Default Name',
-          last_name: req.body.last_name || 'Default Surname',
-          role: req.body.role || 'user',
+          first_name: name || 'Default Name',
+          last_name: surname || 'Default Surname',
+          role: role || 'user',
+          verifyCode,
+          verify: false,
         });
+        const message = welcomeMessage(name, verifyCode);
+        // se envia el email de bienvenida
+        await emailService.sendWelcomeEmail(email, message);
+        return done(null, { uid: null });
+      } catch (error) {
+        return done(error);
+      }
+    }
+  )
+);
 
-        const data = {
-          uid: newUser.uid,
-          role: newUser.role,
-        };
+passport.use(
+  'verify',
+  new LocalStrategy(
+    {
+      passReqToCallback: true,
+      usernameField: 'email',
+      passwordField: 'code',
+      session: false,
+    },
+    async (req, email, code, done) => {
+      try {
+        const user = await readUserByEmailService(email);
+        if (!user) {
+          const error = new NotAuthorized(AUTH_ERROR_MESSAGES.USER_NOT_FOUND);
+          error.field = 'email';
+          error.statusCode = 401;
+          return done(error);
+        }
 
-        const token = generateToken(data);
+        if (code !== user.verifyCode) {
+          const error = new NotAuthorized(
+            AUTH_ERROR_MESSAGES.ERROR_VERIFY_CODE
+          );
+          error.field = 'code';
+          error.statusCode = 401;
+          return done(error);
+        }
 
-        return done(null, token);
+        await updateUserService(user._id, { verify: true });
+        return done(null, { uid: null });
       } catch (error) {
         return done(error);
       }
@@ -76,6 +116,12 @@ passport.use(
           error.field = 'email';
           return done(error);
         }
+        if (!user.verify) {
+          const error = new NotAuthorized(AUTH_ERROR_MESSAGES.VERIFY_CODE);
+          error.statusCode = 401;
+          error.field = null;
+          return done(error);
+        }
         const passwordForm = password;
         const passwordDb = user.password;
         const verify = await comparePassword(passwordForm, passwordDb);
@@ -93,6 +139,7 @@ passport.use(
         };
         const token = generateToken(data);
         await updateUserService(user._id, { online: true });
+
         return done(null, token);
       } catch (error) {
         return done(error);

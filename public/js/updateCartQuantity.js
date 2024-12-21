@@ -5,7 +5,8 @@ export const updateCartQuantity = async () => {
   try {
     const quantityElement = document.querySelector('.quantityProductInCart');
 
-    const cid = quantityElement.getAttribute('data-id') || 6;
+    const cid =
+      quantityElement.getAttribute('data-id') || '67670b7e72fd3b14db0d0606';
 
     // enviar el cid si el usuario esta logeado, va a permitar cargar dinamicamente, se puede obtener de
     // alguna cookie que se almacende solamente el cid del carrito
@@ -19,7 +20,11 @@ export const updateCartQuantity = async () => {
     if (response.ok) {
       const data = await response.json();
 
-      quantityElement.textContent = data.products.length;
+      const {
+        data: { product },
+      } = data;
+
+      quantityElement.textContent = product.length;
 
       const quantityElementNumber = parseInt(quantityElement.textContent);
 

@@ -1,3 +1,4 @@
+import { USER_MESSAGES } from '../constant/userMessage.js';
 import {
   readUserByEmailService,
   readUserByIdService,
@@ -9,7 +10,7 @@ class UserController {
     try {
       const { id } = req.params;
       const userData = await readUserByIdService(id);
-      return res.status(200).json({ userData });
+      return res.status(200).json({ data: userData, message: null });
     } catch (error) {
       next(error);
     }
@@ -19,7 +20,7 @@ class UserController {
     try {
       const { email } = req.body;
       const userData = await readUserByEmailService(email);
-      return res.status(200).json({ userData });
+      return res.status(200).json({ data: userData, message: null });
     } catch (error) {
       next(error);
     }
@@ -29,8 +30,10 @@ class UserController {
     try {
       const { id } = req.params;
       const updateData = req.body;
-      const response = await updateUserService(id, updateData);
-      return res.status(200).json({ message: response.message });
+      await updateUserService(id, updateData);
+      return res
+        .status(200)
+        .json({ data: null, message: USER_MESSAGES.USER_UPDATE });
     } catch (error) {
       next(error);
     }
@@ -39,8 +42,10 @@ class UserController {
   deleteUser = async (req, res, next) => {
     try {
       const { id } = req.params;
-      const response = await destroyUserService(id);
-      return res.status(200).json({ message: response.message });
+      await destroyUserService(id);
+      return res
+        .status(200)
+        .json({ data: null, message: USER_MESSAGES.USER_DELETE });
     } catch (error) {
       next(error);
     }

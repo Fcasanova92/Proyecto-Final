@@ -30,7 +30,7 @@ export const handlerQuantity = async ({ target }) => {
   // aca tambien tengo que enviarle el cid del carrito para actualizar los productos del carrito
 
   const response = await fetch(
-    `http://localhost:8080/api/carts/1/products/${idProduct}`,
+    `http://localhost:8080/api/carts/67670b7e72fd3b14db0d0606/products/${idProduct}`,
     {
       method: 'PUT',
       headers: {
