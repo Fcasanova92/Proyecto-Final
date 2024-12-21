@@ -5,19 +5,18 @@ export const verifyRegister = async (user) => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(user),
+      body: JSON.stringify({ email: 'null', ...user }),
     });
     const data = await response.json();
     if (response.ok) {
       return { status: true, message: data.message };
     }
-    if (response.status === 401) {
-      return {
-        status: false,
-        id: data.dataError,
-        message: data.message,
-      };
-    }
+
+    return {
+      status: false,
+      id: data.dataError,
+      message: data.message,
+    };
   } catch (error) {
     console.error('Error:', error);
   }

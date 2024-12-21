@@ -1,18 +1,24 @@
 <section>
-        <section id="user-session">  
-            <form id="verify" class="fx-deep-shadow-static" method="post">
-                <div class="headline">
-                    <h3 class="title-c">{{title}}</h3>
-                    <i class="fa-solid fa-right-to-bracket"></i>
-                </div>
-                <label class="message" for="email"></label>
-                <input id="email" type="text" placeholder="Email..." data-validate="false" data-form="verify">     
-                <label class="message" for="code"></label>
-                <input id="code" type="text" placeholder="Code" data-validate="false" data-form="verify">
-                <button id="send" class="trigger-a" type="submit" data-id="verify" >Verify</button>
-                <a class="link-c" href="">Olvidaste tu codigo? clickea para volver a enviartelo</a>
-                <label class="message" for="send"></label>
-            </form>
-        </section>
+
+    <div style="background-color: #ffffff; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); padding: 30px; width: 100%; max-width: 400px; text-align: center; margin: 50px auto;">
+        <h1 style="color: #4CAF50; font-size: 24px; margin-bottom: 20px;">¡Registro Exitoso!</h1>
+        <p style="color: #555; font-size: 16px; margin-bottom: 30px;">Tu registro fue exitoso. Hemos enviado un código de verificación a tu correo electrónico.</p>
+        <p style="color: #555; font-size: 16px; margin-bottom: 30px;">Por favor, ingresa el código de verificación a continuación:</p>
+        
+        <form id="verify" class="fx-deep-shadow-static" method="post">
+            <label class="message" for="code" style="display: block; margin-bottom: 8px; font-size: 14px; color: #555;"></label>
+            <input id="code" type="text" placeholder="Code" data-validate="false" data-form="verify" style="padding: 12px; font-size: 16px; width: 100%; border: 2px solid #ddd; border-radius: 4px; margin-bottom: 20px; box-sizing: border-box;">
+            <button id="send" class="trigger-a" type="submit" data-id="verify" 
+                style=style="background-color: #4CAF50; color: white; border: none; padding: 12px 20px; font-size: 16px; border-radius: 4px; cursor: pointer; width: 100%; margin-top: 10px;">
+            Verify
+        </button>
+        <label class="messageForm" for="send"></label>
+        </form>
+        <div style="font-size: 14px; color: #777; margin-top: 20px;">
+            <p>Si no recibiste el código, revisa tu carpeta de spam o solicita uno nuevo.</p>
+        </div>
+    </div>
+
 </section>
+
 <script type="module" src="/js/form/verifyForm.js"></script>

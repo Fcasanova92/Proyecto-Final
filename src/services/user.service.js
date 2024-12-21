@@ -4,6 +4,7 @@ import {
   readByEmail,
   destroy,
   update,
+  readByCode,
 } from '../data/mongo/managers/userManager.js';
 
 export class UserService {
@@ -29,6 +30,14 @@ export class UserService {
       throw error;
     }
   };
+
+  readUserByCodeService = async (code) => {
+    try {
+      return await readByCode(code);
+    } catch (error) {
+      throw error;
+    }
+  };
   updateUserService = async (id, updateData) => {
     try {
       return await update(id, updateData);
@@ -48,6 +57,7 @@ export class UserService {
 export const {
   readUserByEmailService,
   readUserByIdService,
+  readUserByCodeService,
   destroyUserService,
   createService,
   updateUserService,

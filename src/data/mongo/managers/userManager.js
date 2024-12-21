@@ -14,7 +14,23 @@ export class UserManager extends Manager {
       throw new InternalServerError(error.message);
     }
   }
+
+  async readByCode(code) {
+    try {
+      const user = await userModel.findOne({ verifyCode: code }).lean();
+      return user;
+    } catch (error) {
+      throw new InternalServerError(error.message);
+    }
+  }
 }
 
-export const { readByEmail, read, readById, destroy, update, create } =
-  new UserManager();
+export const {
+  readByEmail,
+  read,
+  readById,
+  destroy,
+  update,
+  create,
+  readByCode,
+} = new UserManager();

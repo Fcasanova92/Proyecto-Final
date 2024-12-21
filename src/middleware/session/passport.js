@@ -11,6 +11,7 @@ import { uidGenerator, verifyCodeGenerator } from '../../utils/uidGenerator.js';
 import { NotAuthorized } from '../../utils/errors.js';
 import {
   createService,
+  readUserByCodeService,
   readUserByEmailService,
   readUserByIdService,
   updateUserService,
@@ -78,15 +79,8 @@ passport.use(
     },
     async (req, email, code, done) => {
       try {
-        const user = await readUserByEmailService(email);
+        const user = await readUserByCodeService(code);
         if (!user) {
-          const error = new NotAuthorized(AUTH_ERROR_MESSAGES.USER_NOT_FOUND);
-          error.field = 'email';
-          error.statusCode = 401;
-          return done(error);
-        }
-
-        if (code !== user.verifyCode) {
           const error = new NotAuthorized(
             AUTH_ERROR_MESSAGES.ERROR_VERIFY_CODE
           );

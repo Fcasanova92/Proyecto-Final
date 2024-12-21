@@ -8,7 +8,6 @@ import { redirectUrl } from './redirectURL.js';
 
 export const handleAuthentication = async (formData) => {
   const { data, type } = formData;
-
   try {
     const button = document.getElementById('send');
     updateButtonState(button, type);
@@ -22,10 +21,11 @@ export const handleAuthentication = async (formData) => {
       } else {
         const message = response.message;
 
+        console.log("el error es", response.id)
         const fieldIdError = response.id;
 
         styleErrorField(message, fieldIdError, type, button);
-
+        console.log(type)
         resetButtonState(button, type);
       }
     }, 3000);
