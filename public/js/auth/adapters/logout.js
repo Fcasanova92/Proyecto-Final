@@ -1,7 +1,6 @@
 import { redirectLogout } from '../helpers/redirectLogout.js';
 
 export const logout = async () => {
-  console.log('estoy realizando el logout');
   try {
     const response = await fetch('/api/auth/logout', {
       method: 'POST',
