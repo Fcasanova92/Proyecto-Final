@@ -4,12 +4,14 @@ import {
 } from '../../form/styleUtils/styleButton.js';
 import { styleErrorField } from '../../form/styleUtils/styleFieldError.js';
 import { responseSelector } from '../adapters/responseSelector.js';
-import { redirectUrl } from './redirectURL.js';
+import { redirectUrlFailed } from './redirectUrlFailed.js';
+import { redirectUrlSucces } from './redirectUrlSucces.js';
 
 export const handleAuthentication = async (formData) => {
   const { data, type } = formData;
   try {
-    const button = document.getElementById('send');
+    const button = document.querySelector(`button[data-id="${type}"]#send`);
+
     updateButtonState(button, type);
 
     const response = await responseSelector(type, data);
@@ -17,15 +19,20 @@ export const handleAuthentication = async (formData) => {
     setTimeout(async () => {
       button.disabled = true;
       if (response.status) {
-        redirectUrl(type);
+        redirectUrlSucces(type);
+        if (type === 'resend') {
+          alert('Codigo Enviado');
+        }
       } else {
         const message = response.message;
 
         const fieldIdError = response.id;
 
         styleErrorField(message, fieldIdError, type, button);
-        console.log(type)
+
         resetButtonState(button, type);
+
+        redirectUrlFailed(type, message);
       }
     }, 3000);
   } catch (error) {

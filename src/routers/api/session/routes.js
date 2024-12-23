@@ -9,6 +9,7 @@ import {
   admin,
   recoveryPassowrd,
   verifyRegister,
+  newCodeVerify,
 } from '../../../controllers/session.controller.js';
 
 import { passportCall } from '../../../middleware/session/passportCall.js';
@@ -40,3 +41,4 @@ router.post(
 );
 
 router.post('/verify-register', passportCall('verify'), verifyRegister);
+router.post('/new-code-verify', passportCall('new-code-verify'), newCodeVerify);

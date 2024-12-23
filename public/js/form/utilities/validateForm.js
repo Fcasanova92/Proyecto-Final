@@ -43,6 +43,12 @@ export const getValidateDataform = (event) => {
         return { data, type: formType, inputsArray };
       }
       break;
+
+    case 'resend':
+      if (data) {
+        return { data, type: formType, inputsArray };
+      }
+      break;
   }
 };
 

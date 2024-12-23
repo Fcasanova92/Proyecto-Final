@@ -8,7 +8,7 @@ export const handleAuthenticationError = (
   inputSelected,
   empty
 ) => {
-  if (value.length === 0) {
+  if (value.length === 0 && inputSelected.getAttribute('id') !== 'code') {
     showValidationError(inputSelected, alertValidate, empty, '#EF5350');
   } else if (regexValidate(regex, value)) {
     hideValidationError(inputSelected, alertValidate, '#23DC3D');

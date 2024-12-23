@@ -1,6 +1,7 @@
 import { login } from './login.js';
 import { register } from './register.js';
 import { verifyRegister } from './verifyRegister.js';
+import { newCodeVerify } from './newCode.js';
 
 export const responseSelector = async (type, data) => {
   let response;
@@ -15,6 +16,10 @@ export const responseSelector = async (type, data) => {
 
     case 'verify':
       response = verifyRegister(data);
+      break;
+
+    case 'resend':
+      response = newCodeVerify(data);
       break;
   }
   return response;

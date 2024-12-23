@@ -5,5 +5,6 @@ export const AUTH_ERROR_MESSAGES = {
   UNAUTHORIZED: 'No tienes los permisos necesarios',
   INVALID_CREDENTIAL: 'Credenciales inválidas',
   VERIFY_CODE: 'No has validado el codigo de registracion',
+  VERIFY_SUCCES_ERROR: 'La cuenta ya ha sido validada',
   ERROR_VERIFY_CODE: 'El codigo de verificacion es incorrecto',
 };

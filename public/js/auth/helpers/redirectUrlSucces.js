@@ -1,4 +1,4 @@
-export const redirectUrl = (type) => {
+export const redirectUrlSucces = (type) => {
   let url = '';
   switch (type) {
     case 'login':
@@ -11,10 +11,6 @@ export const redirectUrl = (type) => {
 
     case 'verify':
       url = '/auth/login';
-      break;
-
-    default:
-      url = '/';
       break;
   }
   setTimeout(() => {

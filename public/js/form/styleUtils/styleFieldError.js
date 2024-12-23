@@ -20,6 +20,7 @@ export const styleErrorField = (message, id, type, button) => {
 
   setTimeout(() => {
     errorMessageLabel.style.display = 'none';
+    inputError.style.borderColor = ' #ccc';
     inputError.id === `${id}` ? 'none' : 'flex';
-  }, 2500);
+  }, 2000);
 };

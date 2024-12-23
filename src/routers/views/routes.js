@@ -56,7 +56,17 @@ router.get('/auth/register', async (req, res, next) => {
 router.get('/auth/verify', async (req, res, next) => {
   try {
     res.render('verifyRegister', {
-      title: 'Verificacion',
+      title: 'Registro Exitoso!',
+    });
+  } catch (error) {
+    next('Error al cargar el registro');
+  }
+});
+
+router.get('/auth/verify-user', async (req, res, next) => {
+  try {
+    res.render('verifyUser', {
+      title: 'Verificacion de usuario',
     });
   } catch (error) {
     next('Error al cargar el registro');
@@ -71,8 +81,6 @@ router.get('/carts/:cid?', async (req, res, next) => {
     const cartsData = await products.json();
 
     const productLista = cartsData.data.product;
-
-    console.log(productLista)
 
     res.render('carts', {
       title: 'Productos del carrito',

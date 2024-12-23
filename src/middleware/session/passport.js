@@ -99,6 +99,48 @@ passport.use(
 );
 
 passport.use(
+  'new-code-verify',
+  new LocalStrategy(
+    {
+      passReqToCallback: true,
+      usernameField: 'email',
+      passwordField: 'code',
+      session: false,
+    },
+    async (req, email, code, done) => {
+      try {
+        const user = await readUserByEmailService(email);
+        if (!user) {
+          const error = new NotAuthorized(
+            AUTH_ERROR_MESSAGES.USER_ALREADY_EXISTS
+          );
+          error.field = 'email';
+          error.statusCode = 401;
+          return done(error);
+        }
+
+        if (user.verify) {
+          const error = new NotVerify(AUTH_ERROR_MESSAGES.VERIFY_SUCCES_ERROR);
+          error.statusCode = 403;
+          error.field = null;
+          return done(error);
+        }
+
+        const verifyCode = verifyCodeGenerator();
+
+        await updateUserService(user._id, { verifyCode: verifyCode });
+        const message = welcomeMessage(user.name, verifyCode);
+        // se envia el email de bienvenida
+        await emailService.sendWelcomeEmail(email, message);
+        return done(null, { uid: null });
+      } catch (error) {
+        return done(error);
+      }
+    }
+  )
+);
+
+passport.use(
   'login',
   new LocalStrategy(
     { passReqToCallback: true, usernameField: 'email', session: false },

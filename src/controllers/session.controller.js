@@ -87,6 +87,16 @@ class SessionController {
       return next(error);
     }
   };
+
+  newCodeVerify = (req, res, next) => {
+    try {
+      return res
+        .status(200)
+        .json({ data: null, message: AUTH_MESSAGES.VERIFY_NEW_CODE });
+    } catch (error) {
+      return next(error);
+    }
+  };
 }
 const controller = new SessionController();
 export const {
@@ -98,4 +108,5 @@ export const {
   admin,
   recoveryPassowrd,
   verifyRegister,
+  newCodeVerify,
 } = controller;
